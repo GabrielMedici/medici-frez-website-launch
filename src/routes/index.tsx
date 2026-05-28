@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import logo from "@/assets/medici-frez-logo.jpeg";
+import logo from "@/assets/logotipo.png";
 import { OrbitChat } from "@/components/OrbitChat";
 import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
 
@@ -79,10 +79,8 @@ function Header() {
           />
           <div className="hidden sm:block leading-tight">
             <div className="font-serif text-lg text-navy tracking-tight">
-              Médici &amp; Frez
             </div>
             <div className="text-[10px] uppercase tracking-[0.24em] text-navy/50">
-              Advocacia &amp; Consultoria
             </div>
           </div>
         </a>
