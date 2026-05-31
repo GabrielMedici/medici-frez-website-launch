@@ -107,17 +107,40 @@ export function OrbitChat() {
 
   return (
     <>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Fechar chat" : "Abrir OrbitChat"}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-gold-foreground transition-all hover:-translate-y-0.5 hover:scale-105 hover:opacity-90 cursor-pointer"
-        style={{
-          background: "var(--gradient-gold)",
-          boxShadow: "var(--shadow-gold)",
-        }}
-      >
-        {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
-      </button>
+      {/* Floating CTA trigger */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {/* Breathing ring — only visible when chat is closed */}
+        {!open && (
+          <span
+            aria-hidden
+            className="orbit-ring"
+          />
+        )}
+        <button
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Fechar chat" : "Iniciar atendimento rápido"}
+          className={
+            open
+              ? "relative flex h-14 w-14 items-center justify-center rounded-full text-gold-foreground transition-all duration-300 hover:scale-105 hover:opacity-90 cursor-pointer"
+              : "orbit-pill relative flex items-center gap-3 rounded-full px-5 py-0 h-14 text-gold-foreground transition-all duration-300 hover:-translate-y-0.5 hover:brightness-105 cursor-pointer"
+          }
+          style={{
+            background: "var(--gradient-gold)",
+            boxShadow: "var(--shadow-gold)",
+          }}
+        >
+          {open ? (
+            <X className="h-6 w-6 shrink-0" />
+          ) : (
+            <>
+              <MessageCircle className="h-5 w-5 shrink-0" />
+              <span className="whitespace-nowrap text-[13px] font-semibold tracking-wide leading-none pr-1">
+                Iniciar atendimento rápido
+              </span>
+            </>
+          )}
+        </button>
+      </div>
 
       {open && (
         <div className="fixed bottom-24 right-3 left-3 sm:left-auto sm:right-6 z-50 flex w-auto sm:w-[min(380px,90vw)] flex-col overflow-hidden rounded-xl border border-border bg-white animate-scale-in shadow-[0_30px_60px_-20px_oklch(0.22_0.06_260_/_0.45)]">

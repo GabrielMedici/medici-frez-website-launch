@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import logo from "@/assets/Logotipo - Copia.png";
 import { OrbitChat } from "@/components/OrbitChat";
 import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -31,9 +31,44 @@ const navLinks = [
   { label: "Equipe", href: "#equipe" },
 ];
 
+function MouseGlow() {
+  const glowRef = useRef<HTMLDivElement>(null);
+  const posRef = useRef({ x: -999, y: -999 });
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      posRef.current = { x: e.clientX, y: e.clientY };
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(() => {
+          if (glowRef.current) {
+            glowRef.current.style.setProperty("--gx", `${posRef.current.x}px`);
+            glowRef.current.style.setProperty("--gy", `${posRef.current.y}px`);
+          }
+          rafRef.current = null;
+        });
+      }
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={glowRef}
+      aria-hidden
+      className="mouse-glow"
+    />
+  );
+}
+
 function Home() {
   return (
     <div className="min-h-screen bg-background text-navy">
+      <MouseGlow />
       <Header />
       <main>
         <Hero />
@@ -41,12 +76,7 @@ function Home() {
         <AreasAtuacao />
         <Sinergia />
         <AcompanhamentoProcessos />
-        <PlaceholderSection
-          id="equipe"
-          eyebrow="Nossa Equipe"
-          title="Em breve"
-          description="Conheça em breve os advogados que compõem a Médici & Frez."
-        />
+        <TeamSection />
       </main>
       <Footer />
       <OrbitChat />
@@ -181,7 +211,7 @@ function Hero() {
           <img
             src={logo}
             alt="Emblema Médici & Frez"
-            className="relative z-11 w-[68%] max-w-sm mix-blend-multiply"
+            className="relative z-11 w-[90%] max-w-md mix-blend-multiply logo-float"
           />
         </div>
       </div>
@@ -318,27 +348,80 @@ function Sinergia() {
   );
 }
 
-function PlaceholderSection({
-  id,
-  eyebrow,
-  title,
-  description,
-}: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  description: string;
-}) {
+/* ─── Team data ──────────────────────────────────────────── */
+const TEAM = [
+  { name: "Gabriel Médici",   role: "Sócio Fundador",   specialty: "Gestão Previdenciária",                   initials: "GM" },
+  { name: "Larissa Frez",     role: "Sócia Fundadora",  specialty: "Planejamento e Aposentadorias",            initials: "LF" },
+  { name: "Maria Aparecida",  role: "Advogada",          specialty: "Direito Civil e Projetos Sociais",         initials: "MA" },
+  { name: "Gabriel Fagundes", role: "Advogado",          specialty: "Relações Externas e Prazos",              initials: "GF" },
+  { name: "Laura Mel",        role: "Advogada",          specialty: "Administração Financeira Cível",           initials: "LM" },
+  { name: "Laura Andrade",    role: "Advogada",          specialty: "Demandas Patrimoniais e Inventários",      initials: "LA" },
+  { name: "Maria Cristina",   role: "Advogada",          specialty: "Conciliação e Mediação",                  initials: "MC" },
+  { name: "João Augusto",     role: "Advogado",          specialty: "Contratos e Relações de Consumo",         initials: "JA" },
+  { name: "Jemerson",         role: "Advogado",          specialty: "Direito de Família e Guarda",             initials: "JE" },
+  { name: "Geraldo Silva",    role: "Advogado",          specialty: "Benefícios por Incapacidade e Idosos",    initials: "GS" },
+  { name: "João Pedro",       role: "Advogado",          specialty: "Acompanhamento Previdenciário",            initials: "JP" },
+];
+
+function MemberCard({ name, role, specialty, initials }: (typeof TEAM)[number]) {
   return (
-    <section id={id} className="bg-background">
-      <div className="mx-auto max-w-7xl px-4 md:px-8 py-24 md:py-40 text-center">
-        <Eyebrow center>{eyebrow}</Eyebrow>
+    <article className="team-card flex-shrink-0 w-64 md:w-72 bg-white rounded-xl flex flex-col items-center text-center px-6 py-8 select-none"
+      style={{ boxShadow: "var(--shadow-soft)", borderBottom: "2px solid oklch(0.72 0.13 80 / 0.55)" }}
+    >
+      {/* Avatar */}
+      <div
+        className="w-20 h-20 rounded-full flex items-center justify-center mb-5 ring-1 ring-gold/20"
+        style={{ background: "oklch(0.95 0.012 250)" }}
+      >
+        <span
+          className="font-serif text-xl font-semibold"
+          style={{ color: "var(--gold)" }}
+        >
+          {initials}
+        </span>
+      </div>
+      {/* Name */}
+      <div className="font-serif text-[17px] font-semibold text-navy leading-tight">{name}</div>
+      {/* Role badge */}
+      <div className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.28em] text-gold">{role}</div>
+      {/* Divider */}
+      <div className="my-4 h-px w-8 bg-gold/40" />
+      {/* Specialty */}
+      <p className="text-xs font-light leading-relaxed text-navy/60">{specialty}</p>
+    </article>
+  );
+}
+
+function TeamSection() {
+  const doubled = [...TEAM, ...TEAM]; // seamless loop
+  return (
+    <section id="equipe" className="bg-background py-24 md:py-40 overflow-hidden">
+      {/* Header */}
+      <div className="mx-auto max-w-7xl px-4 md:px-8 mb-16 text-center">
+        <Eyebrow center>Nossa Equipe</Eyebrow>
         <h2 className="mt-10 font-serif text-4xl font-normal text-navy md:text-5xl">
-          {title}
+          Os profissionais por{" "}
+          <span className="italic">trás do escritório</span>
         </h2>
-        <p className="mx-auto mt-8 max-w-xl text-base font-light leading-relaxed text-navy/65">
-          {description}
+        <p className="mx-auto mt-6 max-w-xl text-base font-light leading-relaxed text-navy/60">
+          Uma equipe multidisciplinar comprometida com a excelência técnica
+          e o atendimento humanizado em cada etapa do processo.
         </p>
+      </div>
+
+      {/* Gradient fade edges */}
+      <div className="relative">
+        <div className="team-fade-left" aria-hidden />
+        <div className="team-fade-right" aria-hidden />
+
+        {/* Marquee wrapper — pause on hover */}
+        <div className="team-marquee-wrapper">
+          <div className="team-marquee-track flex gap-5 w-max">
+            {doubled.map((m, i) => (
+              <MemberCard key={i} {...m} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
