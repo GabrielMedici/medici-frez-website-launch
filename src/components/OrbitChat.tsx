@@ -110,7 +110,7 @@ export function OrbitChat() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Fechar chat" : "Abrir OrbitChat"}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-gold-foreground transition-all hover:-translate-y-0.5 hover:scale-105"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-gold-foreground transition-all hover:-translate-y-0.5 hover:scale-105 hover:opacity-90 cursor-pointer"
         style={{
           background: "var(--gradient-gold)",
           boxShadow: "var(--shadow-gold)",
@@ -120,7 +120,7 @@ export function OrbitChat() {
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 flex w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-xl border border-border bg-card animate-scale-in shadow-[0_30px_60px_-20px_oklch(0.22_0.06_260_/_0.45)]">
+        <div className="fixed bottom-24 right-3 left-3 sm:left-auto sm:right-6 z-50 flex w-auto sm:w-[min(380px,90vw)] flex-col overflow-hidden rounded-xl border border-border bg-white animate-scale-in shadow-[0_30px_60px_-20px_oklch(0.22_0.06_260_/_0.45)]">
           <div className="relative bg-background px-5 py-4 text-navy border-b border-border">
             <div
               aria-hidden
@@ -169,12 +169,12 @@ export function OrbitChat() {
             ))}
 
             {currentNode && (
-              <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <div className="mt-2 flex flex-col gap-2">
                 {currentNode.options.map((opt) => (
                   <button
                     key={opt.label}
                     onClick={() => handleSelect(opt)}
-                    className="group rounded-md border border-gold/60 bg-card px-3 py-2.5 text-left text-sm font-medium text-navy transition-all hover:border-gold hover:bg-gold hover:text-gold-foreground"
+                    className="group min-h-[44px] rounded-md border border-gold/60 bg-white px-3 py-2.5 text-left text-sm font-medium text-navy transition-all hover:border-gold hover:bg-gold hover:text-gold-foreground hover:opacity-90 cursor-pointer"
                   >
                     <span className="mr-2 text-gold group-hover:text-gold-foreground">
                       →
@@ -188,7 +188,7 @@ export function OrbitChat() {
             {finished && (
               <button
                 onClick={reset}
-                className="mt-3 inline-flex items-center justify-center gap-2 self-start rounded-md border border-navy/15 bg-card px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy transition-colors hover:border-gold hover:text-gold"
+                className="mt-3 inline-flex min-h-[44px] items-center justify-center gap-2 self-start rounded-md border border-navy/15 bg-white px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy transition-colors hover:border-gold hover:text-gold cursor-pointer"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
                 Reiniciar Atendimento
