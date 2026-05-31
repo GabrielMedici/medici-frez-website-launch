@@ -114,9 +114,10 @@ function MouseGlow() {
 
 function Home() {
   return (
-    <div className="min-h-screen text-navy">
+    <div className="min-h-screen text-navy relative">
       <CustomCursor />
       <MouseGlow />
+      <NetworkBackground />
       <Header />
       <main>
         <Hero />
@@ -217,7 +218,6 @@ function Header() {
 function Hero() {
   return (
     <section id="home" className="relative bg-[#0F172A] overflow-hidden">
-      <NetworkBackground />
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-4 md:px-8 py-12 md:py-20 lg:grid-cols-2">
         <div className="space-y-10">
           <Eyebrow className="text-white/60">Sociedade de Advogados</Eyebrow>

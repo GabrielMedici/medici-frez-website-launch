@@ -45,15 +45,8 @@ export function NetworkBackground() {
     };
 
     const init = () => {
-      // Pega o tamanho do container pai (Hero)
-      const parent = canvas.parentElement;
-      if (parent) {
-        width = parent.offsetWidth;
-        height = parent.offsetHeight;
-      } else {
-        width = window.innerWidth;
-        height = window.innerHeight;
-      }
+      width = window.innerWidth;
+      height = window.innerHeight;
       
       // Ajusta para densidade de pixel (Retina) para máxima qualidade
       const dpr = window.devicePixelRatio || 1;
@@ -175,7 +168,7 @@ export function NetworkBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-0 h-full w-full pointer-events-none"
+      className="fixed inset-0 z-30 h-full w-full pointer-events-none"
       style={{ background: "transparent" }}
     />
   );
