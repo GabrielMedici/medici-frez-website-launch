@@ -3,6 +3,7 @@ import logo from "@/assets/Logotipo - Copia.png";
 import { OrbitChat } from "@/components/OrbitChat";
 import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
 import { CustomCursor } from "@/components/CustomCursor";
+import { NetworkBackground } from "@/components/NetworkBackground";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 
@@ -131,12 +132,10 @@ function Home() {
   );
 }
 
-function Eyebrow({ children, center = false }: { children: React.ReactNode; center?: boolean }) {
+function Eyebrow({ children, center = false, className = "text-navy/60" }: { children: React.ReactNode; center?: boolean; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.32em] text-navy/60 ${
-        center ? "" : ""
-      }`}
+      className={`inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.32em] ${className}`}
     >
       <span aria-hidden className="h-px w-8 bg-gold" />
       {children}
@@ -217,15 +216,16 @@ function Header() {
 
 function Hero() {
   return (
-    <section id="home" className="relative">
-      <div className="mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-4 md:px-8 py-12 md:py-20 lg:grid-cols-2">
+    <section id="home" className="relative bg-[#0F172A] overflow-hidden">
+      <NetworkBackground />
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-4 md:px-8 py-12 md:py-20 lg:grid-cols-2">
         <div className="space-y-10">
-          <Eyebrow>Sociedade de Advogados</Eyebrow>
-          <h1 className="font-serif text-5xl font-normal leading-[1.08] text-navy md:text-6xl lg:text-[4.5rem]">
+          <Eyebrow className="text-white/60">Sociedade de Advogados</Eyebrow>
+          <h1 className="font-serif text-5xl font-normal leading-[1.08] text-white md:text-6xl lg:text-[4.5rem]">
             Organização jurídica <span className="italic">especializada</span>{" "}
             <Highlight delay={400}>e humanizada</Highlight>
           </h1>
-          <p className="max-w-xl text-lg font-light leading-relaxed text-navy/70">
+          <p className="max-w-xl text-lg font-light leading-relaxed text-white/70">
             Unimos rigor técnico e escuta atenta para conduzir cada caso com
             estratégia, clareza e profundo respeito por quem confia a nós suas
             questões mais importantes.
@@ -234,11 +234,7 @@ function Hero() {
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group inline-flex items-center justify-center rounded-sm px-8 py-4 text-xs font-medium uppercase tracking-[0.22em] text-gold-foreground transition-all hover:-translate-y-0.5 cursor-pointer"
-              style={{
-                background: "var(--gradient-gold)",
-                boxShadow: "var(--shadow-gold)",
-              }}
+              className="group inline-flex items-center justify-center rounded-sm px-8 py-4 text-xs font-medium uppercase tracking-[0.22em] text-navy transition-all hover:-translate-y-0.5 cursor-pointer bg-gold shadow-[0_0_20px_rgba(197,160,89,0.3)] hover:shadow-[0_0_30px_rgba(197,160,89,0.5)]"
             >
               Fale com um Especialista
               <span className="ml-2 transition-transform group-hover:translate-x-1">
@@ -247,7 +243,7 @@ function Hero() {
             </button>
             <a
               href="#quem-somos"
-              className="text-xs font-medium uppercase tracking-[0.22em] text-navy/70 underline-offset-[6px] decoration-gold/60 hover:text-gold hover:underline"
+              className="text-xs font-medium uppercase tracking-[0.22em] text-white/70 underline-offset-[6px] decoration-gold/60 hover:text-gold hover:underline"
             >
               Conheça o escritório
             </a>
@@ -258,8 +254,8 @@ function Hero() {
           <img
             src={logo}
             alt="Emblema Médici & Frez"
-            className="relative z-11 w-[70%] max-w-[420px] logo-float"
-            style={{ filter: "drop-shadow(0 12px 24px rgba(15,23,42,0.06)) drop-shadow(0 4px 8px rgba(15,23,42,0.04))" }}
+            className="relative z-11 w-[70%] max-w-[420px] logo-float brightness-0 invert opacity-90"
+            style={{ filter: "drop-shadow(0 12px 24px rgba(0,0,0,0.2))" }}
           />
 
           {/* Grid de Cards Movido para Baixo */}
@@ -267,49 +263,49 @@ function Hero() {
             {/* Card 1: Família */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
+              className="group flex w-full flex-col rounded-xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
-                <h3 className="font-serif text-xl text-navy">Família</h3>
+                <h3 className="font-serif text-xl text-white">Família</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Divórcio, Guarda e Pensão</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Divórcio, Guarda e Pensão</p>
             </div>
             
             {/* Card 2: Patrimônio */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
+              className="group flex w-full flex-col rounded-xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
-                <h3 className="font-serif text-xl text-navy">Patrimônio</h3>
+                <h3 className="font-serif text-xl text-white">Patrimônio</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Inventários e Bens</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Inventários e Bens</p>
             </div>
 
             {/* Card 3: INSS */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
+              className="group flex w-full flex-col rounded-xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
-                <h3 className="font-serif text-xl text-navy">INSS</h3>
+                <h3 className="font-serif text-xl text-white">INSS</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Aposentadorias e Revisões</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Aposentadorias e Revisões</p>
             </div>
 
             {/* Card 4: Invalidez */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
+              className="group flex w-full flex-col rounded-xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
-                <h3 className="font-serif text-xl text-navy">Invalidez</h3>
+                <h3 className="font-serif text-xl text-white">Invalidez</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Auxílio-Doença e Afastamento</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Auxílio-Doença e Afastamento</p>
             </div>
           </div>
         </div>
