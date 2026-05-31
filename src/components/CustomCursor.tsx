@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import cursorImg from "../assets/cursor-direito.png";
 /**
  * CustomCursor — Premium interactive cursor.
  *
@@ -37,6 +37,15 @@ export function CustomCursor() {
     // ── Event handlers ─────────────────────────────────────────────
     const onMove = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY };
+      
+      // Atualiza a imagem imediatamente (0 input lag)
+      // Ajuste percentual (-42% X, -20% Y) foca exatamente na ponta esquerda/superior da flecha na imagem enviada
+      if (dotRef.current) {
+        dotRef.current.style.transform =
+          `translate(calc(${e.clientX}px - 42%), calc(${e.clientY}px - 20%))`;
+        dotRef.current.style.opacity = "1";
+        dotRef.current.style.visibility = "visible";
+      }
     };
 
     const CLICKABLE_SELECTOR =
@@ -61,14 +70,9 @@ export function CustomCursor() {
       ringScale.current += (targetScale - ringScale.current) * SCALE_LERP;
       const s = ringScale.current;
 
-      // --- Apply dot ---
-      if (dotRef.current) {
-        dotRef.current.style.transform =
-          `translate(calc(${mx}px - 50%), calc(${my}px - 50%))`;
-        dotRef.current.style.opacity = h ? "0" : "1";
-      }
-
-      // --- Apply ring ---
+      // A imagem (dotRef) agora é atualizada instantaneamente no onMove para zero lag
+      
+      // --- Apply ring (Animação de amortecimento continua suave) ---
       if (ringRef.current) {
         ringRef.current.style.transform =
           `translate(calc(${rx}px - 50%), calc(${ry}px - 50%)) scale(${s})`;
@@ -95,8 +99,15 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* ── Dot ─────────────────────────────────── */}
-      <div ref={dotRef} className="cursor-dot" aria-hidden />
+      {/* ── Imagem do Cursor Anexado ───────────────────────── */}
+      <img
+        ref={dotRef as any}
+        src={cursorImg}
+        alt=""
+        className="cursor-image"
+        style={{ opacity: 1, visibility: "visible", display: "block" }}
+        aria-hidden
+      />
 
       {/* ── Trailing ring ───────────────────────── */}
       <div ref={ringRef} className="cursor-ring" aria-hidden />

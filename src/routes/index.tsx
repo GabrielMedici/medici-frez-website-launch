@@ -32,6 +32,39 @@ const navLinks = [
   { label: "Equipe", href: "#equipe" },
 ];
 
+/**
+ * Highlight — wraps text with a gold marker sweep animation.
+ * Triggered once when the element scrolls into view.
+ */
+function Highlight({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [on, setOn] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) { setOn(true); obs.disconnect(); }
+      },
+      { threshold: 0.6 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <span
+      ref={ref}
+      className="highlight-sweep"
+      data-on={on}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </span>
+  );
+}
+
 function MouseGlow() {
   const glowRef = useRef<HTMLDivElement>(null);
   const posRef = useRef({ x: -999, y: -999 });
@@ -68,7 +101,7 @@ function MouseGlow() {
 
 function Home() {
   return (
-    <div className="min-h-screen bg-background text-navy">
+    <div className="min-h-screen text-navy">
       <CustomCursor />
       <MouseGlow />
       <Header />
@@ -103,28 +136,29 @@ function Eyebrow({ children, center = false }: { children: React.ReactNode; cent
 function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-40 border-b border-border/40 bg-background/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 bg-[#0F172A] overflow-visible shadow-[0_1px_0_0_rgba(197,160,89,0.20),0_8px_32px_-8px_rgba(15,23,42,0.6)] backdrop-blur-lg">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-8 py-2">
         <a href="#home" className="flex items-center gap-3">
+          {/* Logo estática — blend + sombra dourada, sem movimento */}
           <img
             src={logo}
-            alt="Médici & Frez Sociedade de Advogados"
-            className="h-12 md:h-20 w-auto rounded-full object-contain object-center transition-transform duration-700 ease-in-out hover:rotate-[360deg] cursor-pointer"
-            style={{ objectPosition: "center 30%" }}
+            alt="Médici &amp; Frez Sociedade de Advogados"
+            className="w-auto object-contain cursor-pointer shrink-0 select-none"
+            style={{
+              height: "clamp(56px, 8vw, 88px)",
+              mixBlendMode: "screen",
+              filter:
+                "drop-shadow(0 4px 8px rgba(197,160,89,0.25)) " +
+                "drop-shadow(0 2px 4px rgba(15,23,42,0.30))",
+            }}
           />
-          <div className="hidden sm:block leading-tight">
-            <div className="font-serif text-lg text-navy tracking-tight">
-            </div>
-            <div className="text-[10px] uppercase tracking-[0.24em] text-navy/50">
-            </div>
-          </div>
         </a>
         <nav className="hidden md:flex items-center gap-10">
           {navLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-light text-navy/75 transition-colors hover:text-gold cursor-pointer min-h-[44px] inline-flex items-center"
+              className="text-sm font-light text-white/75 transition-colors hover:text-gold cursor-pointer min-h-[44px] inline-flex items-center"
             >
               {l.label}
             </a>
@@ -132,7 +166,7 @@ function Header() {
         </nav>
         <a
           href="#contato"
-          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-medium uppercase tracking-[0.22em] text-navy transition-colors hover:text-gold cursor-pointer min-h-[44px]"
+          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-medium uppercase tracking-[0.22em] text-white/80 transition-colors hover:text-gold cursor-pointer min-h-[44px]"
         >
           Contato
         </a>
@@ -140,20 +174,20 @@ function Header() {
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
-          className="md:hidden inline-flex h-11 w-11 min-h-[44px] items-center justify-center rounded-md text-navy transition-colors hover:bg-navy/5 cursor-pointer"
+          className="md:hidden inline-flex h-11 w-11 min-h-[44px] items-center justify-center rounded-md text-white transition-colors hover:bg-white/10 cursor-pointer"
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-md">
+        <div className="md:hidden border-t border-white/10 bg-navy/98 backdrop-blur-md">
           <nav className="mx-auto flex max-w-7xl flex-col px-4 py-3">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="min-h-[44px] flex items-center text-sm font-light text-navy/80 transition-colors hover:text-gold cursor-pointer border-b border-border/40 last:border-b-0"
+                className="min-h-[44px] flex items-center text-sm font-light text-white/80 transition-colors hover:text-gold cursor-pointer border-b border-white/10 last:border-b-0"
               >
                 {l.label}
               </a>
@@ -174,13 +208,13 @@ function Header() {
 
 function Hero() {
   return (
-    <section id="home" className="relative bg-background">
+    <section id="home" className="relative">
       <div className="mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-4 md:px-8 py-12 md:py-20 lg:grid-cols-2">
         <div className="space-y-10">
           <Eyebrow>Sociedade de Advogados</Eyebrow>
           <h1 className="font-serif text-5xl font-normal leading-[1.08] text-navy md:text-6xl lg:text-[4.5rem]">
             Organização jurídica <span className="italic">especializada</span>{" "}
-            e humanizada
+            <Highlight delay={400}>e humanizada</Highlight>
           </h1>
           <p className="max-w-xl text-lg font-light leading-relaxed text-navy/70">
             Unimos rigor técnico e escuta atenta para conduzir cada caso com
@@ -210,12 +244,65 @@ function Hero() {
             </a>
           </div>
         </div>
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex w-full flex-col items-center justify-center gap-8 mt-12 lg:mt-0">
+          {/* Logo Restaurada Acima dos Cards */}
           <img
             src={logo}
             alt="Emblema Médici & Frez"
-            className="relative z-11 w-[90%] max-w-md mix-blend-multiply logo-float"
+            className="relative z-11 w-[80%] max-w-[360px] logo-float"
+            style={{ filter: "drop-shadow(0 8px 32px rgba(15,23,42,0.12)) drop-shadow(0 2px 8px rgba(15,23,42,0.08))" }}
           />
+
+          {/* Grid de Cards Movido para Baixo */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+            {/* Card 1: Família */}
+            <div
+              onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
+              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-gold text-lg">✦</span>
+                <h3 className="font-serif text-xl text-navy">Família</h3>
+              </div>
+              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Divórcio, Guarda e Pensão</p>
+            </div>
+            
+            {/* Card 2: Patrimônio */}
+            <div
+              onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
+              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-gold text-lg">✦</span>
+                <h3 className="font-serif text-xl text-navy">Patrimônio</h3>
+              </div>
+              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Inventários e Bens</p>
+            </div>
+
+            {/* Card 3: INSS */}
+            <div
+              onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
+              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-gold text-lg">✦</span>
+                <h3 className="font-serif text-xl text-navy">INSS</h3>
+              </div>
+              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Aposentadorias e Revisões</p>
+            </div>
+
+            {/* Card 4: Invalidez */}
+            <div
+              onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
+              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-gold text-lg">✦</span>
+                <h3 className="font-serif text-xl text-navy">Invalidez</h3>
+              </div>
+              <p className="mt-2 text-xs font-light leading-relaxed text-navy/70">Auxílio-Doença e Afastamento</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -224,12 +311,12 @@ function Hero() {
 
 function QuemSomos() {
   return (
-    <section id="quem-somos" className="relative bg-background">
+    <section id="quem-somos" className="relative">
       <div className="mx-auto max-w-3xl px-4 md:px-8 py-12 md:py-20 text-center">
         <Eyebrow center>Quem somos</Eyebrow>
         <h2 className="mt-6 font-serif text-4xl font-normal leading-[1.15] text-navy md:text-5xl">
-          Uma advocacia <span className="italic">híbrida e estruturada</span>,
-          construída para servir.
+          Uma advocacia <span className="italic">híbrida e estruturada</span>,{" "}
+          <Highlight delay={200}>construída para servir.</Highlight>
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-[1.85] text-navy/70">
           A Médici &amp; Frez nasce da união entre experiência consultiva e
@@ -237,8 +324,8 @@ function QuemSomos() {
           presencial e digital — que combina a proximidade do atendimento
           personalizado com a eficiência de processos modernos. Cada cliente é
           conduzido por uma estrutura sólida, com método, transparência e o
-          cuidado de quem entende que, por trás de cada caso, existe uma
-          história a ser preservada.
+          cuidado de quem entende que, por trás de cada caso, existe uma{" "}
+          <Highlight delay={300}>história a ser preservada.</Highlight>
         </p>
       </div>
     </section>
@@ -274,7 +361,7 @@ const areas = [
 
 function AreasAtuacao() {
   return (
-    <section id="areas" className="bg-background">
+    <section id="areas">
       <div className="mx-auto max-w-7xl px-4 md:px-8 py-12 md:py-20">
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow center>Expertise</Eyebrow>
@@ -328,7 +415,7 @@ function AreasAtuacao() {
 
 function Sinergia() {
   return (
-    <section className="bg-background px-4 md:px-8 py-10 md:py-16">
+    <section className="px-4 md:px-8 py-10 md:py-16">
       <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1fr_2fr]">
         <div>
           <Eyebrow>Sinergia</Eyebrow>
@@ -338,11 +425,11 @@ function Sinergia() {
         </div>
         <p className="text-lg font-light leading-[1.85] text-navy/70">
           Nosso diferencial está na{" "}
-          <span className="text-gold">atuação conjunta</span> entre as áreas.
+          <Highlight><span className="text-gold">atuação conjunta</span></Highlight> entre as áreas.
           Demandas familiares que geram desdobramentos previdenciários — como
           inventários que envolvem pensão por morte, ou divórcios com reflexos
           em benefícios — são conduzidas de forma{" "}
-          <span className="text-gold">centralizada</span>, com uma única
+          <Highlight delay={250}><span className="text-gold">centralizada</span></Highlight>, com uma única
           estratégia, um único interlocutor e total integração entre os
           núcleos.
         </p>
@@ -398,7 +485,7 @@ function MemberCard({ name, role, specialty, initials }: (typeof TEAM)[number]) 
 function TeamSection() {
   const doubled = [...TEAM, ...TEAM]; // seamless loop
   return (
-    <section id="equipe" className="bg-background py-12 md:py-20 overflow-hidden">
+    <section id="equipe" className="py-12 md:py-20 overflow-hidden">
       {/* Header */}
       <div className="mx-auto max-w-7xl px-4 md:px-8 mb-10 text-center">
         <Eyebrow center>Nossa Equipe</Eyebrow>
@@ -434,7 +521,7 @@ function Footer() {
   return (
     <footer
       id="contato"
-      className="border-t border-border/50 bg-background text-navy"
+      className="border-t border-white/10 bg-navy text-white"
     >
       <div className="mx-auto max-w-7xl px-4 md:px-8 py-10 md:py-14">
         <div className="grid gap-12 md:gap-16 md:grid-cols-3">
@@ -443,27 +530,33 @@ function Footer() {
               <img
                 src={logo}
                 alt=""
-                className="h-14 w-auto object-contain"
+                className="h-20 w-auto object-contain"
+                style={{
+                  mixBlendMode: "screen",
+                  filter:
+                    "drop-shadow(0 3px 6px rgba(197,160,89,0.20)) " +
+                    "drop-shadow(0 1px 3px rgba(15,23,42,0.25))",
+                }}
               />
               <div>
-                <div className="font-serif text-xl">Médici &amp; Frez</div>
-                <div className="text-[10px] uppercase tracking-[0.24em] text-navy/50">
+                <div className="font-serif text-xl text-white">Médici &amp; Frez</div>
+                <div className="text-[10px] uppercase tracking-[0.24em] text-white/50">
                   Sociedade de Advogados
                 </div>
               </div>
             </div>
-            <p className="mt-8 max-w-xs text-sm font-light leading-relaxed text-navy/65">
+            <p className="mt-8 max-w-xs text-sm font-light leading-relaxed text-white/60">
               Advocacia e consultoria jurídica — Direito Civil, Família e
               Sucessões.
             </p>
           </div>
 
           <div>
-            <h3 className="text-[11px] font-medium uppercase tracking-[0.28em] text-navy/60">
+            <h3 className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/50">
               Endereço
             </h3>
             <div className="mt-4 h-px w-8 bg-gold" />
-            <p className="mt-6 text-sm font-light leading-relaxed text-navy/75">
+            <p className="mt-6 text-sm font-light leading-relaxed text-white/70">
               Centro Empresarial Phenom
               <br />
               Avenida Carneiro Leão, nº 500
@@ -473,11 +566,11 @@ function Footer() {
           </div>
 
           <div>
-            <h3 className="text-[11px] font-medium uppercase tracking-[0.28em] text-navy/60">
+            <h3 className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/50">
               Contato
             </h3>
             <div className="mt-4 h-px w-8 bg-gold" />
-            <ul className="mt-6 space-y-2 text-sm font-light text-navy/75">
+            <ul className="mt-6 space-y-2 text-sm font-light text-white/70">
               <li>contato@medicifrez.adv.br</li>
               <li>+55 (44) 0000-0000</li>
               <li>Seg. à Sex. — 09h às 18h</li>
@@ -485,12 +578,12 @@ function Footer() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 text-xs font-light text-navy/50 md:flex-row">
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs font-light text-white/40 md:flex-row">
           <span>
             © {new Date().getFullYear()} Médici &amp; Frez Sociedade de
             Advogados. Todos os direitos reservados.
           </span>
-          <span className="uppercase tracking-[0.28em] text-navy/50">OAB/PR</span>
+          <span className="uppercase tracking-[0.28em] text-white/40">OAB/PR</span>
         </div>
       </div>
     </footer>

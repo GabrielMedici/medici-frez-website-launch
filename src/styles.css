@@ -183,18 +183,15 @@
   }
 }
 
-.cursor-dot {
+.cursor-image {
   position: fixed;
   top: 0;
   left: 0;
-  width: 8px;
-  height: 8px;
-  background: var(--gold);
-  border-radius: 50%;
+  width: 150px;
+  height: auto;
+  object-fit: contain;
   pointer-events: none;
   z-index: 99999;
-  will-change: transform, opacity;
-  transition: opacity 0.18s ease;
 }
 
 .cursor-ring {
@@ -228,6 +225,41 @@
 
 .logo-float {
   animation: float-logo 4s ease-in-out infinite;
+}
+
+/* ── Header logo — flutuante acima da barra ────────────────── */
+@keyframes header-logo-float {
+  0%, 100% {
+    transform: translateY(10px);
+    filter:
+      drop-shadow(0 6px 18px rgba(197,160,89,0.55))
+      drop-shadow(0 2px 6px rgba(15,23,42,0.40));
+  }
+  50% {
+    transform: translateY(4px);
+    filter:
+      drop-shadow(0 14px 28px rgba(197,160,89,0.35))
+      drop-shadow(0 4px 10px rgba(15,23,42,0.25));
+  }
+}
+
+.header-logo-float {
+  animation: header-logo-float 5s ease-in-out infinite;
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Floating Cards ───────────────────────────────────────── */
+@keyframes float-card {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+
+.animate-float-card {
+  animation: float-card 6s ease-in-out infinite;
+}
+.animate-float-card-delayed {
+  animation: float-card 6s ease-in-out 3s infinite;
 }
 
 /* ── Mouse glow ───────────────────────────────────────────── */
