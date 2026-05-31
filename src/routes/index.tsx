@@ -5,7 +5,7 @@ import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
 import { CustomCursor } from "@/components/CustomCursor";
 import { NetworkBackground } from "@/components/NetworkBackground";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, HeartHandshake, Bird, GraduationCap, Building2, MessageCircle, Mail, Building, MessageSquare, Lightbulb, User as UserIcon } from "lucide-react";
+import { Menu, X, HeartHandshake, Bird, GraduationCap, Building2, MessageCircle, Mail, Building, MessageSquare, Lightbulb, User as UserIcon, LayoutDashboard } from "lucide-react";
 
 import imgGabrielMedici from "@/assets/gabrielmedici.png";
 import imgGabrielFagundes from "@/assets/gabrielfagundes.png";
@@ -512,9 +512,12 @@ function ModeloHibrido() {
                <span className="font-bold text-white text-lg tracking-wide">OrbitChat</span>
                <span className="ml-auto text-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
              </div>
-             <div className="group flex items-center gap-5 bg-[#1E293B] p-5 rounded-xl border border-white/10 shadow-2xl transition-all hover:-translate-y-1 hover:border-white/20">
-               <div className="bg-[#0284C7] p-3 rounded-xl shadow-inner"><Mail className="w-6 h-6 text-white" /></div>
-               <span className="font-bold text-white text-lg tracking-wide">Webmail Corporate</span>
+             <div className="group flex items-center gap-5 bg-[#1E293B] p-5 rounded-xl border border-white/10 shadow-2xl transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(197,160,89,0.15)] cursor-pointer" onClick={() => {
+               document.getElementById("cliente")?.scrollIntoView({ behavior: "smooth" });
+             }}>
+               <div className="bg-[#0284C7] p-3 rounded-xl shadow-inner"><LayoutDashboard className="w-6 h-6 text-white" /></div>
+               <span className="font-bold text-white text-lg tracking-wide">Astrea</span>
+               <span className="ml-auto text-gold opacity-0 group-hover:opacity-100 transition-opacity">↓</span>
              </div>
            </div>
         </div>
