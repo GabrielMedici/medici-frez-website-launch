@@ -455,29 +455,34 @@ const TEAM = [
 
 function MemberCard({ name, role, specialty, initials }: (typeof TEAM)[number]) {
   return (
-    <article className="team-card flex-shrink-0 w-64 md:w-72 bg-white rounded-xl flex flex-col items-center text-center px-6 py-8 select-none"
+    <article className="team-card flex-shrink-0 w-64 md:w-72 bg-white rounded-xl flex flex-col items-center text-center select-none overflow-hidden"
       style={{ boxShadow: "var(--shadow-soft)", borderBottom: "2px solid oklch(0.72 0.13 80 / 0.55)" }}
     >
-      {/* Avatar */}
+      {/* Avatar / Photo Area */}
       <div
-        className="w-20 h-20 rounded-full flex items-center justify-center mb-5 ring-1 ring-gold/20"
+        className="w-full h-44 flex items-center justify-center bg-gray-100"
         style={{ background: "oklch(0.95 0.012 250)" }}
       >
+        {/* Caso coloquem foto no futuro, ela ficaria aqui como <img src={...} className="w-full h-full object-cover" /> */}
         <span
-          className="font-serif text-xl font-semibold"
+          className="font-serif text-5xl font-semibold opacity-40"
           style={{ color: "var(--gold)" }}
         >
           {initials}
         </span>
       </div>
-      {/* Name */}
-      <div className="font-serif text-[17px] font-semibold text-navy leading-tight">{name}</div>
-      {/* Role badge */}
-      <div className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.28em] text-gold">{role}</div>
-      {/* Divider */}
-      <div className="my-4 h-px w-8 bg-gold/40" />
-      {/* Specialty */}
-      <p className="text-xs font-light leading-relaxed text-navy/60">{specialty}</p>
+      
+      {/* Content Area */}
+      <div className="flex flex-col items-center px-6 py-6 w-full">
+        {/* Name */}
+        <div className="font-serif text-[17px] font-semibold text-navy leading-tight">{name}</div>
+        {/* Role badge */}
+        <div className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.28em] text-gold">{role}</div>
+        {/* Divider */}
+        <div className="my-4 h-px w-8 bg-gold/40" />
+        {/* Specialty */}
+        <p className="text-xs font-light leading-relaxed text-navy/60">{specialty}</p>
+      </div>
     </article>
   );
 }
