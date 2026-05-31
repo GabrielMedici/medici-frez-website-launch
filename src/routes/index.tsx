@@ -74,7 +74,7 @@ function Header() {
           <img
             src={logo}
             alt="Médici & Frez Sociedade de Advogados"
-            className="h-25 w-25 rounded-full object-contain object-center"
+            className="h-20 w-auto rounded-full object-contain object-center transition-transform duration-700 ease-in-out hover:rotate-[360deg]"
             style={{ objectPosition: "center 30%" }}
           />
           <div className="hidden sm:block leading-tight">
