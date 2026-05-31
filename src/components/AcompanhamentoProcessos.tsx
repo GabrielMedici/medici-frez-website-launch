@@ -111,16 +111,18 @@ export function AcompanhamentoProcessos() {
 
         {!isLogged ? (
           // --- LOGIN SIMULADO ---
-          <div className="mx-auto max-w-md bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-border/60 p-8 md:p-12">
-             <div className="flex justify-center mb-6 h-16">
+          <div className="mx-auto max-w-md bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-border/60 overflow-hidden">
+             <div className="bg-[#0F172A] w-full py-8 px-6 flex justify-center items-center border-b-2 border-gold/50">
                 <img 
                   src={imgAstrea} 
                   alt="Logo Astrea" 
-                  className="w-full max-w-[200px] h-full object-contain drop-shadow-sm"
+                  className="w-[85%] max-w-[260px] h-auto object-contain brightness-0 invert drop-shadow-md"
                 />
              </div>
-             <h3 className="text-center font-serif text-2xl text-navy mb-2">Acesso ao Sistema</h3>
-             <p className="text-center text-sm text-navy/60 mb-8">Informe suas credenciais para entrar no portal integrado ao Astrea.</p>
+             
+             <div className="p-8 md:p-10">
+               <h3 className="text-center font-serif text-2xl text-navy mb-2">Acesso ao Sistema</h3>
+               <p className="text-center text-sm text-navy/60 mb-8">Informe suas credenciais para entrar no portal integrado ao Astrea.</p>
              
              <form onSubmit={handleLogin} className="flex flex-col gap-4">
                 <input
@@ -144,6 +146,7 @@ export function AcompanhamentoProcessos() {
                   Entrar Seguramente
                 </button>
              </form>
+            </div>
           </div>
         ) : (
           // --- ASTREA DASHBOARD ---
