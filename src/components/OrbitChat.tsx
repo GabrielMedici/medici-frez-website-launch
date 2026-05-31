@@ -77,6 +77,13 @@ export function OrbitChat() {
     });
   }, [messages, nodeKey, finished]);
 
+  // Listen for external open trigger (e.g. Hero CTA button)
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener("orbit:open", handler);
+    return () => window.removeEventListener("orbit:open", handler);
+  }, []);
+
   const pushBot = (text: string) =>
     setMessages((prev) => [...prev, { id: prev.length + 1, from: "bot", text }]);
   const pushUser = (text: string) =>

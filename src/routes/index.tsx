@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import logo from "@/assets/Logotipo - Copia.png";
 import { OrbitChat } from "@/components/OrbitChat";
 import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
+import { CustomCursor } from "@/components/CustomCursor";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 
@@ -68,6 +69,7 @@ function MouseGlow() {
 function Home() {
   return (
     <div className="min-h-screen bg-background text-navy">
+      <CustomCursor />
       <MouseGlow />
       <Header />
       <main>
@@ -173,7 +175,7 @@ function Header() {
 function Hero() {
   return (
     <section id="home" className="relative bg-background">
-      <div className="mx-auto grid max-w-7xl items-center gap-12 md:gap-20 px-4 md:px-8 py-20 md:py-48 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-4 md:px-8 py-12 md:py-20 lg:grid-cols-2">
         <div className="space-y-10">
           <Eyebrow>Sociedade de Advogados</Eyebrow>
           <h1 className="font-serif text-5xl font-normal leading-[1.08] text-navy md:text-6xl lg:text-[4.5rem]">
@@ -186,9 +188,10 @@ function Hero() {
             questões mais importantes.
           </p>
           <div className="flex flex-wrap items-center gap-8 pt-4">
-            <a
-              href="#contato"
-              className="group inline-flex items-center justify-center rounded-sm px-8 py-4 text-xs font-medium uppercase tracking-[0.22em] text-gold-foreground transition-all hover:-translate-y-0.5"
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
+              className="group inline-flex items-center justify-center rounded-sm px-8 py-4 text-xs font-medium uppercase tracking-[0.22em] text-gold-foreground transition-all hover:-translate-y-0.5 cursor-pointer"
               style={{
                 background: "var(--gradient-gold)",
                 boxShadow: "var(--shadow-gold)",
@@ -198,7 +201,7 @@ function Hero() {
               <span className="ml-2 transition-transform group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </button>
             <a
               href="#quem-somos"
               className="text-xs font-medium uppercase tracking-[0.22em] text-navy/70 underline-offset-[6px] decoration-gold/60 hover:text-gold hover:underline"
@@ -222,13 +225,13 @@ function Hero() {
 function QuemSomos() {
   return (
     <section id="quem-somos" className="relative bg-background">
-      <div className="mx-auto max-w-3xl px-4 md:px-8 py-24 md:py-40 text-center">
+      <div className="mx-auto max-w-3xl px-4 md:px-8 py-12 md:py-20 text-center">
         <Eyebrow center>Quem somos</Eyebrow>
-        <h2 className="mt-10 font-serif text-4xl font-normal leading-[1.15] text-navy md:text-5xl">
+        <h2 className="mt-6 font-serif text-4xl font-normal leading-[1.15] text-navy md:text-5xl">
           Uma advocacia <span className="italic">híbrida e estruturada</span>,
           construída para servir.
         </h2>
-        <p className="mx-auto mt-12 max-w-2xl text-lg font-light leading-[1.85] text-navy/70">
+        <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-[1.85] text-navy/70">
           A Médici &amp; Frez nasce da união entre experiência consultiva e
           atuação contenciosa qualificada. Operamos em um modelo híbrido —
           presencial e digital — que combina a proximidade do atendimento
@@ -272,19 +275,19 @@ const areas = [
 function AreasAtuacao() {
   return (
     <section id="areas" className="bg-background">
-      <div className="mx-auto max-w-7xl px-4 md:px-8 py-24 md:py-40">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-12 md:py-20">
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow center>Expertise</Eyebrow>
-          <h2 className="mt-10 font-serif text-4xl font-normal text-navy md:text-5xl">
+          <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
             Nossas Áreas de <span className="italic">Atuação</span>
           </h2>
-          <p className="mx-auto mt-8 max-w-xl text-base font-light leading-relaxed text-navy/65">
+          <p className="mx-auto mt-5 max-w-xl text-base font-light leading-relaxed text-navy/65">
             Dois núcleos complementares que se conectam para oferecer soluções
             jurídicas completas ao longo da vida do cliente e de sua família.
           </p>
         </div>
 
-        <div className="mt-16 md:mt-24 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
+        <div className="mt-10 md:mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
           {areas.map((area) => (
             <article
               key={area.title}
@@ -325,7 +328,7 @@ function AreasAtuacao() {
 
 function Sinergia() {
   return (
-    <section className="bg-background px-4 md:px-8 py-20 md:py-32">
+    <section className="bg-background px-4 md:px-8 py-10 md:py-16">
       <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1fr_2fr]">
         <div>
           <Eyebrow>Sinergia</Eyebrow>
@@ -395,11 +398,11 @@ function MemberCard({ name, role, specialty, initials }: (typeof TEAM)[number]) 
 function TeamSection() {
   const doubled = [...TEAM, ...TEAM]; // seamless loop
   return (
-    <section id="equipe" className="bg-background py-24 md:py-40 overflow-hidden">
+    <section id="equipe" className="bg-background py-12 md:py-20 overflow-hidden">
       {/* Header */}
-      <div className="mx-auto max-w-7xl px-4 md:px-8 mb-16 text-center">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 mb-10 text-center">
         <Eyebrow center>Nossa Equipe</Eyebrow>
-        <h2 className="mt-10 font-serif text-4xl font-normal text-navy md:text-5xl">
+        <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
           Os profissionais por{" "}
           <span className="italic">trás do escritório</span>
         </h2>
@@ -433,7 +436,7 @@ function Footer() {
       id="contato"
       className="border-t border-border/50 bg-background text-navy"
     >
-      <div className="mx-auto max-w-7xl px-4 md:px-8 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-10 md:py-14">
         <div className="grid gap-12 md:gap-16 md:grid-cols-3">
           <div>
             <div className="flex items-center gap-4">
