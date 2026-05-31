@@ -73,12 +73,13 @@ const DOCUMENTOS = [
 
 export function AcompanhamentoProcessos() {
   const [cpf, setCpf] = useState("");
+  const [senha, setSenha] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("resumo");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (cpf.trim().length === 0) return;
+    if (cpf.trim().length === 0) return; // Aceita qualquer coisa desde que preenchido
     setIsLogged(true);
   };
 
@@ -111,27 +112,34 @@ export function AcompanhamentoProcessos() {
         {!isLogged ? (
           // --- LOGIN SIMULADO ---
           <div className="mx-auto max-w-md bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-border/60 p-8 md:p-12">
-             <div className="flex justify-center mb-8">
+             <div className="flex justify-center mb-6 h-16">
                 <img 
                   src={imgAstrea} 
                   alt="Logo Astrea" 
-                  className="h-20 w-auto object-contain drop-shadow-sm"
+                  className="w-full max-w-[200px] h-full object-contain drop-shadow-sm"
                 />
              </div>
              <h3 className="text-center font-serif text-2xl text-navy mb-2">Acesso ao Sistema</h3>
-             <p className="text-center text-sm text-navy/60 mb-8">Informe seu CPF para entrar no portal integrado ao Astrea.</p>
+             <p className="text-center text-sm text-navy/60 mb-8">Informe suas credenciais para entrar no portal integrado ao Astrea.</p>
              
              <form onSubmit={handleLogin} className="flex flex-col gap-4">
                 <input
                   type="text"
                   value={cpf}
                   onChange={(e) => setCpf(e.target.value)}
-                  placeholder="Digite seu CPF (simulação)"
+                  placeholder="Digite seu CPF"
+                  className="w-full min-h-[48px] rounded-lg border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-gold focus:ring-1 focus:ring-gold"
+                />
+                <input
+                  type="password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
+                  placeholder="Digite sua senha"
                   className="w-full min-h-[48px] rounded-lg border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-gold focus:ring-1 focus:ring-gold"
                 />
                 <button
                   type="submit"
-                  className="w-full inline-flex min-h-[48px] items-center justify-center rounded-lg px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white transition-all hover:-translate-y-0.5 hover:shadow-lg cursor-pointer bg-[#0F172A]"
+                  className="w-full inline-flex min-h-[48px] items-center justify-center rounded-lg px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white transition-all hover:-translate-y-0.5 hover:shadow-lg cursor-pointer bg-[#0F172A] mt-2"
                 >
                   Entrar Seguramente
                 </button>
@@ -143,11 +151,11 @@ export function AcompanhamentoProcessos() {
             
             {/* Sidebar */}
             <aside className="w-full md:w-64 bg-[#0F172A] flex flex-col">
-              <div className="p-6 border-b border-white/10 flex items-center justify-center bg-white/5 min-h-[96px]">
+              <div className="p-6 border-b border-white/10 flex items-center justify-center bg-white/5 h-[80px]">
                  <img 
                    src={imgAstrea} 
                    alt="Logo Astrea" 
-                   className="h-12 w-auto object-contain brightness-0 invert opacity-90"
+                   className="w-full max-w-[120px] h-full object-contain brightness-0 invert opacity-90"
                  />
               </div>
               <nav className="flex-1 p-4 space-y-1 overflow-x-auto md:overflow-x-visible flex flex-row md:flex-col scrollbar-hide">
