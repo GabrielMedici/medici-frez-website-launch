@@ -114,7 +114,7 @@ function MouseGlow() {
 
 function Home() {
   return (
-    <div className="min-h-screen text-navy relative">
+    <div className="min-h-screen text-white relative bg-[#0F172A]">
       <CustomCursor />
       <MouseGlow />
       <NetworkBackground />
@@ -133,7 +133,7 @@ function Home() {
   );
 }
 
-function Eyebrow({ children, center = false, className = "text-navy/60" }: { children: React.ReactNode; center?: boolean; className?: string }) {
+function Eyebrow({ children, center = false, className = "text-white/60" }: { children: React.ReactNode; center?: boolean; className?: string }) {
   return (
     <span
       className={`inline-flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.32em] ${className}`}
@@ -148,17 +148,17 @@ function Eyebrow({ children, center = false, className = "text-navy/60" }: { chi
 function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-40 bg-white/60 overflow-visible shadow-[0_4px_30px_rgba(0,0,0,0.03)] border-b border-white/20 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 bg-[#0F172A]/80 overflow-visible shadow-[0_4px_30px_rgba(0,0,0,0.3)] border-b border-white/10 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-8 py-2">
         <a href="#home" className="flex items-center gap-3">
-          {/* Logo estática — blend + sombra dourada, sem movimento */}
+          {/* Logo */}
           <img
             src={logo}
             alt="Médici &amp; Frez Sociedade de Advogados"
-            className="w-auto object-contain cursor-pointer shrink-0 select-none"
+            className="w-auto object-contain cursor-pointer shrink-0 select-none brightness-0 invert opacity-90"
             style={{
               height: "clamp(56px, 8vw, 88px)",
-              filter: "drop-shadow(0 2px 8px rgba(15,23,42,0.15))",
+              filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.5))",
             }}
           />
         </a>
@@ -167,7 +167,7 @@ function Header() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-navy/80 transition-colors hover:text-gold cursor-pointer min-h-[44px] inline-flex items-center"
+              className="text-sm font-medium text-white/80 transition-colors hover:text-gold cursor-pointer min-h-[44px] inline-flex items-center"
             >
               {l.label}
             </a>
@@ -175,7 +175,7 @@ function Header() {
         </nav>
         <a
           href="#contato"
-          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-semibold uppercase tracking-[0.22em] text-navy transition-colors hover:text-gold cursor-pointer min-h-[44px]"
+          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-gold cursor-pointer min-h-[44px]"
         >
           Contato
         </a>
@@ -183,20 +183,20 @@ function Header() {
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
-          className="md:hidden inline-flex h-11 w-11 min-h-[44px] items-center justify-center rounded-md text-navy transition-colors hover:bg-navy/5 cursor-pointer"
+          className="md:hidden inline-flex h-11 w-11 min-h-[44px] items-center justify-center rounded-md text-white transition-colors hover:bg-white/5 cursor-pointer"
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-navy/10 bg-white/95 backdrop-blur-xl shadow-lg">
+        <div className="md:hidden border-t border-white/10 bg-[#0F172A]/95 backdrop-blur-xl shadow-lg">
           <nav className="mx-auto flex max-w-7xl flex-col px-4 py-3">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="min-h-[44px] flex items-center text-sm font-medium text-navy/80 transition-colors hover:text-gold cursor-pointer border-b border-navy/5 last:border-b-0"
+                className="min-h-[44px] flex items-center text-sm font-medium text-white/80 transition-colors hover:text-gold cursor-pointer border-b border-white/5 last:border-b-0"
               >
                 {l.label}
               </a>
@@ -319,11 +319,11 @@ function QuemSomos() {
     <section id="quem-somos" className="relative">
       <div className="mx-auto max-w-3xl px-4 md:px-8 py-12 md:py-20 text-center">
         <Eyebrow center>Quem somos</Eyebrow>
-        <h2 className="mt-6 font-serif text-4xl font-normal leading-[1.15] text-navy md:text-5xl">
+        <h2 className="mt-6 font-serif text-4xl font-normal leading-[1.15] text-white md:text-5xl">
           Uma advocacia <span className="italic">híbrida e estruturada</span>,{" "}
           <Highlight delay={200}>construída para servir.</Highlight>
         </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-[1.85] text-navy/70">
+        <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-[1.85] text-white/70">
           A Médici &amp; Frez nasce da união entre experiência consultiva e
           atuação contenciosa qualificada. Operamos em um modelo híbrido —
           presencial e digital — que combina a proximidade do atendimento
@@ -370,10 +370,10 @@ function AreasAtuacao() {
       <div className="mx-auto max-w-7xl px-4 md:px-8 py-12 md:py-20">
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow center>Expertise</Eyebrow>
-          <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
+          <h2 className="mt-6 font-serif text-4xl font-normal text-white md:text-5xl">
             Nossas Áreas de <span className="italic">Atuação</span>
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-base font-light leading-relaxed text-navy/65">
+          <p className="mx-auto mt-5 max-w-xl text-base font-light leading-relaxed text-white/65">
             Dois núcleos complementares que se conectam para oferecer soluções
             jurídicas completas ao longo da vida do cliente e de sua família.
           </p>
@@ -383,16 +383,16 @@ function AreasAtuacao() {
           {areas.map((area) => (
             <article
               key={area.title}
-              className="group relative flex flex-col rounded-sm bg-white p-8 md:p-12 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer"
-              style={{ boxShadow: "var(--shadow-soft)" }}
+              className="group relative flex flex-col rounded-xl border border-white/10 bg-white/5 p-8 md:p-12 transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-gold/30 cursor-pointer backdrop-blur-sm"
+              style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}
             >
               <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-gold">
                 {area.eyebrow}
               </span>
-              <h3 className="mt-6 font-serif text-3xl font-normal text-navy">
+              <h3 className="mt-6 font-serif text-3xl font-normal text-white">
                 {area.title}
               </h3>
-              <p className="mt-5 text-sm font-light leading-relaxed text-navy/65">
+              <p className="mt-5 text-sm font-light leading-relaxed text-white/65">
                 {area.description}
               </p>
               <div className="my-9 h-px w-12 bg-gold/60" />
@@ -400,7 +400,7 @@ function AreasAtuacao() {
                 {area.items.map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-4 text-[15px] font-light text-navy/85"
+                    className="flex items-start gap-4 text-[15px] font-light text-white/85"
                   >
                     <span
                       aria-hidden
@@ -424,11 +424,11 @@ function Sinergia() {
       <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1fr_2fr]">
         <div>
           <Eyebrow>Sinergia</Eyebrow>
-          <h3 className="mt-8 font-serif text-3xl font-normal leading-tight text-navy md:text-4xl">
+          <h3 className="mt-8 font-serif text-3xl font-normal leading-tight text-white md:text-4xl">
             Atuação <span className="italic">Interdisciplinar</span>
           </h3>
         </div>
-        <p className="text-lg font-light leading-[1.85] text-navy/70">
+        <p className="text-lg font-light leading-[1.85] text-white/70">
           Nosso diferencial está na{" "}
           <Highlight><span className="text-gold">atuação conjunta</span></Highlight> entre as áreas.
           Demandas familiares que geram desdobramentos previdenciários — como
@@ -462,16 +462,15 @@ type TeamMember = typeof TEAM[number] & { image?: string };
 
 function MemberCard({ name, role, specialty, initials, image }: TeamMember) {
   return (
-    <article className="team-card flex-shrink-0 w-64 md:w-72 bg-white rounded-xl flex flex-col items-center text-center select-none overflow-hidden"
-      style={{ boxShadow: "var(--shadow-soft)", borderBottom: "2px solid oklch(0.72 0.13 80 / 0.55)" }}
+    <article className="team-card flex-shrink-0 w-64 md:w-72 bg-white/5 border border-white/10 backdrop-blur-sm rounded-xl flex flex-col items-center text-center select-none overflow-hidden"
+      style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.2)", borderBottom: "2px solid rgba(197,160,89,0.55)" }}
     >
       {/* Avatar / Photo Area */}
       <div
-        className="w-full h-44 flex items-center justify-center bg-gray-100"
-        style={{ background: "oklch(0.95 0.012 250)" }}
+        className="w-full h-44 flex items-center justify-center bg-white/5"
       >
         {image ? (
-          <img src={image} alt={`Foto de ${name}`} className="w-full h-full object-cover" />
+          <img src={image} alt={`Foto de ${name}`} className="w-full h-full object-cover grayscale brightness-110 contrast-125 mix-blend-screen opacity-90" />
         ) : (
           <span
             className="font-serif text-5xl font-semibold opacity-40"
@@ -485,13 +484,13 @@ function MemberCard({ name, role, specialty, initials, image }: TeamMember) {
       {/* Content Area */}
       <div className="flex flex-col items-center px-6 py-6 w-full">
         {/* Name */}
-        <div className="font-serif text-[17px] font-semibold text-navy leading-tight">{name}</div>
+        <div className="font-serif text-[17px] font-semibold text-white leading-tight">{name}</div>
         {/* Role badge */}
         <div className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.28em] text-gold">{role}</div>
         {/* Divider */}
         <div className="my-4 h-px w-8 bg-gold/40" />
         {/* Specialty */}
-        <p className="text-xs font-light leading-relaxed text-navy/60">{specialty}</p>
+        <p className="text-xs font-light leading-relaxed text-white/60">{specialty}</p>
       </div>
     </article>
   );
@@ -504,11 +503,11 @@ function TeamSection() {
       {/* Header */}
       <div className="mx-auto max-w-7xl px-4 md:px-8 mb-10 text-center">
         <Eyebrow center>Nossa Equipe</Eyebrow>
-        <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
+        <h2 className="mt-6 font-serif text-4xl font-normal text-white md:text-5xl">
           Os profissionais por{" "}
           <span className="italic">trás do escritório</span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-base font-light leading-relaxed text-navy/60">
+        <p className="mx-auto mt-6 max-w-xl text-base font-light leading-relaxed text-white/60">
           Uma equipe multidisciplinar comprometida com a excelência técnica
           e o atendimento humanizado em cada etapa do processo.
         </p>

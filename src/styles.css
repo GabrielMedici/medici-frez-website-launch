@@ -331,24 +331,22 @@
 }
 
 /* Soft gradient fade on left and right edges */
-.team-fade-left,
-.team-fade-right {
+.team-fade-left {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 120px;
-  z-index: 2;
+  top: 0; left: 0; bottom: 0;
+  width: 100px;
+  background: linear-gradient(to right, #0F172A, transparent);
+  z-index: 10;
   pointer-events: none;
 }
 
-.team-fade-left {
-  left: 0;
-  background: linear-gradient(to right, var(--background) 0%, transparent 100%);
-}
-
 .team-fade-right {
-  right: 0;
-  background: linear-gradient(to left, var(--background) 0%, transparent 100%);
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 100px;
+  background: linear-gradient(to left, #0F172A, transparent);
+  z-index: 10;
+  pointer-events: none;
 }
 
 /* Card subtle hover lift */

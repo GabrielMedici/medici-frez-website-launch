@@ -93,7 +93,7 @@ export function AcompanhamentoProcessos() {
   ];
 
   return (
-    <section id="cliente" className="bg-background border-t border-border/40 py-20 md:py-28">
+    <section id="cliente" className="bg-transparent border-t border-white/10 py-20 md:py-28 relative z-10">
       <div className="mx-auto max-w-6xl px-4 md:px-8">
         
         {/* Cabeçalho Público */}
@@ -101,11 +101,11 @@ export function AcompanhamentoProcessos() {
           <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-gold">
             Área Restrita
           </span>
-          <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
+          <h2 className="mt-6 font-serif text-4xl font-normal text-white md:text-5xl">
             Painel do <span className="italic">Cliente</span>
           </h2>
           <div className="mx-auto mt-6 h-px w-16 bg-gold/70" />
-          <p className="mx-auto mt-6 max-w-2xl text-base font-light leading-relaxed text-navy/65">
+          <p className="mx-auto mt-6 max-w-2xl text-base font-light leading-relaxed text-white/65">
             Acesse o ambiente seguro integrado à nossa plataforma de gestão <strong>Astrea</strong>. Acompanhe processos, agenda, honorários e acesse seus documentos.
           </p>
         </div>
