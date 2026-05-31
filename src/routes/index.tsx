@@ -13,6 +13,7 @@ import imgJoaoPedro from "@/assets/joaopedro.png";
 import imgLarissaFrez from "@/assets/larissafrez.png";
 import imgLauraAndrade from "@/assets/lauraandrade.png";
 import imgLauraMel from "@/assets/lauramel.png";
+import imgMariaAparecida from "@/assets/mariaaprecida.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -450,7 +451,7 @@ function Sinergia() {
 const TEAM = [
   { name: "Gabriel Médici",   role: "Sócio Fundador",   specialty: "Gestão Previdenciária",                   initials: "GM", image: imgGabrielMedici },
   { name: "Larissa Frez",     role: "Sócia Fundadora",  specialty: "Planejamento e Aposentadorias",            initials: "LF", image: imgLarissaFrez },
-  { name: "Maria Aparecida",  role: "Advogada",          specialty: "Direito Civil e Projetos Sociais",         initials: "MA" },
+  { name: "Maria Aparecida",  role: "Advogada",          specialty: "Direito Civil e Projetos Sociais",         initials: "MA", image: imgMariaAparecida },
   { name: "Gabriel Fagundes", role: "Advogado",          specialty: "Relações Externas e Prazos",              initials: "GF" },
   { name: "Laura Mel",        role: "Advogada",          specialty: "Administração Financeira Cível",           initials: "LM", image: imgLauraMel },
   { name: "Laura Andrade",    role: "Advogada",          specialty: "Demandas Patrimoniais e Inventários",      initials: "LA", image: imgLauraAndrade },
