@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 
 import imgGabrielMedici from "@/assets/gabrielmedici.png";
 import imgGeraldo from "@/assets/geraldo.png";
+import imgJemerson from "@/assets/jemerson.png";
 import imgJoaoPedro from "@/assets/joaopedro.png";
 import imgLarissaFrez from "@/assets/larissafrez.png";
 import imgLauraAndrade from "@/assets/lauraandrade.png";
@@ -455,7 +456,7 @@ const TEAM = [
   { name: "Laura Andrade",    role: "Advogada",          specialty: "Demandas Patrimoniais e Inventários",      initials: "LA", image: imgLauraAndrade },
   { name: "Maria Cristina",   role: "Advogada",          specialty: "Conciliação e Mediação",                  initials: "MC" },
   { name: "João Augusto",     role: "Advogado",          specialty: "Contratos e Relações de Consumo",         initials: "JA" },
-  { name: "Jemerson",         role: "Advogado",          specialty: "Direito de Família e Guarda",             initials: "JE" },
+  { name: "Jemerson",         role: "Advogado",          specialty: "Direito de Família e Guarda",             initials: "JE", image: imgJemerson },
   { name: "Geraldo Silva",    role: "Advogado",          specialty: "Benefícios por Incapacidade e Idosos",    initials: "GS", image: imgGeraldo },
   { name: "João Pedro",       role: "Advogado",          specialty: "Acompanhamento Previdenciário",            initials: "JP", image: imgJoaoPedro },
 ];
