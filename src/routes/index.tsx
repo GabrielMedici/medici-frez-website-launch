@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import logo from "@/assets/logotipo.png";
+import logo from "@/assets/Logotipo - Copia.png";
 import { OrbitChat } from "@/components/OrbitChat";
 import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
 
@@ -69,12 +69,12 @@ function Eyebrow({ children, center = false }: { children: React.ReactNode; cent
 function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/40 bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-2">
         <a href="#home" className="flex items-center gap-3">
           <img
             src={logo}
             alt="Médici & Frez Sociedade de Advogados"
-            className="h-11 w-11 rounded-full object-cover object-center"
+            className="h-25 w-25 rounded-full object-contain object-center"
             style={{ objectPosition: "center 30%" }}
           />
           <div className="hidden sm:block leading-tight">
@@ -147,7 +147,7 @@ function Hero() {
           <img
             src={logo}
             alt="Emblema Médici & Frez"
-            className="relative z-10 w-[68%] max-w-sm mix-blend-multiply"
+            className="relative z-11 w-[68%] max-w-sm mix-blend-multiply"
           />
         </div>
       </div>
