@@ -294,19 +294,19 @@ function Hero() {
                 <span className="text-gold text-lg">✦</span>
                 <h3 className="font-serif text-xl text-white">INSS</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Aposentadorias e Revisões</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Previdência e Assistência Social</p>
             </div>
 
-            {/* Card 4: Invalidez */}
+            {/* Card 4: INSS - Assistência */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
               className="group flex w-full flex-col rounded-xl border border-white/10 bg-white/5 p-6 shadow-xl backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:bg-white/10 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
-                <h3 className="font-serif text-xl text-white">Invalidez</h3>
+                <h3 className="font-serif text-xl text-white">Auxílio Doença</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Auxílio-Doença e Afastamento</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">e Afastamentos</p>
             </div>
           </div>
         </div>

@@ -13,7 +13,7 @@ const TREE: Record<string, Node> = {
       { label: "Família", next: "familia" },
       { label: "Patrimônio", next: "patrimonio" },
       { label: "INSS", next: "inss" },
-      { label: "Auxílio-Doença/Invalidez", next: "auxilio" },
+      { label: "Auxílio-Doença/INSS - Assistência", next: "auxilio" },
     ],
   },
   familia: {
