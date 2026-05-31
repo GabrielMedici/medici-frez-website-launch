@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import imgAstrea from "@/assets/astrea.png";
 
 type TabId = "resumo" | "processos" | "agenda" | "financeiro" | "documentos";
 
@@ -110,10 +111,12 @@ export function AcompanhamentoProcessos() {
         {!isLogged ? (
           // --- LOGIN SIMULADO ---
           <div className="mx-auto max-w-md bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-border/60 p-8 md:p-12">
-             <div className="flex justify-center mb-6">
-                <div className="h-16 w-16 bg-[#0F172A] rounded-2xl flex items-center justify-center rotate-3 shadow-lg">
-                   <span className="font-serif text-2xl text-white">MF</span>
-                </div>
+             <div className="flex justify-center mb-8">
+                <img 
+                  src={imgAstrea} 
+                  alt="Logo Astrea" 
+                  className="h-14 w-auto object-contain drop-shadow-sm"
+                />
              </div>
              <h3 className="text-center font-serif text-2xl text-navy mb-2">Acesso ao Sistema</h3>
              <p className="text-center text-sm text-navy/60 mb-8">Informe seu CPF para entrar no portal integrado ao Astrea.</p>
@@ -140,14 +143,12 @@ export function AcompanhamentoProcessos() {
             
             {/* Sidebar */}
             <aside className="w-full md:w-64 bg-[#0F172A] flex flex-col">
-              <div className="p-6 border-b border-white/10 flex items-center gap-3">
-                 <div className="h-10 w-10 bg-[#C5A059] rounded-lg flex items-center justify-center text-navy font-serif font-bold text-lg">
-                    MF
-                 </div>
-                 <div className="flex flex-col">
-                    <span className="text-white text-sm font-semibold">Astrea Portal</span>
-                    <span className="text-white/50 text-xs">Simulação</span>
-                 </div>
+              <div className="p-6 border-b border-white/10 flex items-center justify-center bg-white/5">
+                 <img 
+                   src={imgAstrea} 
+                   alt="Logo Astrea" 
+                   className="h-8 w-auto object-contain brightness-0 invert opacity-90"
+                 />
               </div>
               <nav className="flex-1 p-4 space-y-1 overflow-x-auto md:overflow-x-visible flex flex-row md:flex-col scrollbar-hide">
                 {TABS.map((tab) => {
