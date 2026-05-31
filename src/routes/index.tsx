@@ -145,7 +145,7 @@ function Eyebrow({ children, center = false }: { children: React.ReactNode; cent
 function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-40 bg-[#0F172A] overflow-visible shadow-[0_1px_0_0_rgba(197,160,89,0.20),0_8px_32px_-8px_rgba(15,23,42,0.6)] backdrop-blur-lg">
+    <header className="sticky top-0 z-40 bg-white/60 overflow-visible shadow-[0_4px_30px_rgba(0,0,0,0.03)] border-b border-white/20 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-8 py-2">
         <a href="#home" className="flex items-center gap-3">
           {/* Logo estática — blend + sombra dourada, sem movimento */}
@@ -155,10 +155,7 @@ function Header() {
             className="w-auto object-contain cursor-pointer shrink-0 select-none"
             style={{
               height: "clamp(56px, 8vw, 88px)",
-              mixBlendMode: "screen",
-              filter:
-                "drop-shadow(0 4px 8px rgba(197,160,89,0.25)) " +
-                "drop-shadow(0 2px 4px rgba(15,23,42,0.30))",
+              filter: "drop-shadow(0 2px 8px rgba(15,23,42,0.15))",
             }}
           />
         </a>
@@ -167,7 +164,7 @@ function Header() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-light text-white/75 transition-colors hover:text-gold cursor-pointer min-h-[44px] inline-flex items-center"
+              className="text-sm font-medium text-navy/80 transition-colors hover:text-gold cursor-pointer min-h-[44px] inline-flex items-center"
             >
               {l.label}
             </a>
@@ -175,7 +172,7 @@ function Header() {
         </nav>
         <a
           href="#contato"
-          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-medium uppercase tracking-[0.22em] text-white/80 transition-colors hover:text-gold cursor-pointer min-h-[44px]"
+          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-semibold uppercase tracking-[0.22em] text-navy transition-colors hover:text-gold cursor-pointer min-h-[44px]"
         >
           Contato
         </a>
@@ -183,20 +180,20 @@ function Header() {
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
-          className="md:hidden inline-flex h-11 w-11 min-h-[44px] items-center justify-center rounded-md text-white transition-colors hover:bg-white/10 cursor-pointer"
+          className="md:hidden inline-flex h-11 w-11 min-h-[44px] items-center justify-center rounded-md text-navy transition-colors hover:bg-navy/5 cursor-pointer"
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-white/10 bg-navy/98 backdrop-blur-md">
+        <div className="md:hidden border-t border-navy/10 bg-white/95 backdrop-blur-xl shadow-lg">
           <nav className="mx-auto flex max-w-7xl flex-col px-4 py-3">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="min-h-[44px] flex items-center text-sm font-light text-white/80 transition-colors hover:text-gold cursor-pointer border-b border-white/10 last:border-b-0"
+                className="min-h-[44px] flex items-center text-sm font-medium text-navy/80 transition-colors hover:text-gold cursor-pointer border-b border-navy/5 last:border-b-0"
               >
                 {l.label}
               </a>
@@ -204,7 +201,7 @@ function Header() {
             <a
               href="#contato"
               onClick={() => setOpen(false)}
-              className="mt-2 min-h-[44px] flex items-center text-xs font-medium uppercase tracking-[0.22em] text-gold cursor-pointer"
+              className="mt-2 min-h-[44px] flex items-center text-xs font-semibold uppercase tracking-[0.22em] text-gold cursor-pointer"
             >
               Contato →
             </a>
@@ -258,8 +255,8 @@ function Hero() {
           <img
             src={logo}
             alt="Emblema Médici & Frez"
-            className="relative z-11 w-[95%] max-w-[500px] logo-float"
-            style={{ filter: "drop-shadow(0 8px 32px rgba(15,23,42,0.12)) drop-shadow(0 2px 8px rgba(15,23,42,0.08))" }}
+            className="relative z-11 w-[70%] max-w-[420px] logo-float"
+            style={{ filter: "drop-shadow(0 12px 24px rgba(15,23,42,0.06)) drop-shadow(0 4px 8px rgba(15,23,42,0.04))" }}
           />
 
           {/* Grid de Cards Movido para Baixo */}
@@ -267,7 +264,7 @@ function Hero() {
             {/* Card 1: Família */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
@@ -279,7 +276,7 @@ function Hero() {
             {/* Card 2: Patrimônio */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
@@ -291,7 +288,7 @@ function Hero() {
             {/* Card 3: INSS */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
@@ -303,7 +300,7 @@ function Hero() {
             {/* Card 4: Invalidez */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
-              className="group flex w-full flex-col rounded-sm border-b-2 border-transparent bg-white/95 p-6 shadow-xl shadow-[#0F172A]/5 backdrop-blur-sm cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl hover:border-[#C5A059]"
+              className="group flex w-full flex-col rounded-xl border border-white/40 bg-white/80 p-6 shadow-xl shadow-navy/5 backdrop-blur-md cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white/95 hover:border-gold/30"
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>

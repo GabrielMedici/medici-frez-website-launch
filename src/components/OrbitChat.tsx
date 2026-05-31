@@ -128,12 +128,12 @@ export function OrbitChat() {
           aria-label={open ? "Fechar chat" : "Iniciar atendimento rápido"}
           className={
             open
-              ? "relative flex h-14 w-14 items-center justify-center rounded-full text-gold-foreground transition-all duration-300 hover:scale-105 hover:opacity-90 cursor-pointer"
-              : "orbit-pill relative flex items-center gap-3 rounded-full px-5 py-0 h-14 text-gold-foreground transition-all duration-300 hover:-translate-y-0.5 hover:brightness-105 cursor-pointer"
+              ? "relative flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 text-gold transition-all duration-300 hover:scale-105 hover:border-gold hover:opacity-90 cursor-pointer"
+              : "orbit-pill relative flex items-center gap-3 rounded-full border border-gold/30 px-5 py-0 h-14 text-gold transition-all duration-300 hover:-translate-y-0.5 hover:border-gold hover:shadow-2xl cursor-pointer"
           }
           style={{
-            background: "var(--gradient-gold)",
-            boxShadow: "var(--shadow-gold)",
+            backgroundColor: "var(--navy)",
+            boxShadow: "var(--shadow-soft)",
           }}
         >
           {open ? (
