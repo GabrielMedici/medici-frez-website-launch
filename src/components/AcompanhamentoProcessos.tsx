@@ -27,48 +27,48 @@ type Step = {
 
 const STEPS: Step[] = [
   {
-    id: "analise",
-    title: "Análise Inicial de Documentos",
-    description: "Documentação recebida e validada pela equipe.",
+    id: "cadastro",
+    title: "Cadastro e Organização (Astrea)",
+    description: "Documentação recebida, inserida no sistema e compartilhada com os advogados. Acesso seguro estabelecido.",
     status: "done",
     detail: {
       date: "08/05/2026",
-      responsible: "Setor Cível",
-      parecer: "Documentação conferida, sem pendências formais.",
+      responsible: "Equipe de Gestão",
+      parecer: "Documentos armazenados em nuvem. Planejamento estratégico e honorários registrados.",
     },
   },
   {
     id: "protocolo",
-    title: "Protocolo do Requerimento",
-    description: "Petição protocolada junto ao órgão competente.",
+    title: "Protocolo e Monitoramento Automático",
+    description: "Petição encaminhada. O sistema iniciou o monitoramento diário de movimentações e intimações.",
     status: "done",
     detail: {
       date: "15/05/2026",
-      responsible: "Setor Cível",
-      parecer: "Documentação autuada e encaminhada.",
+      responsible: "Setor Cível / Previdenciário",
+      parecer: "Processo autuado. Agenda jurídica atualizada sem risco de perda de prazos.",
       hasPdf: true,
     },
   },
   {
-    id: "analise-orgao",
-    title: "Análise do Órgão Competente",
-    description: "Processo em avaliação. Aguardando manifestação.",
+    id: "andamento",
+    title: "Acompanhamento Ativo",
+    description: "Processo sob vigilância automática com integração direta de publicações judiciais e administrativas.",
     status: "current",
     detail: {
       date: "Em andamento",
-      responsible: "Vara Cível — 1ª Instância",
-      parecer: "Aguardando manifestação do juízo.",
+      responsible: "Órgão Competente",
+      parecer: "Aguardando despacho. Equipe notificada instantaneamente de qualquer atualização.",
     },
   },
   {
     id: "decisao",
-    title: "Decisão / Sentença",
-    description: "Aguardando decisão final.",
+    title: "Decisão e Fechamento",
+    description: "Recebimento de sentença, atualização de receitas e relatórios gerenciais finais.",
     status: "pending",
     detail: {
       date: "A definir",
-      responsible: "Juízo competente",
-      parecer: "Etapa pendente.",
+      responsible: "Juízo Competente",
+      parecer: "Aguardando julgamento de mérito.",
     },
   },
 ];
@@ -90,7 +90,7 @@ export function AcompanhamentoProcessos() {
 
   const handleDownload = () => {
     toast.success("Download seguro iniciado.", {
-      description: "Arquivo salvo no dispositivo.",
+      description: "Documento disponibilizado pelo sistema Astrea.",
     });
   };
 
@@ -102,12 +102,11 @@ export function AcompanhamentoProcessos() {
             Área do Cliente
           </span>
           <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
-            Acompanhamento de <span className="italic">Processos</span>
+            Gestão Processual com <span className="italic">Astrea</span>
           </h2>
           <div className="mx-auto mt-6 h-px w-16 bg-gold/70" />
-          <p className="mx-auto mt-6 max-w-xl text-base font-light leading-relaxed text-navy/65">
-            Transparência em cada etapa. Consulte o andamento do seu processo
-            de forma simples, rápida e segura.
+          <p className="mx-auto mt-6 max-w-2xl text-base font-light leading-relaxed text-navy/65">
+            Adotamos a plataforma <strong>Astrea (Aurum)</strong> para gestão avançada. Através dela, monitoramos automaticamente prazos, andamentos e intimações em nossos setores cível e previdenciário, garantindo segurança total e transparência aos nossos clientes.
           </p>
         </div>
 
@@ -125,10 +124,10 @@ export function AcompanhamentoProcessos() {
               </div>
               <div className="text-center">
                 <h3 className="font-serif text-2xl text-navy">
-                  Consulta de Processo
+                  Portal de Acompanhamento
                 </h3>
                 <p className="mt-2 text-sm text-navy/60">
-                  Informe seu CPF para visualizar o andamento.
+                  Informe seu CPF para visualizar o status (integrado ao Astrea).
                 </p>
               </div>
               <div className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
