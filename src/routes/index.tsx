@@ -470,7 +470,7 @@ function MemberCard({ name, role, specialty, initials, image }: TeamMember) {
         className="w-full h-44 flex items-center justify-center bg-white/5"
       >
         {image ? (
-          <img src={image} alt={`Foto de ${name}`} className="w-full h-full object-cover grayscale brightness-110 contrast-125 mix-blend-screen opacity-90" />
+          <img src={image} alt={`Foto de ${name}`} className="w-full h-full object-cover" />
         ) : (
           <span
             className="font-serif text-5xl font-semibold opacity-40"
