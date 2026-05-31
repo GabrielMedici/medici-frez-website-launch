@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Check, Clock, Circle, Search, LogOut, Download, FileText, User, CalendarDays } from "lucide-react";
+import { 
+  LayoutDashboard, Scale, CalendarDays, Wallet, FileText, 
+  Search, Check, Clock, Download, Circle, LogOut, File, ChevronDown, CheckCircle2
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   Accordion,
@@ -8,335 +11,439 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-type StepStatus = "done" | "current" | "pending";
+type TabId = "resumo" | "processos" | "agenda" | "financeiro" | "documentos";
 
-type StepDetail = {
-  date: string;
-  responsible: string;
-  parecer: string;
-  hasPdf?: boolean;
-};
+// --- MOCK DATA ---
 
-type Step = {
-  id: string;
-  title: string;
-  description: string;
-  status: StepStatus;
-  detail: StepDetail;
-};
+const PROCESSOS = [
+  {
+    id: "1",
+    numero: "0001234-56.2026.8.16.0017",
+    cliente: "João da Silva",
+    setor: "Cível",
+    status: "Ativo",
+    history: [
+      { date: "15/05/2026", event: "Intimação lida: Aguardando manifestação do réu" },
+      { date: "10/05/2026", event: "Petição inicial protocolada" }
+    ]
+  },
+  {
+    id: "2",
+    numero: "5009876-12.2026.4.04.7000",
+    cliente: "Maria Souza",
+    setor: "Previdenciário",
+    status: "Pendente",
+    history: [
+      { date: "20/05/2026", event: "Aguardando perícia médica" },
+      { date: "01/05/2026", event: "Requerimento administrativo agendado no INSS" }
+    ]
+  },
+  {
+    id: "3",
+    numero: "0003456-99.2026.8.16.0017",
+    cliente: "Empresa XYZ",
+    setor: "Cível",
+    status: "Ativo",
+    history: [
+      { date: "18/05/2026", event: "Audiência de conciliação designada" },
+      { date: "12/05/2026", event: "Contestação apresentada" }
+    ]
+  }
+];
 
-const STEPS: Step[] = [
-  {
-    id: "cadastro",
-    title: "Cadastro e Organização (Astrea)",
-    description: "Documentação recebida, inserida no sistema e compartilhada com os advogados. Acesso seguro estabelecido.",
-    status: "done",
-    detail: {
-      date: "08/05/2026",
-      responsible: "Equipe de Gestão",
-      parecer: "Documentos armazenados em nuvem. Planejamento estratégico e honorários registrados.",
-    },
-  },
-  {
-    id: "protocolo",
-    title: "Protocolo e Monitoramento Automático",
-    description: "Petição encaminhada. O sistema iniciou o monitoramento diário de movimentações e intimações.",
-    status: "done",
-    detail: {
-      date: "15/05/2026",
-      responsible: "Setor Cível / Previdenciário",
-      parecer: "Processo autuado. Agenda jurídica atualizada sem risco de perda de prazos.",
-      hasPdf: true,
-    },
-  },
-  {
-    id: "andamento",
-    title: "Acompanhamento Ativo",
-    description: "Processo sob vigilância automática com integração direta de publicações judiciais e administrativas.",
-    status: "current",
-    detail: {
-      date: "Em andamento",
-      responsible: "Órgão Competente",
-      parecer: "Aguardando despacho. Equipe notificada instantaneamente de qualquer atualização.",
-    },
-  },
-  {
-    id: "decisao",
-    title: "Decisão e Fechamento",
-    description: "Recebimento de sentença, atualização de receitas e relatórios gerenciais finais.",
-    status: "pending",
-    detail: {
-      date: "A definir",
-      responsible: "Juízo Competente",
-      parecer: "Aguardando julgamento de mérito.",
-    },
-  },
+const AGENDA = [
+  { id: 1, date: "05/06/2026 14:00", title: "Audiência de Conciliação - João da Silva", type: "audiencia" },
+  { id: 2, date: "08/06/2026 23:59", title: "Prazo Fatal: Recurso Inominado (Maria Souza)", type: "prazo" },
+  { id: 3, date: "10/06/2026 10:00", title: "Reunião de Alinhamento - Empresa XYZ", type: "reuniao" },
+];
+
+const FINANCEIRO = [
+  { id: 1, cliente: "João da Silva", vencimento: "05/06/2026", valor: "R$ 3.500,00", status: "Pendente" },
+  { id: 2, cliente: "Maria Souza", vencimento: "15/05/2026", valor: "R$ 1.200,00", status: "Pago" },
+  { id: 3, cliente: "Empresa XYZ", vencimento: "20/05/2026", valor: "R$ 5.000,00", status: "Atrasado" },
+];
+
+const DOCUMENTOS = [
+  { id: 1, nome: "Procuração_Assinada_Joao.pdf", size: "1.2 MB", type: "PDF" },
+  { id: 2, nome: "Laudo_Medico_Maria.pdf", size: "3.4 MB", type: "PDF" },
+  { id: 3, nome: "Contrato_Honorarios_XYZ.pdf", size: "800 KB", type: "PDF" },
+  { id: 4, nome: "Petição_Inicial_Final.pdf", size: "2.1 MB", type: "PDF" },
 ];
 
 export function AcompanhamentoProcessos() {
   const [cpf, setCpf] = useState("");
-  const [consulted, setConsulted] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabId>("resumo");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (cpf.trim().length === 0) return;
-    setConsulted(true);
+    setIsLogged(true);
   };
 
-  const handleExit = () => {
-    setConsulted(false);
-    setCpf("");
-  };
-
-  const handleDownload = () => {
-    toast.success("Download seguro iniciado.", {
-      description: "Documento disponibilizado pelo sistema Astrea.",
-    });
-  };
+  const TABS = [
+    { id: "resumo", label: "Resumo Gerencial", icon: LayoutDashboard },
+    { id: "processos", label: "Processos", icon: Scale },
+    { id: "agenda", label: "Agenda Jurídica", icon: CalendarDays },
+    { id: "financeiro", label: "Gestão Financeira", icon: Wallet },
+    { id: "documentos", label: "Documentos", icon: FileText },
+  ];
 
   return (
-    <section id="cliente" className="bg-background border-t border-border/40">
-      <div className="mx-auto max-w-5xl px-4 md:px-8 py-20 md:py-28">
-        <div className="text-center">
+    <section id="cliente" className="bg-background border-t border-border/40 py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-4 md:px-8">
+        
+        {/* Cabeçalho Público */}
+        <div className="text-center mb-10">
           <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-gold">
-            Área do Cliente
+            Área Restrita
           </span>
           <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
-            Gestão Processual com <span className="italic">Astrea</span>
+            Painel do <span className="italic">Cliente</span>
           </h2>
           <div className="mx-auto mt-6 h-px w-16 bg-gold/70" />
           <p className="mx-auto mt-6 max-w-2xl text-base font-light leading-relaxed text-navy/65">
-            Adotamos a plataforma <strong>Astrea (Aurum)</strong> para gestão avançada. Através dela, monitoramos automaticamente prazos, andamentos e intimações em nossos setores cível e previdenciário, garantindo segurança total e transparência aos nossos clientes.
+            Acesse o ambiente seguro integrado à nossa plataforma de gestão <strong>Astrea</strong>. Acompanhe processos, agenda, honorários e acesse seus documentos.
           </p>
         </div>
 
-        <div
-          className="mt-10 md:mt-14 w-full overflow-hidden rounded-sm bg-white border-b-[1px] border-b-gold/70 transition-shadow shadow-sm hover:shadow-md"
-          style={{ boxShadow: "var(--shadow-soft)" }}
-        >
-          {!consulted ? (
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col items-center gap-6 px-4 py-12 md:px-12 md:py-14"
-            >
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary">
-                <Search className="h-6 w-6 text-navy" />
-              </div>
-              <div className="text-center">
-                <h3 className="font-serif text-2xl text-navy">
-                  Portal de Acompanhamento
-                </h3>
-                <p className="mt-2 text-sm text-navy/60">
-                  Informe seu CPF para visualizar o status (integrado ao Astrea).
-                </p>
-              </div>
-              <div className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+        {!isLogged ? (
+          // --- LOGIN SIMULADO ---
+          <div className="mx-auto max-w-md bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-border/60 p-8 md:p-12">
+             <div className="flex justify-center mb-6">
+                <div className="h-16 w-16 bg-[#0F172A] rounded-2xl flex items-center justify-center rotate-3 shadow-lg">
+                   <span className="font-serif text-2xl text-white">MF</span>
+                </div>
+             </div>
+             <h3 className="text-center font-serif text-2xl text-navy mb-2">Acesso ao Sistema</h3>
+             <p className="text-center text-sm text-navy/60 mb-8">Informe seu CPF para entrar no portal integrado ao Astrea.</p>
+             
+             <form onSubmit={handleLogin} className="flex flex-col gap-4">
                 <input
                   type="text"
                   value={cpf}
                   onChange={(e) => setCpf(e.target.value)}
                   placeholder="Digite seu CPF (simulação)"
-                  className="flex-1 min-h-[44px] rounded-sm border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-gold"
+                  className="w-full min-h-[48px] rounded-lg border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-gold focus:ring-1 focus:ring-gold"
                 />
                 <button
                   type="submit"
-                  className="inline-flex min-h-[44px] items-center justify-center rounded-sm px-6 py-3 text-xs font-semibold uppercase tracking-widest text-gold-foreground transition-all hover:-translate-y-0.5 hover:opacity-90 cursor-pointer"
-                  style={{
-                    background: "var(--gradient-gold)",
-                    boxShadow: "var(--shadow-gold)",
-                  }}
+                  className="w-full inline-flex min-h-[48px] items-center justify-center rounded-lg px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white transition-all hover:-translate-y-0.5 hover:shadow-lg cursor-pointer bg-[#0F172A]"
                 >
-                  Consultar
+                  Entrar Seguramente
                 </button>
+             </form>
+          </div>
+        ) : (
+          // --- ASTREA DASHBOARD ---
+          <div className="flex flex-col md:flex-row bg-[#F4F6F9] rounded-2xl overflow-hidden border border-border shadow-xl min-h-[600px]">
+            
+            {/* Sidebar */}
+            <aside className="w-full md:w-64 bg-[#0F172A] flex flex-col">
+              <div className="p-6 border-b border-white/10 flex items-center gap-3">
+                 <div className="h-10 w-10 bg-[#C5A059] rounded-lg flex items-center justify-center text-navy font-serif font-bold text-lg">
+                    MF
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-white text-sm font-semibold">Astrea Portal</span>
+                    <span className="text-white/50 text-xs">Simulação</span>
+                 </div>
               </div>
-              <p className="text-[11px] uppercase tracking-widest text-navy/45">
-                Ambiente de demonstração
-              </p>
-            </form>
-          ) : (
-            <div className="px-4 py-10 md:px-12 md:py-12">
-              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-                <div>
-                  <div className="text-[10px] font-medium uppercase tracking-[0.3em] text-gold">
-                    Processo nº 0001234-56.2026.8.16.0017
-                  </div>
-                  <h3 className="mt-2 font-serif text-2xl text-navy">
-                    Andamento do Processo
-                  </h3>
-                </div>
-                <button
-                  onClick={handleExit}
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-sm border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest text-navy transition-colors hover:border-gold hover:text-gold cursor-pointer"
-                >
-                  <LogOut className="h-3.5 w-3.5" />
-                  Sair
-                </button>
+              <nav className="flex-1 p-4 space-y-1 overflow-x-auto md:overflow-x-visible flex flex-row md:flex-col scrollbar-hide">
+                {TABS.map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id as TabId)}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+                        isActive 
+                          ? "bg-[#C5A059] text-navy shadow-md" 
+                          : "text-white/70 hover:bg-white/10 hover:text-white"
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </nav>
+              <div className="p-4 mt-auto border-t border-white/10 hidden md:block">
+                 <button onClick={() => setIsLogged(false)} className="flex items-center gap-2 text-white/50 hover:text-white text-sm transition-colors cursor-pointer w-full p-2">
+                   <LogOut className="w-4 h-4" /> Sair do Sistema
+                 </button>
               </div>
+            </aside>
 
-              <Accordion
-                type="single"
-                collapsible
-                defaultValue="protocolo"
-                className="mt-10 w-full"
-              >
-                {STEPS.map((step, i) => (
-                  <StepAccordion
-                    key={step.id}
-                    step={step}
-                    index={i}
-                    isLast={i === STEPS.length - 1}
-                    onDownload={handleDownload}
-                  />
-                ))}
-              </Accordion>
-            </div>
-          )}
-        </div>
+            {/* Content Area */}
+            <main className="flex-1 bg-[#F4F6F9] p-4 md:p-8 overflow-y-auto max-h-[700px]">
+               
+               {activeTab === "resumo" && <ResumoGerencial />}
+               {activeTab === "processos" && <ProcessosModulo />}
+               {activeTab === "agenda" && <AgendaModulo />}
+               {activeTab === "financeiro" && <FinanceiroModulo />}
+               {activeTab === "documentos" && <DocumentosModulo />}
+
+            </main>
+          </div>
+        )}
       </div>
-
-      <style>{`
-        @keyframes mf-pulse-gold {
-          0%, 100% { box-shadow: 0 0 0 0 oklch(0.72 0.13 80 / 0.55); }
-          50% { box-shadow: 0 0 0 10px oklch(0.72 0.13 80 / 0); }
-        }
-        .mf-pulse-gold { animation: mf-pulse-gold 1.8s ease-out infinite; }
-      `}</style>
     </section>
   );
 }
 
-function StepAccordion({
-  step,
-  index,
-  isLast,
-  onDownload,
-}: {
-  step: Step;
-  index: number;
-  isLast: boolean;
-  onDownload: () => void;
-}) {
-  const styles = {
-    done: {
-      ring: "border-emerald-500 bg-emerald-500 text-white",
-      label: "text-emerald-600",
-      labelText: "Concluído",
-      line: "bg-emerald-500",
-      icon: <Check className="h-4 w-4" />,
-    },
-    current: {
-      ring: "border-gold bg-gold text-gold-foreground mf-pulse-gold",
-      label: "text-gold",
-      labelText: "Em andamento",
-      line: "bg-border",
-      icon: <Clock className="h-4 w-4" />,
-    },
-    pending: {
-      ring: "border-border bg-secondary text-navy/50",
-      label: "text-navy/45",
-      labelText: "Pendente",
-      line: "bg-border",
-      icon: <Circle className="h-3.5 w-3.5" />,
-    },
-  }[step.status];
+// --- SUBMODULOS ---
 
+function ResumoGerencial() {
   return (
-    <div className="relative">
-      {!isLast && (
-        <span
-          aria-hidden
-          className={`absolute left-[19px] top-12 bottom-0 w-0.5 ${styles.line}`}
-        />
-      )}
-      <AccordionItem value={step.id} className="border-b border-border/60">
-        <AccordionTrigger className="hover:no-underline py-5 min-h-[44px] cursor-pointer [&>svg]:text-navy/50">
-          <div className="flex flex-1 items-center gap-4 md:gap-5 text-left">
-            <div
-              className={`relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 ${styles.ring}`}
-            >
-              {styles.icon}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <h4 className="font-serif text-lg text-navy">
-                  <span className="mr-2 text-sm text-navy/45">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {step.title}
-                </h4>
-                <span
-                  className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${styles.label}`}
-                >
-                  • {styles.labelText}
-                </span>
-              </div>
-              <p className="mt-1.5 text-sm font-light text-navy/60">
-                {step.description}
-              </p>
-            </div>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="ml-12 md:ml-[60px] mr-1 md:mr-2 mt-2 mb-4 rounded-sm border border-border/70 border-b-[1px] border-b-gold/60 bg-white p-4 md:p-5">
-            <div className="grid gap-4 sm:grid-cols-3">
-              <DetailItem
-                icon={<CalendarDays className="h-4 w-4" />}
-                label="Data"
-                value={step.detail.date}
-              />
-              <DetailItem
-                icon={<User className="h-4 w-4" />}
-                label="Responsável"
-                value={step.detail.responsible}
-              />
-              <DetailItem
-                icon={<FileText className="h-4 w-4" />}
-                label="Parecer Técnico"
-                value={step.detail.parecer}
-              />
-            </div>
-            {step.detail.hasPdf && (
-              <div className="mt-6 flex justify-end border-t border-border/60 pt-4">
-                <button
-                  onClick={onDownload}
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-sm px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-foreground transition-all hover:-translate-y-0.5 hover:opacity-90 cursor-pointer"
-                  style={{
-                    background: "var(--gradient-gold)",
-                    boxShadow: "var(--shadow-gold)",
-                  }}
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  Baixar Cópia do Protocolo (PDF)
-                </button>
-              </div>
-            )}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
+    <div className="animate-fade-in">
+      <h3 className="text-2xl font-serif text-navy mb-6">Resumo Gerencial</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+         <StatCard title="Processos Ativos" value="42" icon={Scale} />
+         <StatCard title="Prazos na Semana" value="5" icon={CalendarDays} alert />
+         <StatCard title="Inadimplência" value="2%" icon={Wallet} />
+         <StatCard title="Produtividade" value="Alto" icon={FileText} />
+      </div>
+
+      <div className="bg-white rounded-xl p-6 border border-border shadow-sm">
+         <h4 className="text-lg font-semibold text-navy mb-4">Produtividade Mensal</h4>
+         <div className="space-y-5">
+            <ProgressBar label="Andamentos Cíveis Analisados" percent={80} />
+            <ProgressBar label="Requerimentos Previdenciários" percent={65} />
+            <ProgressBar label="Petições Protocoladas" percent={90} />
+         </div>
+      </div>
     </div>
   );
 }
 
-function DetailItem({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+function StatCard({ title, value, icon: Icon, alert }: any) {
+  return (
+    <div className="bg-white p-5 rounded-xl border border-border shadow-sm flex items-start justify-between">
+       <div>
+         <p className="text-xs text-navy/50 font-medium uppercase tracking-wider mb-1">{title}</p>
+         <p className="text-3xl font-serif text-navy">{value}</p>
+       </div>
+       <div className={`p-2 rounded-lg ${alert ? 'bg-red-50 text-red-500' : 'bg-[#F4F6F9] text-[#C5A059]'}`}>
+         <Icon className="w-5 h-5" />
+       </div>
+    </div>
+  );
+}
+
+function ProgressBar({ label, percent }: any) {
   return (
     <div>
-      <div className="flex items-center gap-2 text-gold">
-        {icon}
-        <span className="text-[10px] font-semibold uppercase tracking-[0.22em]">
-          {label}
-        </span>
+      <div className="flex justify-between text-sm mb-1">
+        <span className="font-medium text-navy/80">{label}</span>
+        <span className="text-navy/50">{percent}%</span>
       </div>
-      <p className="mt-2 text-sm font-light leading-relaxed text-navy">
-        {value}
-      </p>
+      <div className="h-2 w-full bg-[#F4F6F9] rounded-full overflow-hidden">
+        <div className="h-full bg-[#C5A059] rounded-full transition-all duration-1000" style={{ width: `${percent}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function ProcessosModulo() {
+  const [filter, setFilter] = useState("Todos");
+  
+  const filtered = PROCESSOS.filter(p => filter === "Todos" || p.setor === filter);
+
+  return (
+    <div className="animate-fade-in">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <h3 className="text-2xl font-serif text-navy">Monitoramento de Processos</h3>
+        <div className="flex gap-2 bg-white p-1 rounded-lg border border-border shadow-sm">
+           {["Todos", "Cível", "Previdenciário"].map(f => (
+             <button
+               key={f}
+               onClick={() => setFilter(f)}
+               className={`px-4 py-1.5 rounded-md text-sm transition-colors cursor-pointer ${filter === f ? 'bg-[#0F172A] text-white' : 'text-navy/60 hover:bg-[#F4F6F9]'}`}
+             >
+               {f}
+             </button>
+           ))}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+        <Accordion type="single" collapsible className="w-full">
+          {filtered.map(p => (
+            <AccordionItem key={p.id} value={p.id} className="border-b border-border/50 last:border-0">
+              <AccordionTrigger className="hover:no-underline px-6 py-4 cursor-pointer hover:bg-[#F4F6F9]/50 transition-colors">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-left w-full">
+                   <div className="min-w-[220px]">
+                     <p className="text-xs text-navy/50 font-medium">NÚMERO</p>
+                     <p className="font-semibold text-navy text-sm">{p.numero}</p>
+                   </div>
+                   <div className="flex-1">
+                     <p className="text-xs text-navy/50 font-medium">CLIENTE</p>
+                     <p className="text-navy text-sm">{p.cliente}</p>
+                   </div>
+                   <div className="w-[120px]">
+                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F4F6F9] text-navy border border-border/50">
+                       {p.setor}
+                     </span>
+                   </div>
+                   <div className="w-[100px] flex justify-end">
+                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${p.status === 'Ativo' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
+                       {p.status}
+                     </span>
+                   </div>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="px-6 pb-6 pt-2">
+                  <div className="bg-[#F4F6F9] rounded-lg p-5">
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-navy/40 mb-4">Histórico de Movimentações (Astrea)</h5>
+                    <div className="space-y-4">
+                       {p.history.map((h, i) => (
+                         <div key={i} className="flex gap-4">
+                            <div className="flex flex-col items-center">
+                               <div className="w-2.5 h-2.5 rounded-full bg-[#C5A059] mt-1.5" />
+                               {i !== p.history.length - 1 && <div className="w-px h-full bg-[#C5A059]/30 my-1" />}
+                            </div>
+                            <div className="pb-2">
+                               <div className="text-xs text-[#C5A059] font-bold mb-0.5">{h.date}</div>
+                               <div className="text-sm text-navy/80">{h.event}</div>
+                            </div>
+                         </div>
+                       ))}
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </div>
+  );
+}
+
+function AgendaModulo() {
+  return (
+    <div className="animate-fade-in">
+      <h3 className="text-2xl font-serif text-navy mb-6">Agenda Jurídica Integrada</h3>
+      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+        <div className="divide-y divide-border/50">
+           {AGENDA.map(evento => (
+             <div key={evento.id} className="p-5 flex items-center gap-4 hover:bg-[#F4F6F9]/50 transition-colors">
+                <div className={`p-3 rounded-full ${
+                  evento.type === 'prazo' ? 'bg-red-50 text-red-500' :
+                  evento.type === 'audiencia' ? 'bg-amber-50 text-amber-500' :
+                  'bg-blue-50 text-blue-500'
+                }`}>
+                   <CalendarDays className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-navy">{evento.title}</p>
+                  <p className="text-xs text-navy/60">{evento.date}</p>
+                </div>
+             </div>
+           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FinanceiroModulo() {
+  return (
+    <div className="animate-fade-in">
+      <h3 className="text-2xl font-serif text-navy mb-6">Controle de Honorários e Despesas</h3>
+      <div className="bg-white rounded-xl border border-border shadow-sm overflow-hidden overflow-x-auto">
+        <table className="w-full text-left border-collapse min-w-[600px]">
+          <thead>
+            <tr className="bg-[#F4F6F9] border-b border-border/60 text-xs font-semibold text-navy/50 uppercase tracking-wider">
+              <th className="p-4">Cliente / Contrato</th>
+              <th className="p-4">Vencimento</th>
+              <th className="p-4">Valor</th>
+              <th className="p-4">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border/50 text-sm">
+            {FINANCEIRO.map(item => (
+              <tr key={item.id} className="hover:bg-[#F4F6F9]/30 transition-colors">
+                <td className="p-4 font-medium text-navy">{item.cliente}</td>
+                <td className="p-4 text-navy/70">{item.vencimento}</td>
+                <td className="p-4 font-semibold text-navy">{item.valor}</td>
+                <td className="p-4">
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border ${
+                    item.status === 'Pago' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                    item.status === 'Pendente' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                    'bg-red-50 text-red-700 border-red-200'
+                  }`}>
+                    <Circle className={`w-2 h-2 fill-current ${
+                      item.status === 'Pago' ? 'text-emerald-500' :
+                      item.status === 'Pendente' ? 'text-amber-500' :
+                      'text-red-500'
+                    }`} />
+                    {item.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function DocumentosModulo() {
+  const [downloading, setDownloading] = useState<number | null>(null);
+  const [downloaded, setDownloaded] = useState<number[]>([]);
+
+  const handleDownload = (id: number) => {
+    if (downloading === id || downloaded.includes(id)) return;
+    setDownloading(id);
+    setTimeout(() => {
+      setDownloading(null);
+      setDownloaded([...downloaded, id]);
+      toast.success("Download seguro concluído", {
+        description: "Arquivo disponibilizado pelo sistema Astrea."
+      });
+    }, 1500);
+  };
+
+  return (
+    <div className="animate-fade-in">
+      <h3 className="text-2xl font-serif text-navy mb-6">Cofre de Documentos</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+         {DOCUMENTOS.map(doc => {
+           const isDownloading = downloading === doc.id;
+           const isDone = downloaded.includes(doc.id);
+           return (
+             <div key={doc.id} className="bg-white p-5 rounded-xl border border-border shadow-sm hover:shadow-md transition-all flex flex-col">
+               <div className="flex items-start gap-3 mb-4">
+                 <div className="p-3 bg-[#F4F6F9] text-navy/50 rounded-lg">
+                   <File className="w-6 h-6" />
+                 </div>
+                 <div className="flex-1 min-w-0">
+                   <p className="text-sm font-semibold text-navy truncate" title={doc.nome}>{doc.nome}</p>
+                   <p className="text-xs text-navy/50 mt-0.5">{doc.size} • {doc.type}</p>
+                 </div>
+               </div>
+               <button
+                 onClick={() => handleDownload(doc.id)}
+                 className={`mt-auto w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
+                   isDone 
+                    ? "bg-emerald-50 text-emerald-600 border border-emerald-200" 
+                    : isDownloading
+                    ? "bg-[#F4F6F9] text-navy/50 cursor-wait"
+                    : "bg-[#0F172A] text-white hover:bg-[#C5A059] hover:text-navy"
+                 }`}
+               >
+                 {isDone ? <CheckCircle2 className="w-4 h-4" /> : isDownloading ? <Clock className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                 {isDone ? "Baixado" : isDownloading ? "Baixando..." : "Baixar"}
+               </button>
+             </div>
+           );
+         })}
+      </div>
     </div>
   );
 }
