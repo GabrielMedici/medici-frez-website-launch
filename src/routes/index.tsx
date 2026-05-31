@@ -15,7 +15,7 @@ import imgJoaoAugusto from "@/assets/joaoaugusto.png";
 import imgJoaoPedro from "@/assets/joaopedro.png";
 import imgLarissaFrez from "@/assets/larissafrez.png";
 import imgLauraAndrade from "@/assets/lauraandrade.png";
-import imgLauraMel from "@/assets/lauramel.png";
+import imgLauraMel from "@/assets/lauramel2.jpeg";
 import imgMariaAparecida from "@/assets/mariaaprecida.png";
 import imgMariaCristina from "@/assets/mariacristina.png";
 
