@@ -113,15 +113,15 @@ export function AcompanhamentoProcessos() {
         {!isLogged ? (
           // --- LOGIN SIMULADO ---
           <div className="mx-auto max-w-md bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-border/60 overflow-hidden">
-             <div className="bg-[#0F172A] w-full py-8 px-6 flex justify-center items-center border-b-2 border-gold/50">
+             <div className="bg-white w-full pt-10 pb-6 px-6 flex justify-center items-center">
                 <img 
                   src={imgAstrea} 
                   alt="Logo Astrea" 
-                  className="w-[85%] max-w-[260px] h-auto object-contain brightness-0 invert drop-shadow-md"
+                  className="w-[85%] max-w-[260px] h-auto object-contain"
                 />
              </div>
              
-             <div className="p-8 md:p-10">
+             <div className="p-8 md:p-10 pt-4">
                <h3 className="text-center font-serif text-2xl text-navy mb-2">Acesso ao Sistema</h3>
                <p className="text-center text-sm text-navy/60 mb-8">Informe suas credenciais para entrar no portal integrado ao Astrea.</p>
              
