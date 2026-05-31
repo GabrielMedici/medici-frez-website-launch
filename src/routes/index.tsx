@@ -5,7 +5,7 @@ import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
 import { CustomCursor } from "@/components/CustomCursor";
 import { NetworkBackground } from "@/components/NetworkBackground";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, HeartHandshake, Bird, GraduationCap, Building2, MessageCircle, Mail, Building, MessageSquare, Lightbulb, User as UserIcon } from "lucide-react";
 
 import imgGabrielMedici from "@/assets/gabrielmedici.png";
 import imgGabrielFagundes from "@/assets/gabrielfagundes.png";
@@ -123,7 +123,8 @@ function Home() {
         <Hero />
         <QuemSomos />
         <AreasAtuacao />
-        <Sinergia />
+        <FuncaoSocial />
+        <ModeloHibrido />
         <AcompanhamentoProcessos />
         <TeamSection />
       </main>
@@ -418,26 +419,128 @@ function AreasAtuacao() {
   );
 }
 
-function Sinergia() {
+function FuncaoSocial() {
   return (
-    <section className="px-4 md:px-8 py-10 md:py-16">
-      <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1fr_2fr]">
-        <div>
-          <Eyebrow>Sinergia</Eyebrow>
-          <h3 className="mt-8 font-serif text-3xl font-normal leading-tight text-white md:text-4xl">
-            Atuação <span className="italic">Interdisciplinar</span>
-          </h3>
+    <section className="px-4 md:px-8 py-16 md:py-24 border-t border-white/10 relative z-10 bg-[#0F172A]">
+      <div className="mx-auto max-w-4xl flex flex-col items-center text-center">
+        {/* Icon */}
+        <div className="w-20 h-20 rounded-full border-2 border-gold/40 flex items-center justify-center mb-8 bg-white/5 shadow-[0_0_30px_rgba(197,160,89,0.15)]">
+          <HeartHandshake className="w-10 h-10 text-gold" />
         </div>
-        <p className="text-lg font-light leading-[1.85] text-white/70">
-          Nosso diferencial está na{" "}
-          <Highlight><span className="text-gold">atuação conjunta</span></Highlight> entre as áreas.
-          Demandas familiares que geram desdobramentos previdenciários — como
-          inventários que envolvem pensão por morte, ou divórcios com reflexos
-          em benefícios — são conduzidas de forma{" "}
-          <Highlight delay={250}><span className="text-gold">centralizada</span></Highlight>, com uma única
-          estratégia, um único interlocutor e total integração entre os
-          núcleos.
-        </p>
+        <h3 className="font-serif text-3xl font-normal uppercase tracking-widest text-white md:text-5xl leading-tight">
+          Função Social<br />Da Advocacia
+        </h3>
+        
+        {/* Badges / Logos */}
+        <div className="flex flex-wrap justify-center gap-10 md:gap-16 items-center mt-16 w-full max-w-2xl">
+          {/* ODS 16 */}
+          <div className="bg-[#00689D] text-white p-5 flex flex-col items-start w-40 h-40 justify-center shadow-2xl hover:scale-105 transition-transform rounded-sm">
+            <div className="flex gap-2 items-start">
+              <span className="font-bold text-5xl leading-none tracking-tighter">16</span>
+              <span className="text-[10px] font-bold uppercase leading-tight mt-1">Paz, Justiça e<br/>Inst. Fortes</span>
+            </div>
+            <Bird className="w-12 h-12 mt-4 ml-2 fill-white" />
+          </div>
+          {/* Mão Amiga */}
+          <div className="flex flex-col items-center justify-center gap-3">
+            <div className="relative">
+              <HeartHandshake className="w-24 h-24 text-gold drop-shadow-[0_0_15px_rgba(197,160,89,0.4)]" />
+            </div>
+            <span className="font-bold text-white uppercase text-base tracking-widest">Mão Amiga</span>
+          </div>
+        </div>
+
+        {/* List */}
+        <div className="mt-20 w-full max-w-2xl flex flex-col gap-6 text-left">
+          <div className="group flex items-start gap-6 bg-white/5 border border-white/10 p-8 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/30">
+            <div className="p-3 bg-white/5 rounded-lg shrink-0 group-hover:bg-gold/10 transition-colors">
+              <UserIcon className="w-8 h-8 text-gold" />
+            </div>
+            <div>
+              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Ações mulheres</h4>
+              <p className="text-base font-light text-white/70 leading-relaxed">
+                Apoio a mulheres em situações vulneráveis, atendimento prioritário a crianças e proteção aos direitos de pessoas idosas.
+              </p>
+            </div>
+          </div>
+          <div className="group flex items-start gap-6 bg-white/5 border border-white/10 p-8 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/30">
+            <div className="p-3 bg-white/5 rounded-lg shrink-0 group-hover:bg-gold/10 transition-colors">
+              <GraduationCap className="w-8 h-8 text-gold" />
+            </div>
+            <div>
+              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Ações educacionais</h4>
+              <p className="text-base font-light text-white/70 leading-relaxed">
+                Capacitação para profissionais da área, palestras educativas e iniciativas voltadas à conscientização de pessoas idosas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ModeloHibrido() {
+  return (
+    <section className="px-4 md:px-8 py-16 md:py-24 border-t border-white/10 relative z-10 bg-[#0F172A]">
+      <div className="mx-auto max-w-4xl flex flex-col items-center text-center">
+        {/* Icon */}
+        <div className="w-20 h-20 rounded-full border-2 border-gold/40 flex items-center justify-center mb-8 bg-white/5 shadow-[0_0_30px_rgba(197,160,89,0.15)]">
+          <MessageCircle className="w-10 h-10 text-gold" />
+        </div>
+        <h3 className="font-serif text-3xl font-normal uppercase tracking-widest text-white md:text-5xl leading-tight">
+          Modelo Híbrido e<br />Acessibilidade
+        </h3>
+        
+        {/* Diagram */}
+        <div className="mt-16 flex flex-col md:flex-row items-center gap-12 md:gap-24 w-full max-w-4xl justify-center bg-white/5 p-10 md:p-16 rounded-2xl border border-white/10 backdrop-blur-sm relative">
+           {/* Office icon representation */}
+           <div className="flex flex-col items-center gap-4">
+             <div className="w-40 h-40 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center shadow-xl">
+               <Building2 className="w-20 h-20 text-gold opacity-90" />
+             </div>
+             <span className="text-xs font-medium uppercase tracking-widest text-white/50">Escritório Físico</span>
+           </div>
+           
+           {/* Connecting Lines (Desktop only) */}
+           <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[2px] bg-gradient-to-r from-gold/0 via-gold/50 to-gold/0" />
+           
+           {/* Digital tools */}
+           <div className="flex flex-col gap-6 z-10 w-full md:w-auto">
+             <div className="group flex items-center gap-5 bg-[#1E293B] p-5 rounded-xl border border-white/10 shadow-2xl cursor-pointer transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(197,160,89,0.15)]" onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}>
+               <div className="bg-[#2563EB] p-3 rounded-xl shadow-inner"><MessageCircle className="w-6 h-6 text-white" /></div>
+               <span className="font-bold text-white text-lg tracking-wide">OrbitChat</span>
+               <span className="ml-auto text-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+             </div>
+             <div className="group flex items-center gap-5 bg-[#1E293B] p-5 rounded-xl border border-white/10 shadow-2xl transition-all hover:-translate-y-1 hover:border-white/20">
+               <div className="bg-[#0284C7] p-3 rounded-xl shadow-inner"><Mail className="w-6 h-6 text-white" /></div>
+               <span className="font-bold text-white text-lg tracking-wide">Webmail Corporate</span>
+             </div>
+           </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="mt-24 w-full max-w-3xl flex items-end justify-between border-b border-white/20 pb-6 relative px-4">
+           {/* Line accent */}
+           <div className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent w-full opacity-50" />
+           
+           <div className="flex flex-col items-center gap-3 w-1/3">
+             <Building className="w-10 h-10 text-white/30" />
+             <span className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest">Tradicional</span>
+           </div>
+           
+           <div className="flex flex-col items-center gap-3 w-1/3 -translate-y-4">
+             <div className="p-4 rounded-full bg-gold/10 border border-gold/30 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
+               <MessageSquare className="w-12 h-12 text-gold" />
+             </div>
+             <span className="text-xs md:text-sm font-bold text-gold uppercase tracking-widest">Híbrido</span>
+           </div>
+           
+           <div className="flex flex-col items-center gap-3 w-1/3">
+             <Lightbulb className="w-10 h-10 text-white/30" />
+             <span className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest">Moderno</span>
+           </div>
+        </div>
       </div>
     </section>
   );
