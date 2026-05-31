@@ -294,7 +294,7 @@ function Hero() {
                 <span className="text-gold text-lg">✦</span>
                 <h3 className="font-serif text-xl text-white">INSS</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Previdência e Assistência Social</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Previdência</p>
             </div>
 
             {/* Card 4: INSS - Assistência */}
@@ -304,9 +304,9 @@ function Hero() {
             >
               <div className="flex items-center gap-3">
                 <span className="text-gold text-lg">✦</span>
-                <h3 className="font-serif text-xl text-white">Auxílio Doença</h3>
+                <h3 className="font-serif text-xl text-white">INSS - Assistência</h3>
               </div>
-              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">e Afastamentos</p>
+              <p className="mt-2 text-xs font-light leading-relaxed text-white/60">Auxílios e Afastamentos</p>
             </div>
           </div>
         </div>
