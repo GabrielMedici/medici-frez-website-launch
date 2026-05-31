@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import imgAstrea from "@/assets/astrea.png";
+import imgAstreaIco from "@/assets/astreaico.png";
 
 type TabId = "resumo" | "processos" | "agenda" | "financeiro" | "documentos";
 
@@ -156,9 +157,9 @@ export function AcompanhamentoProcessos() {
             <aside className="w-full md:w-64 bg-[#0F172A] flex flex-col">
               <div className="p-6 border-b border-white/10 flex items-center justify-center bg-white/5 h-[80px]">
                  <img 
-                   src={imgAstrea} 
-                   alt="Logo Astrea" 
-                   className="w-full max-w-[120px] h-full object-contain brightness-0 invert opacity-90"
+                   src={imgAstreaIco} 
+                   alt="Ícone Astrea" 
+                   className="h-10 w-auto object-contain drop-shadow-md"
                  />
               </div>
               <nav className="flex-1 p-4 space-y-1 overflow-x-auto md:overflow-x-visible flex flex-row md:flex-col scrollbar-hide">
