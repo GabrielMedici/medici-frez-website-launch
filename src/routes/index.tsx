@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import logo from "@/assets/Logotipo - Copia.png";
 import { OrbitChat } from "@/components/OrbitChat";
 import { AcompanhamentoProcessos } from "@/components/AcompanhamentoProcessos";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -67,14 +69,15 @@ function Eyebrow({ children, center = false }: { children: React.ReactNode; cent
 }
 
 function Header() {
+  const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-40 border-b border-border/40 bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-2">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 md:px-8 py-2">
         <a href="#home" className="flex items-center gap-3">
           <img
             src={logo}
             alt="Médici & Frez Sociedade de Advogados"
-            className="h-20 w-auto rounded-full object-contain object-center transition-transform duration-700 ease-in-out hover:rotate-[360deg]"
+            className="h-12 md:h-20 w-auto rounded-full object-contain object-center transition-transform duration-700 ease-in-out hover:rotate-[360deg] cursor-pointer"
             style={{ objectPosition: "center 30%" }}
           />
           <div className="hidden sm:block leading-tight">
@@ -89,7 +92,7 @@ function Header() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-light text-navy/75 transition-colors hover:text-gold"
+              className="text-sm font-light text-navy/75 transition-colors hover:text-gold cursor-pointer min-h-[44px] inline-flex items-center"
             >
               {l.label}
             </a>
@@ -97,11 +100,42 @@ function Header() {
         </nav>
         <a
           href="#contato"
-          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-medium uppercase tracking-[0.22em] text-navy transition-colors hover:text-gold"
+          className="hidden md:inline-flex items-center justify-center border-b border-gold/70 pb-1 text-xs font-medium uppercase tracking-[0.22em] text-navy transition-colors hover:text-gold cursor-pointer min-h-[44px]"
         >
           Contato
         </a>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          className="md:hidden inline-flex h-11 w-11 min-h-[44px] items-center justify-center rounded-md text-navy transition-colors hover:bg-navy/5 cursor-pointer"
+        >
+          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
       </div>
+      {open && (
+        <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur-md">
+          <nav className="mx-auto flex max-w-7xl flex-col px-4 py-3">
+            {navLinks.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="min-h-[44px] flex items-center text-sm font-light text-navy/80 transition-colors hover:text-gold cursor-pointer border-b border-border/40 last:border-b-0"
+              >
+                {l.label}
+              </a>
+            ))}
+            <a
+              href="#contato"
+              onClick={() => setOpen(false)}
+              className="mt-2 min-h-[44px] flex items-center text-xs font-medium uppercase tracking-[0.22em] text-gold cursor-pointer"
+            >
+              Contato →
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
@@ -109,7 +143,7 @@ function Header() {
 function Hero() {
   return (
     <section id="home" className="relative bg-background">
-      <div className="mx-auto grid max-w-7xl items-center gap-20 px-8 py-32 md:py-48 lg:grid-cols-2">
+      <div className="mx-auto grid max-w-7xl items-center gap-12 md:gap-20 px-4 md:px-8 py-20 md:py-48 lg:grid-cols-2">
         <div className="space-y-10">
           <Eyebrow>Sociedade de Advogados</Eyebrow>
           <h1 className="font-serif text-5xl font-normal leading-[1.08] text-navy md:text-6xl lg:text-[4.5rem]">
@@ -158,7 +192,7 @@ function Hero() {
 function QuemSomos() {
   return (
     <section id="quem-somos" className="relative bg-background">
-      <div className="mx-auto max-w-3xl px-8 py-40 text-center">
+      <div className="mx-auto max-w-3xl px-4 md:px-8 py-24 md:py-40 text-center">
         <Eyebrow center>Quem somos</Eyebrow>
         <h2 className="mt-10 font-serif text-4xl font-normal leading-[1.15] text-navy md:text-5xl">
           Uma advocacia <span className="italic">híbrida e estruturada</span>,
@@ -208,7 +242,7 @@ const areas = [
 function AreasAtuacao() {
   return (
     <section id="areas" className="bg-background">
-      <div className="mx-auto max-w-7xl px-8 py-40">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-24 md:py-40">
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow center>Expertise</Eyebrow>
           <h2 className="mt-10 font-serif text-4xl font-normal text-navy md:text-5xl">
@@ -220,11 +254,11 @@ function AreasAtuacao() {
           </p>
         </div>
 
-        <div className="mt-24 grid gap-10 md:grid-cols-2">
+        <div className="mt-16 md:mt-24 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
           {areas.map((area) => (
             <article
               key={area.title}
-              className="group relative flex flex-col rounded-sm bg-card p-12 transition-all duration-500 hover:-translate-y-1"
+              className="group relative flex flex-col rounded-sm bg-white p-8 md:p-12 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer"
               style={{ boxShadow: "var(--shadow-soft)" }}
             >
               <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-gold">
@@ -261,7 +295,7 @@ function AreasAtuacao() {
 
 function Sinergia() {
   return (
-    <section className="bg-background px-8 py-32">
+    <section className="bg-background px-4 md:px-8 py-20 md:py-32">
       <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1fr_2fr]">
         <div>
           <Eyebrow>Sinergia</Eyebrow>
@@ -297,7 +331,7 @@ function PlaceholderSection({
 }) {
   return (
     <section id={id} className="bg-background">
-      <div className="mx-auto max-w-7xl px-8 py-40 text-center">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-24 md:py-40 text-center">
         <Eyebrow center>{eyebrow}</Eyebrow>
         <h2 className="mt-10 font-serif text-4xl font-normal text-navy md:text-5xl">
           {title}
@@ -316,15 +350,14 @@ function Footer() {
       id="contato"
       className="border-t border-border/50 bg-background text-navy"
     >
-      <div className="mx-auto max-w-7xl px-8 py-24">
-        <div className="grid gap-16 md:grid-cols-3">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 py-16 md:py-24">
+        <div className="grid gap-12 md:gap-16 md:grid-cols-3">
           <div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <img
                 src={logo}
                 alt=""
-                className="h-11 w-11 rounded-full object-cover"
-                style={{ objectPosition: "center 30%" }}
+                className="h-14 w-auto object-contain"
               />
               <div>
                 <div className="font-serif text-xl">Médici &amp; Frez</div>
