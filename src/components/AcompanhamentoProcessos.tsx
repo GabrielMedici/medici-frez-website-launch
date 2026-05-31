@@ -115,7 +115,7 @@ export function AcompanhamentoProcessos() {
                 <img 
                   src={imgAstrea} 
                   alt="Logo Astrea" 
-                  className="h-14 w-auto object-contain drop-shadow-sm"
+                  className="h-20 w-auto object-contain drop-shadow-sm"
                 />
              </div>
              <h3 className="text-center font-serif text-2xl text-navy mb-2">Acesso ao Sistema</h3>
@@ -143,11 +143,11 @@ export function AcompanhamentoProcessos() {
             
             {/* Sidebar */}
             <aside className="w-full md:w-64 bg-[#0F172A] flex flex-col">
-              <div className="p-6 border-b border-white/10 flex items-center justify-center bg-white/5">
+              <div className="p-6 border-b border-white/10 flex items-center justify-center bg-white/5 min-h-[96px]">
                  <img 
                    src={imgAstrea} 
                    alt="Logo Astrea" 
-                   className="h-8 w-auto object-contain brightness-0 invert opacity-90"
+                   className="h-12 w-auto object-contain brightness-0 invert opacity-90"
                  />
               </div>
               <nav className="flex-1 p-4 space-y-1 overflow-x-auto md:overflow-x-visible flex flex-row md:flex-col scrollbar-hide">
