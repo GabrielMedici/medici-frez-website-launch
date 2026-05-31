@@ -96,7 +96,7 @@ export function AcompanhamentoProcessos() {
 
   return (
     <section id="cliente" className="bg-background border-t border-border/40">
-      <div className="mx-auto max-w-5xl px-6 py-28">
+      <div className="mx-auto max-w-5xl px-4 md:px-8 py-20 md:py-28">
         <div className="text-center">
           <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-gold">
             Área do Cliente
@@ -112,13 +112,13 @@ export function AcompanhamentoProcessos() {
         </div>
 
         <div
-          className="mt-14 overflow-hidden rounded-sm bg-card border-b-[1px] border-b-gold/70 transition-shadow shadow-sm hover:shadow-md"
+          className="mt-10 md:mt-14 w-full overflow-hidden rounded-sm bg-white border-b-[1px] border-b-gold/70 transition-shadow shadow-sm hover:shadow-md"
           style={{ boxShadow: "var(--shadow-soft)" }}
         >
           {!consulted ? (
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col items-center gap-6 px-6 py-14 md:px-12"
+              className="flex flex-col items-center gap-6 px-4 py-12 md:px-12 md:py-14"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary">
                 <Search className="h-6 w-6 text-navy" />
@@ -137,11 +137,11 @@ export function AcompanhamentoProcessos() {
                   value={cpf}
                   onChange={(e) => setCpf(e.target.value)}
                   placeholder="Digite seu CPF (simulação)"
-                  className="flex-1 rounded-sm border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-gold"
+                  className="flex-1 min-h-[44px] rounded-sm border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-gold"
                 />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center rounded-sm px-6 py-3 text-xs font-semibold uppercase tracking-widest text-gold-foreground transition-all hover:-translate-y-0.5"
+                  className="inline-flex min-h-[44px] items-center justify-center rounded-sm px-6 py-3 text-xs font-semibold uppercase tracking-widest text-gold-foreground transition-all hover:-translate-y-0.5 hover:opacity-90 cursor-pointer"
                   style={{
                     background: "var(--gradient-gold)",
                     boxShadow: "var(--shadow-gold)",
@@ -155,7 +155,7 @@ export function AcompanhamentoProcessos() {
               </p>
             </form>
           ) : (
-            <div className="px-6 py-12 md:px-12">
+            <div className="px-4 py-10 md:px-12 md:py-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
                   <div className="text-[10px] font-medium uppercase tracking-[0.3em] text-gold">
@@ -167,7 +167,7 @@ export function AcompanhamentoProcessos() {
                 </div>
                 <button
                   onClick={handleExit}
-                  className="inline-flex items-center gap-2 rounded-sm border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest text-navy transition-colors hover:border-gold hover:text-gold"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-sm border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest text-navy transition-colors hover:border-gold hover:text-gold cursor-pointer"
                 >
                   <LogOut className="h-3.5 w-3.5" />
                   Sair
@@ -178,7 +178,7 @@ export function AcompanhamentoProcessos() {
                 type="single"
                 collapsible
                 defaultValue="protocolo"
-                className="mt-10"
+                className="mt-10 w-full"
               >
                 {STEPS.map((step, i) => (
                   <StepAccordion
@@ -250,8 +250,8 @@ function StepAccordion({
         />
       )}
       <AccordionItem value={step.id} className="border-b border-border/60">
-        <AccordionTrigger className="hover:no-underline py-5 [&>svg]:text-navy/50">
-          <div className="flex flex-1 items-center gap-5 text-left">
+        <AccordionTrigger className="hover:no-underline py-5 min-h-[44px] cursor-pointer [&>svg]:text-navy/50">
+          <div className="flex flex-1 items-center gap-4 md:gap-5 text-left">
             <div
               className={`relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 ${styles.ring}`}
             >
@@ -278,7 +278,7 @@ function StepAccordion({
           </div>
         </AccordionTrigger>
         <AccordionContent>
-          <div className="ml-[60px] mr-2 mt-2 mb-4 rounded-sm border border-border/70 border-b-[1px] border-b-gold/60 bg-background p-5">
+          <div className="ml-12 md:ml-[60px] mr-1 md:mr-2 mt-2 mb-4 rounded-sm border border-border/70 border-b-[1px] border-b-gold/60 bg-white p-4 md:p-5">
             <div className="grid gap-4 sm:grid-cols-3">
               <DetailItem
                 icon={<CalendarDays className="h-4 w-4" />}
@@ -300,7 +300,7 @@ function StepAccordion({
               <div className="mt-6 flex justify-end border-t border-border/60 pt-4">
                 <button
                   onClick={onDownload}
-                  className="inline-flex items-center gap-2 rounded-sm px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-foreground transition-all hover:-translate-y-0.5"
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-sm px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-foreground transition-all hover:-translate-y-0.5 hover:opacity-90 cursor-pointer"
                   style={{
                     background: "var(--gradient-gold)",
                     boxShadow: "var(--shadow-gold)",
