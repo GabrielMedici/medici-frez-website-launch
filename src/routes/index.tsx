@@ -6,6 +6,13 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 
+import imgGabrielMedici from "@/assets/gabrielmedici.png";
+import imgGeraldo from "@/assets/geraldo.png";
+import imgJoaoPedro from "@/assets/joaopedro.png";
+import imgLarissaFrez from "@/assets/larissafrez.png";
+import imgLauraAndrade from "@/assets/lauraandrade.png";
+import imgLauraMel from "@/assets/lauramel.png";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -440,20 +447,22 @@ function Sinergia() {
 
 /* ─── Team data ──────────────────────────────────────────── */
 const TEAM = [
-  { name: "Gabriel Médici",   role: "Sócio Fundador",   specialty: "Gestão Previdenciária",                   initials: "GM" },
-  { name: "Larissa Frez",     role: "Sócia Fundadora",  specialty: "Planejamento e Aposentadorias",            initials: "LF" },
+  { name: "Gabriel Médici",   role: "Sócio Fundador",   specialty: "Gestão Previdenciária",                   initials: "GM", image: imgGabrielMedici },
+  { name: "Larissa Frez",     role: "Sócia Fundadora",  specialty: "Planejamento e Aposentadorias",            initials: "LF", image: imgLarissaFrez },
   { name: "Maria Aparecida",  role: "Advogada",          specialty: "Direito Civil e Projetos Sociais",         initials: "MA" },
   { name: "Gabriel Fagundes", role: "Advogado",          specialty: "Relações Externas e Prazos",              initials: "GF" },
-  { name: "Laura Mel",        role: "Advogada",          specialty: "Administração Financeira Cível",           initials: "LM" },
-  { name: "Laura Andrade",    role: "Advogada",          specialty: "Demandas Patrimoniais e Inventários",      initials: "LA" },
+  { name: "Laura Mel",        role: "Advogada",          specialty: "Administração Financeira Cível",           initials: "LM", image: imgLauraMel },
+  { name: "Laura Andrade",    role: "Advogada",          specialty: "Demandas Patrimoniais e Inventários",      initials: "LA", image: imgLauraAndrade },
   { name: "Maria Cristina",   role: "Advogada",          specialty: "Conciliação e Mediação",                  initials: "MC" },
   { name: "João Augusto",     role: "Advogado",          specialty: "Contratos e Relações de Consumo",         initials: "JA" },
   { name: "Jemerson",         role: "Advogado",          specialty: "Direito de Família e Guarda",             initials: "JE" },
-  { name: "Geraldo Silva",    role: "Advogado",          specialty: "Benefícios por Incapacidade e Idosos",    initials: "GS" },
-  { name: "João Pedro",       role: "Advogado",          specialty: "Acompanhamento Previdenciário",            initials: "JP" },
+  { name: "Geraldo Silva",    role: "Advogado",          specialty: "Benefícios por Incapacidade e Idosos",    initials: "GS", image: imgGeraldo },
+  { name: "João Pedro",       role: "Advogado",          specialty: "Acompanhamento Previdenciário",            initials: "JP", image: imgJoaoPedro },
 ];
 
-function MemberCard({ name, role, specialty, initials }: (typeof TEAM)[number]) {
+type TeamMember = typeof TEAM[number] & { image?: string };
+
+function MemberCard({ name, role, specialty, initials, image }: TeamMember) {
   return (
     <article className="team-card flex-shrink-0 w-64 md:w-72 bg-white rounded-xl flex flex-col items-center text-center select-none overflow-hidden"
       style={{ boxShadow: "var(--shadow-soft)", borderBottom: "2px solid oklch(0.72 0.13 80 / 0.55)" }}
@@ -463,13 +472,16 @@ function MemberCard({ name, role, specialty, initials }: (typeof TEAM)[number]) 
         className="w-full h-44 flex items-center justify-center bg-gray-100"
         style={{ background: "oklch(0.95 0.012 250)" }}
       >
-        {/* Caso coloquem foto no futuro, ela ficaria aqui como <img src={...} className="w-full h-full object-cover" /> */}
-        <span
-          className="font-serif text-5xl font-semibold opacity-40"
-          style={{ color: "var(--gold)" }}
-        >
-          {initials}
-        </span>
+        {image ? (
+          <img src={image} alt={`Foto de ${name}`} className="w-full h-full object-cover" />
+        ) : (
+          <span
+            className="font-serif text-5xl font-semibold opacity-40"
+            style={{ color: "var(--gold)" }}
+          >
+            {initials}
+          </span>
+        )}
       </div>
       
       {/* Content Area */}
