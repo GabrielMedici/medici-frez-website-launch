@@ -14,6 +14,7 @@ import imgLarissaFrez from "@/assets/larissafrez.png";
 import imgLauraAndrade from "@/assets/lauraandrade.png";
 import imgLauraMel from "@/assets/lauramel.png";
 import imgMariaAparecida from "@/assets/mariaaprecida.png";
+import imgMariaCristina from "@/assets/mariacristina.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -452,7 +453,7 @@ const TEAM = [
   { name: "Gabriel Fagundes", role: "Advogado",          specialty: "Relações Externas e Prazos",              initials: "GF" },
   { name: "Laura Mel",        role: "Advogada",          specialty: "Administração Financeira Cível",           initials: "LM", image: imgLauraMel },
   { name: "Laura Andrade",    role: "Advogada",          specialty: "Demandas Patrimoniais e Inventários",      initials: "LA", image: imgLauraAndrade },
-  { name: "Maria Cristina",   role: "Advogada",          specialty: "Conciliação e Mediação",                  initials: "MC" },
+  { name: "Maria Cristina",   role: "Advogada",          specialty: "Conciliação e Mediação",                  initials: "MC", image: imgMariaCristina },
   { name: "João Augusto",     role: "Advogado",          specialty: "Contratos e Relações de Consumo",         initials: "JA" },
   { name: "Jemerson",         role: "Advogado",          specialty: "Direito de Família e Guarda",             initials: "JE", image: imgJemerson },
   { name: "Geraldo Silva",    role: "Advogado",          specialty: "Benefícios por Incapacidade e Idosos",    initials: "GS", image: imgGeraldo },
