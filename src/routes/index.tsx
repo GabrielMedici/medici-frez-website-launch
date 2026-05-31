@@ -7,8 +7,10 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 
 import imgGabrielMedici from "@/assets/gabrielmedici.png";
+import imgGabrielFagundes from "@/assets/gabrielfagundes.png";
 import imgGeraldo from "@/assets/geraldo.png";
 import imgJemerson from "@/assets/jemerson.png";
+import imgJoaoAugusto from "@/assets/joaoaugusto.png";
 import imgJoaoPedro from "@/assets/joaopedro.png";
 import imgLarissaFrez from "@/assets/larissafrez.png";
 import imgLauraAndrade from "@/assets/lauraandrade.png";
@@ -450,11 +452,11 @@ const TEAM = [
   { name: "Gabriel Médici",   role: "Sócio Fundador",   specialty: "Gestão Previdenciária",                   initials: "GM", image: imgGabrielMedici },
   { name: "Larissa Frez",     role: "Sócia Fundadora",  specialty: "Planejamento e Aposentadorias",            initials: "LF", image: imgLarissaFrez },
   { name: "Maria Aparecida",  role: "Advogada",          specialty: "Direito Civil e Projetos Sociais",         initials: "MA", image: imgMariaAparecida },
-  { name: "Gabriel Fagundes", role: "Advogado",          specialty: "Relações Externas e Prazos",              initials: "GF" },
+  { name: "Gabriel Fagundes", role: "Advogado",          specialty: "Relações Externas e Prazos",              initials: "GF", image: imgGabrielFagundes },
   { name: "Laura Mel",        role: "Advogada",          specialty: "Administração Financeira Cível",           initials: "LM", image: imgLauraMel },
   { name: "Laura Andrade",    role: "Advogada",          specialty: "Demandas Patrimoniais e Inventários",      initials: "LA", image: imgLauraAndrade },
   { name: "Maria Cristina",   role: "Advogada",          specialty: "Conciliação e Mediação",                  initials: "MC", image: imgMariaCristina },
-  { name: "João Augusto",     role: "Advogado",          specialty: "Contratos e Relações de Consumo",         initials: "JA" },
+  { name: "João Augusto",     role: "Advogado",          specialty: "Contratos e Relações de Consumo",         initials: "JA", image: imgJoaoAugusto },
   { name: "Jemerson",         role: "Advogado",          specialty: "Direito de Família e Guarda",             initials: "JE", image: imgJemerson },
   { name: "Geraldo Silva",    role: "Advogado",          specialty: "Benefícios por Incapacidade e Idosos",    initials: "GS", image: imgGeraldo },
   { name: "João Pedro",       role: "Advogado",          specialty: "Acompanhamento Previdenciário",            initials: "JP", image: imgJoaoPedro },
