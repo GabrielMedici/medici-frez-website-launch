@@ -1,34 +1,75 @@
 import { useState } from "react";
-import { Check, Clock, Circle, Search, LogOut } from "lucide-react";
+import { Check, Clock, Circle, Search, LogOut, Download, FileText, User, CalendarDays } from "lucide-react";
+import { toast } from "sonner";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 type StepStatus = "done" | "current" | "pending";
 
+type StepDetail = {
+  date: string;
+  responsible: string;
+  parecer: string;
+  hasPdf?: boolean;
+};
+
 type Step = {
+  id: string;
   title: string;
   description: string;
   status: StepStatus;
+  detail: StepDetail;
 };
 
 const STEPS: Step[] = [
   {
+    id: "analise",
     title: "Análise Inicial de Documentos",
     description: "Documentação recebida e validada pela equipe.",
     status: "done",
+    detail: {
+      date: "08/05/2026",
+      responsible: "Setor Cível",
+      parecer: "Documentação conferida, sem pendências formais.",
+    },
   },
   {
-    title: "Protocolo do Requerimento/Ação",
+    id: "protocolo",
+    title: "Protocolo do Requerimento",
     description: "Petição protocolada junto ao órgão competente.",
     status: "done",
+    detail: {
+      date: "15/05/2026",
+      responsible: "Setor Cível",
+      parecer: "Documentação autuada e encaminhada.",
+      hasPdf: true,
+    },
   },
   {
+    id: "analise-orgao",
     title: "Análise do Órgão Competente",
     description: "Processo em avaliação. Aguardando manifestação.",
     status: "current",
+    detail: {
+      date: "Em andamento",
+      responsible: "Vara Cível — 1ª Instância",
+      parecer: "Aguardando manifestação do juízo.",
+    },
   },
   {
-    title: "Decisão/Sentença",
+    id: "decisao",
+    title: "Decisão / Sentença",
     description: "Aguardando decisão final.",
     status: "pending",
+    detail: {
+      date: "A definir",
+      responsible: "Juízo competente",
+      parecer: "Etapa pendente.",
+    },
   },
 ];
 
@@ -47,31 +88,33 @@ export function AcompanhamentoProcessos() {
     setCpf("");
   };
 
+  const handleDownload = () => {
+    toast.success("Download seguro iniciado.", {
+      description: "Arquivo salvo no dispositivo.",
+    });
+  };
+
   return (
-    <section id="cliente" className="border-b border-border/60 bg-secondary/30">
+    <section id="cliente" className="bg-background border-t border-border/40">
       <div className="mx-auto max-w-5xl px-6 py-28">
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.32em] text-gold">
+          <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-gold">
             Área do Cliente
           </span>
-          <h2 className="mt-6 font-serif text-4xl text-navy md:text-5xl">
-            Acompanhamento de{" "}
-            <span className="text-gradient-gold italic">Processos</span>
+          <h2 className="mt-6 font-serif text-4xl font-normal text-navy md:text-5xl">
+            Acompanhamento de <span className="italic">Processos</span>
           </h2>
           <div className="mx-auto mt-6 h-px w-16 bg-gold/70" />
-          <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
+          <p className="mx-auto mt-6 max-w-xl text-base font-light leading-relaxed text-navy/65">
             Transparência em cada etapa. Consulte o andamento do seu processo
             de forma simples, rápida e segura.
           </p>
         </div>
 
-        <div className="mt-14 overflow-hidden rounded-xl border border-border bg-card shadow-[0_20px_50px_-30px_oklch(0.22_0.06_260_/_0.35)]">
-          <div
-            aria-hidden
-            className="h-1 w-full"
-            style={{ background: "var(--gradient-gold)" }}
-          />
-
+        <div
+          className="mt-14 overflow-hidden rounded-sm bg-card border-b-[1px] border-b-gold/70 transition-shadow shadow-sm hover:shadow-md"
+          style={{ boxShadow: "var(--shadow-soft)" }}
+        >
           {!consulted ? (
             <form
               onSubmit={handleSubmit}
@@ -84,7 +127,7 @@ export function AcompanhamentoProcessos() {
                 <h3 className="font-serif text-2xl text-navy">
                   Consulta de Processo
                 </h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="mt-2 text-sm text-navy/60">
                   Informe seu CPF para visualizar o andamento.
                 </p>
               </div>
@@ -94,11 +137,11 @@ export function AcompanhamentoProcessos() {
                   value={cpf}
                   onChange={(e) => setCpf(e.target.value)}
                   placeholder="Digite seu CPF (simulação)"
-                  className="flex-1 rounded-md border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-muted-foreground focus:border-gold"
+                  className="flex-1 rounded-sm border border-border bg-background px-4 py-3 text-sm text-navy outline-none transition-colors placeholder:text-navy/40 focus:border-gold"
                 />
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center rounded-md px-6 py-3 text-xs font-semibold uppercase tracking-widest text-gold-foreground transition-all hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center rounded-sm px-6 py-3 text-xs font-semibold uppercase tracking-widest text-gold-foreground transition-all hover:-translate-y-0.5"
                   style={{
                     background: "var(--gradient-gold)",
                     boxShadow: "var(--shadow-gold)",
@@ -107,7 +150,7 @@ export function AcompanhamentoProcessos() {
                   Consultar
                 </button>
               </div>
-              <p className="text-[11px] uppercase tracking-widest text-muted-foreground">
+              <p className="text-[11px] uppercase tracking-widest text-navy/45">
                 Ambiente de demonstração
               </p>
             </form>
@@ -115,7 +158,7 @@ export function AcompanhamentoProcessos() {
             <div className="px-6 py-12 md:px-12">
               <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold">
+                  <div className="text-[10px] font-medium uppercase tracking-[0.3em] text-gold">
                     Processo nº 0001234-56.2026.8.16.0017
                   </div>
                   <h3 className="mt-2 font-serif text-2xl text-navy">
@@ -124,23 +167,29 @@ export function AcompanhamentoProcessos() {
                 </div>
                 <button
                   onClick={handleExit}
-                  className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest text-navy transition-colors hover:border-gold hover:text-gold"
+                  className="inline-flex items-center gap-2 rounded-sm border border-border px-4 py-2 text-xs font-semibold uppercase tracking-widest text-navy transition-colors hover:border-gold hover:text-gold"
                 >
                   <LogOut className="h-3.5 w-3.5" />
                   Sair
                 </button>
               </div>
 
-              <ol className="mt-10 space-y-2">
+              <Accordion
+                type="single"
+                collapsible
+                defaultValue="protocolo"
+                className="mt-10"
+              >
                 {STEPS.map((step, i) => (
-                  <StepRow
-                    key={step.title}
+                  <StepAccordion
+                    key={step.id}
                     step={step}
                     index={i}
                     isLast={i === STEPS.length - 1}
+                    onDownload={handleDownload}
                   />
                 ))}
-              </ol>
+              </Accordion>
             </div>
           )}
         </div>
@@ -157,14 +206,16 @@ export function AcompanhamentoProcessos() {
   );
 }
 
-function StepRow({
+function StepAccordion({
   step,
   index,
   isLast,
+  onDownload,
 }: {
   step: Step;
   index: number;
   isLast: boolean;
+  onDownload: () => void;
 }) {
   const styles = {
     done: {
@@ -182,8 +233,8 @@ function StepRow({
       icon: <Clock className="h-4 w-4" />,
     },
     pending: {
-      ring: "border-border bg-secondary text-muted-foreground",
-      label: "text-muted-foreground",
+      ring: "border-border bg-secondary text-navy/50",
+      label: "text-navy/45",
       labelText: "Pendente",
       line: "bg-border",
       icon: <Circle className="h-3.5 w-3.5" />,
@@ -191,36 +242,102 @@ function StepRow({
   }[step.status];
 
   return (
-    <li className="relative flex gap-5 pb-8 last:pb-0">
+    <div className="relative">
       {!isLast && (
         <span
           aria-hidden
-          className={`absolute left-[19px] top-10 h-[calc(100%-1.5rem)] w-0.5 ${styles.line}`}
+          className={`absolute left-[19px] top-12 bottom-0 w-0.5 ${styles.line}`}
         />
       )}
-      <div
-        className={`relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 ${styles.ring}`}
-      >
-        {styles.icon}
+      <AccordionItem value={step.id} className="border-b border-border/60">
+        <AccordionTrigger className="hover:no-underline py-5 [&>svg]:text-navy/50">
+          <div className="flex flex-1 items-center gap-5 text-left">
+            <div
+              className={`relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 ${styles.ring}`}
+            >
+              {styles.icon}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <h4 className="font-serif text-lg text-navy">
+                  <span className="mr-2 text-sm text-navy/45">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {step.title}
+                </h4>
+                <span
+                  className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${styles.label}`}
+                >
+                  • {styles.labelText}
+                </span>
+              </div>
+              <p className="mt-1.5 text-sm font-light text-navy/60">
+                {step.description}
+              </p>
+            </div>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="ml-[60px] mr-2 mt-2 mb-4 rounded-sm border border-border/70 border-b-[1px] border-b-gold/60 bg-background p-5">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <DetailItem
+                icon={<CalendarDays className="h-4 w-4" />}
+                label="Data"
+                value={step.detail.date}
+              />
+              <DetailItem
+                icon={<User className="h-4 w-4" />}
+                label="Responsável"
+                value={step.detail.responsible}
+              />
+              <DetailItem
+                icon={<FileText className="h-4 w-4" />}
+                label="Parecer Técnico"
+                value={step.detail.parecer}
+              />
+            </div>
+            {step.detail.hasPdf && (
+              <div className="mt-6 flex justify-end border-t border-border/60 pt-4">
+                <button
+                  onClick={onDownload}
+                  className="inline-flex items-center gap-2 rounded-sm px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-foreground transition-all hover:-translate-y-0.5"
+                  style={{
+                    background: "var(--gradient-gold)",
+                    boxShadow: "var(--shadow-gold)",
+                  }}
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Baixar Cópia do Protocolo (PDF)
+                </button>
+              </div>
+            )}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </div>
+  );
+}
+
+function DetailItem({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 text-gold">
+        {icon}
+        <span className="text-[10px] font-semibold uppercase tracking-[0.22em]">
+          {label}
+        </span>
       </div>
-      <div className="flex-1 pt-1.5">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          <h4 className="font-serif text-lg text-navy">
-            <span className="mr-2 text-sm text-muted-foreground">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            {step.title}
-          </h4>
-          <span
-            className={`text-[10px] font-semibold uppercase tracking-[0.2em] ${styles.label}`}
-          >
-            • {styles.labelText}
-          </span>
-        </div>
-        <p className="mt-1.5 text-sm text-muted-foreground">
-          {step.description}
-        </p>
-      </div>
-    </li>
+      <p className="mt-2 text-sm font-light leading-relaxed text-navy">
+        {value}
+      </p>
+    </div>
   );
 }
