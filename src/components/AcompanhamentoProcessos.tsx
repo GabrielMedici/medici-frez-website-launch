@@ -155,11 +155,11 @@ export function AcompanhamentoProcessos() {
             
             {/* Sidebar */}
             <aside className="w-full md:w-64 bg-[#0F172A] flex flex-col">
-              <div className="p-6 border-b border-white/10 flex items-center justify-center bg-white/5 h-[80px]">
+              <div className="p-4 border-b-2 border-gold flex items-center justify-center bg-white h-[80px]">
                  <img 
                    src={imgAstreaIco} 
                    alt="Ícone Astrea" 
-                   className="h-10 w-auto object-contain drop-shadow-md"
+                   className="h-12 w-auto object-contain drop-shadow-sm"
                  />
               </div>
               <nav className="flex-1 p-4 space-y-1 overflow-x-auto md:overflow-x-visible flex flex-row md:flex-col scrollbar-hide">
