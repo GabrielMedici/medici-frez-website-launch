@@ -249,7 +249,7 @@ function Hero() {
           <img
             src={logo}
             alt="Emblema Médici & Frez"
-            className="relative z-11 w-[80%] max-w-[360px] logo-float"
+            className="relative z-11 w-[95%] max-w-[500px] logo-float"
             style={{ filter: "drop-shadow(0 8px 32px rgba(15,23,42,0.12)) drop-shadow(0 2px 8px rgba(15,23,42,0.08))" }}
           />
 
