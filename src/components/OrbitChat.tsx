@@ -324,7 +324,7 @@ export function OrbitChat() {
   return (
     <>
       {/* Floating CTA trigger */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-10 right-4 sm:right-6 z-50">
         {/* Breathing ring — only visible when chat is closed */}
         {!open && (
           <span

@@ -808,13 +808,11 @@ function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 text-xs font-light text-white/40 md:flex-row">
-          <span>
-            © {new Date().getFullYear()} Médici &amp; Frez Sociedade de
-            Advogados. Todos os direitos reservados.
-          </span>
-          <div className="flex items-center gap-6">
-            <span className="uppercase tracking-[0.28em] text-white/40">OAB/PR</span>
+        <div className="mt-16 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-white/10 pt-8 text-xs font-light text-white/40">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+            <span className="text-center md:text-left">
+              © {new Date().getFullYear()} Médici &amp; Frez Sociedade de Advogados.
+            </span>
             <button 
               onClick={() => window.dispatchEvent(new CustomEvent("partner:open"))}
               className="uppercase tracking-[0.2em] text-white/60 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-all flex items-center gap-2 cursor-pointer font-medium shadow-sm hover:text-white"
@@ -822,6 +820,9 @@ function Footer() {
               <LayoutDashboard className="w-3.5 h-3.5" />
               Login dos Sócios
             </button>
+          </div>
+          <div className="flex items-center">
+            <span className="uppercase tracking-[0.28em] text-white/40">OAB/PR</span>
           </div>
         </div>
       </div>
