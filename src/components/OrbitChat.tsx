@@ -96,12 +96,12 @@ const initialMessage = (): Message => ({
 });
 
 const dispararEmailNotificacao = createServerFn({ method: "POST" })
-  .handler(async ({ data: historicoChat }: { data: { pergunta: string; resposta: string }[] }) => {
+  .handler(async ({ data }: { data: { historicoChat: { pergunta: string; resposta: string }[], nomesAdvogados: string } }) => {
   const endpoint = "https://api.resend.com/emails";
   
   // Construção dinâmica das linhas da tabela com perguntas e respostas
   let linhasTabelaHtml = "";
-  historicoChat.forEach(item => {
+  data.historicoChat.forEach(item => {
     if (item.pergunta && item.resposta) {
       linhasTabelaHtml += `
         <tr>
@@ -153,7 +153,7 @@ const dispararEmailNotificacao = createServerFn({ method: "POST" })
       body: JSON.stringify({
         from: "onboarding@resend.dev",
         to: "contato.medicistore@gmail.com",
-        subject: "Novo Lead - Respostas Orbit Chat",
+        subject: `atendimento aos cuidados de: ${data.nomesAdvogados}`,
         html: corpoHtml
       })
     });
@@ -248,7 +248,9 @@ export function OrbitChat() {
             }
           }
         }
-        dispararEmailNotificacao({ data: historicoChat });
+        
+        const nomesAdvogados = finalMsg.lawyers.map(l => l.name).join(" e ");
+        dispararEmailNotificacao({ data: { historicoChat, nomesAdvogados } });
 
       }, 500);
       return;
