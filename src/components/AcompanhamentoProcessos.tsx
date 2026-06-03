@@ -198,7 +198,11 @@ export function AcompanhamentoProcessos() {
                {activeTab === "agenda" && <AgendaModulo />}
                {activeTab === "financeiro" && <FinanceiroModulo />}
                {activeTab === "documentos" && <DocumentosModulo />}
-               {activeTab === "atendimentos" && <AtendimentosModulo />}
+               {activeTab === "atendimentos" && (
+                 <AtendimentosErrorBoundary>
+                   <AtendimentosModulo />
+                 </AtendimentosErrorBoundary>
+               )}
 
             </main>
           </div>
@@ -461,7 +465,6 @@ function DocumentosModulo() {
       </div>
     </div>
   );
-}
 
 function AtendimentosModulo() {
   const [pendentes, setPendentes] = useState<any[]>([]);
