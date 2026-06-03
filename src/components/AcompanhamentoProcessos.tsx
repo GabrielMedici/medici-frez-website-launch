@@ -467,7 +467,7 @@ function AtendimentosModulo() {
   const [pendentes, setPendentes] = useState<any[]>([]);
 
   useEffect(() => {
-    const data = localStorage.getItem("@medici:pendentes");
+    const data = sessionStorage.getItem("@medici:pendentes");
     if (data) {
       try {
         setPendentes(JSON.parse(data).reverse()); // Show newest first

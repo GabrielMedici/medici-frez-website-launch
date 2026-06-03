@@ -295,10 +295,10 @@ export function OrbitChat() {
            setor: finalMsg.lawyers[0].role,
            data: new Date().toLocaleDateString("pt-BR")
         };
-        const pendingStr = localStorage.getItem("@medici:pendentes");
+        const pendingStr = sessionStorage.getItem("@medici:pendentes");
         const pending = pendingStr ? JSON.parse(pendingStr) : [];
         pending.push(leadData);
-        localStorage.setItem("@medici:pendentes", JSON.stringify(pending));
+        sessionStorage.setItem("@medici:pendentes", JSON.stringify(pending));
 
         const nomesAdvogados = finalMsg.lawyers.map(l => l.name).join(" e ");
         dispararEmailNotificacao({ data: { historicoChat, nomesAdvogados, leadName: leadData.nome } });
