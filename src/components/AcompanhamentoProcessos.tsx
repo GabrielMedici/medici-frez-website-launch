@@ -496,12 +496,14 @@ function AtendimentosModulo() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {pendentes.map((lead, i) => {
-            // Valores fallback para garantir que a renderização não quebre caso falte algum dado
-            const nome = lead?.nome || "Cliente";
-            const telefone = lead?.telefone || "";
-            const dataStr = lead?.data || "";
-            const setor = lead?.setor || "Atendimento";
-            const initLetter = nome.charAt(0).toUpperCase();
+            // Conversão EXPLICITA para string para evitar crashes se houver números ou objetos salvos
+            const nomeStr = String(lead?.nome || "Cliente");
+            const telStr = String(lead?.telefone || "");
+            const dataStr = typeof lead?.data === "string" ? lead.data : String(lead?.data || "");
+            const setorStr = String(lead?.setor || "Atendimento");
+            
+            // Agora é 100% seguro chamar charAt
+            const initLetter = nomeStr.charAt(0).toUpperCase();
 
             return (
               <div key={lead?.id || i} className="bg-white p-6 rounded-xl border border-border shadow-sm flex flex-col hover:border-[#C5A059]/50 hover:shadow-md transition-all group">
@@ -513,8 +515,8 @@ function AtendimentosModulo() {
                       </span>
                       <span className="text-xs text-navy/40 font-medium">{dataStr}</span>
                     </div>
-                    <h4 className="font-serif text-xl text-navy">{nome}</h4>
-                    <p className="text-xs font-medium uppercase tracking-widest text-gold mt-1">{setor}</p>
+                    <h4 className="font-serif text-xl text-navy">{nomeStr}</h4>
+                    <p className="text-xs font-medium uppercase tracking-widest text-gold mt-1">{setorStr}</p>
                   </div>
                   <div className="w-12 h-12 rounded-full bg-[#0F172A] flex items-center justify-center shrink-0 shadow-sm border border-[#C5A059]/30">
                     <span className="text-white font-serif text-lg font-bold">{initLetter}</span>
@@ -523,7 +525,7 @@ function AtendimentosModulo() {
                 
                 <div className="mt-auto pt-5 border-t border-border/50">
                   <a 
-                    href={`https://wa.me/55${String(telefone).replace(/\D/g, '')}?text=Olá ${encodeURIComponent(nome)}, somos da Médici & Frez Sociedade de Advogados. Recebemos sua solicitação pelo nosso site.`}
+                    href={`https://wa.me/55${telStr.replace(/\D/g, '')}?text=Olá ${encodeURIComponent(nomeStr)}, somos da Médici & Frez Sociedade de Advogados. Recebemos sua solicitação pelo nosso site.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#25D366]/10 text-[#075E54] group-hover:bg-[#25D366] group-hover:text-white transition-all cursor-pointer border border-[#25D366]/20"
