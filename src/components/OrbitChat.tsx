@@ -180,6 +180,14 @@ export function OrbitChat() {
   const [awaitingPhoneKey, setAwaitingPhoneKey] = useState<string | null>(null);
   const [phoneInput, setPhoneInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-focus no input sempre que houver mudança de estado pedindo texto
+  useEffect(() => {
+    if (awaitingNameKey || awaitingPhoneKey || awaitingObservationKey) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [awaitingNameKey, awaitingPhoneKey, awaitingObservationKey]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -452,6 +460,7 @@ export function OrbitChat() {
 
           <div className="flex items-center gap-2 border-t border-border bg-card px-3 py-3">
             <input
+              ref={inputRef}
               type="text"
               disabled={(!awaitingPhoneKey && !awaitingObservationKey && !awaitingNameKey) || finished}
               placeholder={awaitingNameKey ? "Digite seu nome..." : awaitingPhoneKey ? "Digite seu número com DDD..." : awaitingObservationKey ? "Digite sua observação..." : "Selecione uma opção acima…"}
