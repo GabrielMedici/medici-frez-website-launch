@@ -76,7 +76,7 @@ const FINAL: Record<string, FinalConfig> = {
     ]
   },
   inss: {
-    text: "Seu histórico contributivo será analisado com dedicação pela nossa equipe:",
+    text: "A especialista Dra. Larissa Frez vai entrar em contato com você:",
     lawyers: [
       { name: "Dra. Larissa Frez", role: "Especialista Previdenciária", image: imgLarissa }
     ]
