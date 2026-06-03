@@ -111,8 +111,32 @@ function MouseGlow() {
   );
 }
 
+function useScrollReveal() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+    const timeout = setTimeout(() => {
+      document.querySelectorAll(".reveal-hidden").forEach((el) => observer.observe(el));
+    }, 100);
+    return () => {
+      clearTimeout(timeout);
+      observer.disconnect();
+    };
+  }, []);
+}
+
 function Home() {
   const [showPartnerLogin, setShowPartnerLogin] = useState(false);
+  useScrollReveal();
 
   useEffect(() => {
     const handler = () => setShowPartnerLogin(true);
@@ -247,16 +271,16 @@ function Hero() {
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 md:gap-12 px-4 md:px-8 py-12 md:py-20 lg:grid-cols-2">
         <div className="space-y-10">
           <Eyebrow className="text-white/60">Sociedade de Advogados</Eyebrow>
-          <h1 className="font-serif text-5xl font-normal leading-[1.08] text-white md:text-6xl lg:text-[4.5rem]">
+          <h1 className="font-serif text-5xl font-normal leading-[1.08] text-white md:text-6xl lg:text-[4.5rem] reveal-hidden reveal-delay-100">
             Organização jurídica <span className="italic">especializada</span>{" "}
             <Highlight delay={400}>e humanizada</Highlight>
           </h1>
-          <p className="max-w-xl text-lg font-light leading-relaxed text-white/70">
+          <p className="max-w-xl text-lg font-light leading-relaxed text-white/70 reveal-hidden reveal-delay-200">
             Unimos rigor técnico e escuta atenta para conduzir cada caso com
             estratégia, clareza e profundo respeito por quem confia a nós suas
             questões mais importantes.
           </p>
-          <div className="flex flex-wrap items-center gap-8 pt-4">
+          <div className="flex flex-wrap items-center gap-8 pt-4 reveal-hidden reveal-delay-300">
             <button
               type="button"
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
@@ -280,12 +304,12 @@ function Hero() {
           <img
             src={logo}
             alt="Emblema Médici & Frez"
-            className="relative z-11 w-[70%] max-w-[420px] logo-float brightness-0 invert opacity-90"
+            className="relative z-11 w-[70%] max-w-[420px] logo-float brightness-0 invert opacity-90 reveal-hidden reveal-delay-200"
             style={{ filter: "drop-shadow(0 12px 24px rgba(0,0,0,0.2))" }}
           />
 
           {/* Grid de Cards Movido para Baixo */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full reveal-hidden reveal-delay-400">
             {/* Card 1: Família */}
             <div
               onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}
@@ -343,7 +367,7 @@ function Hero() {
 function QuemSomos() {
   return (
     <section id="quem-somos" className="relative">
-      <div className="mx-auto max-w-3xl px-4 md:px-8 py-12 md:py-20 text-center">
+      <div className="mx-auto max-w-3xl px-4 md:px-8 py-12 md:py-20 text-center reveal-hidden reveal-delay-100">
         <Eyebrow center>Quem somos</Eyebrow>
         <h2 className="mt-6 font-serif text-4xl font-normal leading-[1.15] text-white md:text-5xl">
           Uma advocacia <span className="italic">híbrida e estruturada</span>,{" "}
@@ -394,7 +418,7 @@ function AreasAtuacao() {
   return (
     <section id="areas">
       <div className="mx-auto max-w-7xl px-4 md:px-8 py-12 md:py-20">
-        <div className="mx-auto max-w-2xl text-center">
+        <div className="mx-auto max-w-2xl text-center reveal-hidden reveal-delay-100">
           <Eyebrow center>Expertise</Eyebrow>
           <h2 className="mt-6 font-serif text-4xl font-normal text-white md:text-5xl">
             Nossas Áreas de <span className="italic">Atuação</span>
@@ -405,7 +429,7 @@ function AreasAtuacao() {
           </p>
         </div>
 
-        <div className="mt-10 md:mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+        <div className="mt-10 md:mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 reveal-hidden reveal-delay-200">
           {areas.map((area) => (
             <article
               key={area.title}
@@ -464,7 +488,7 @@ function FuncaoSocial() {
       <div className="mx-auto max-w-6xl flex flex-col items-center relative z-10">
         
         {/* Header Fixo */}
-        <div className="flex flex-col items-center text-center mb-16 relative z-20">
+        <div className="flex flex-col items-center text-center mb-16 relative z-20 reveal-hidden reveal-delay-100">
           <div className="relative group cursor-default">
             {/* Pulsing aura */}
             <div className="absolute inset-0 rounded-full bg-gold/20 blur-xl animate-pulse scale-150" />
@@ -480,7 +504,7 @@ function FuncaoSocial() {
         </div>
 
         {/* Dynamic Panel */}
-        <div className="w-full flex flex-col lg:flex-row gap-6 relative">
+        <div className="w-full flex flex-col lg:flex-row gap-6 relative reveal-hidden reveal-delay-200">
           
           {/* Coluna 1: Esquerda */}
           <div 
@@ -612,7 +636,7 @@ function FuncaoSocial() {
 function ModeloHibrido() {
   return (
     <section className="px-4 md:px-8 py-16 md:py-24 border-t border-white/10 relative z-10 bg-[#0F172A]">
-      <div className="mx-auto max-w-4xl flex flex-col items-center text-center">
+      <div className="mx-auto max-w-4xl flex flex-col items-center text-center reveal-hidden reveal-delay-100">
         {/* Icon */}
         <div className="w-20 h-20 rounded-full border-2 border-gold/40 flex items-center justify-center mb-8 bg-white/5 shadow-[0_0_30px_rgba(197,160,89,0.15)]">
           <MessageCircle className="w-10 h-10 text-gold" />
@@ -717,7 +741,7 @@ function TeamSection() {
   return (
     <section id="equipe" className="py-12 md:py-20 overflow-hidden">
       {/* Header */}
-      <div className="mx-auto max-w-7xl px-4 md:px-8 mb-10 text-center">
+      <div className="mx-auto max-w-7xl px-4 md:px-8 mb-10 text-center reveal-hidden reveal-delay-100">
         <Eyebrow center>Nossa Equipe</Eyebrow>
         <h2 className="mt-6 font-serif text-4xl font-normal text-white md:text-5xl">
           Os profissionais por{" "}
@@ -730,7 +754,7 @@ function TeamSection() {
       </div>
 
       {/* Gradient fade edges */}
-      <div className="relative">
+      <div className="relative reveal-hidden reveal-delay-200">
         <div className="team-fade-left" aria-hidden />
         <div className="team-fade-right" aria-hidden />
 
