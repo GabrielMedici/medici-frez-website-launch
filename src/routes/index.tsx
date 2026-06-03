@@ -639,7 +639,7 @@ function ModeloHibrido() {
           <MessageCircle className="w-10 h-10 text-gold" />
         </div>
         <h3 className="font-serif text-3xl font-normal uppercase tracking-widest text-white md:text-5xl leading-tight">
-          Atendimento 100% digital<br />ou presencial,<br />conforme sua necessidade
+          Atendimento digital e/ou presencial,<br />conforme sua necessidade
         </h3>
         <p className="mx-auto mt-8 max-w-2xl text-lg font-light leading-relaxed text-white/70">
           Nossa infraestrutura foi desenhada para romper barreiras geográficas sem perder a pessoalidade. Garantimos que a comunicação flua com agilidade, permitindo o direcionamento imediato para um advogado especialista capaz de compreender a sua demanda.
