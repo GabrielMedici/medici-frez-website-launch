@@ -465,6 +465,7 @@ function DocumentosModulo() {
 
 function AtendimentosModulo() {
   const [pendentes, setPendentes] = useState<any[]>([]);
+  const [renderError, setRenderError] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -472,7 +473,6 @@ function AtendimentosModulo() {
       if (data) {
         const parsed = JSON.parse(data);
         if (Array.isArray(parsed)) {
-          // Clona o array antes de dar reverse para evitar mutações indesejadas
           setPendentes([...parsed].reverse());
         }
       }
@@ -481,64 +481,88 @@ function AtendimentosModulo() {
     }
   }, []);
 
+  if (renderError) {
+    return (
+      <div className="p-6 bg-red-50 border border-red-200 text-red-800 rounded-xl">
+        <h3 className="font-bold mb-2">Erro interno de renderização</h3>
+        <p className="text-sm font-mono">{renderError}</p>
+        <button 
+          onClick={() => {
+            sessionStorage.removeItem("@medici:pendentes");
+            window.location.reload();
+          }}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md text-sm hover:bg-red-700"
+        >
+          Limpar Dados e Recarregar
+        </button>
+      </div>
+    );
+  }
+
+  let content;
+  try {
+    content = (!pendentes || pendentes.length === 0) ? (
+      <div className="flex flex-col items-center justify-center bg-white rounded-xl border border-border p-12 text-center shadow-sm">
+        <div className="w-16 h-16 bg-[#F4F6F9] rounded-full flex items-center justify-center mb-4">
+          <MessageSquare className="w-8 h-8 text-navy/30" />
+        </div>
+        <p className="text-navy font-semibold">Nenhum atendimento pendente</p>
+        <p className="text-sm text-navy/50 mt-1">Os novos contatos via OrbitChat aparecerão aqui de forma automática.</p>
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {pendentes.map((lead, i) => {
+          const nomeStr = String(lead?.nome || "Cliente");
+          const telStr = String(lead?.telefone || "");
+          const dataStr = typeof lead?.data === "string" ? lead.data : String(lead?.data || "");
+          const setorStr = String(lead?.setor || "Atendimento");
+          const initLetter = nomeStr.charAt(0).toUpperCase();
+
+          return (
+            <div key={lead?.id || i} className="bg-white p-6 rounded-xl border border-border shadow-sm flex flex-col hover:border-[#C5A059]/50 hover:shadow-md transition-all group">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200">
+                      Novo Lead
+                    </span>
+                    <span className="text-xs text-navy/40 font-medium">{dataStr}</span>
+                  </div>
+                  <h4 className="font-serif text-xl text-navy">{nomeStr}</h4>
+                  <p className="text-xs font-medium uppercase tracking-widest text-gold mt-1">{setorStr}</p>
+                </div>
+                <div className="w-12 h-12 rounded-full bg-[#0F172A] flex items-center justify-center shrink-0 shadow-sm border border-[#C5A059]/30">
+                  <span className="text-white font-serif text-lg font-bold">{initLetter}</span>
+                </div>
+              </div>
+              
+              <div className="mt-auto pt-5 border-t border-border/50">
+                <a 
+                  href={`https://wa.me/55${telStr.replace(/\D/g, '')}?text=Olá ${encodeURIComponent(nomeStr)}, somos da Médici & Frez Sociedade de Advogados. Recebemos sua solicitação pelo nosso site.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#25D366]/10 text-[#075E54] group-hover:bg-[#25D366] group-hover:text-white transition-all cursor-pointer border border-[#25D366]/20"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Iniciar no WhatsApp
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  } catch (err: any) {
+    if (!renderError) {
+      setTimeout(() => setRenderError(err.message || String(err)), 0);
+    }
+    content = null;
+  }
+
   return (
     <div className="animate-fade-in">
       <h3 className="text-2xl font-serif text-navy mb-6">Atendimentos Pendentes</h3>
-      
-      {(!pendentes || pendentes.length === 0) ? (
-        <div className="flex flex-col items-center justify-center bg-white rounded-xl border border-border p-12 text-center shadow-sm">
-          <div className="w-16 h-16 bg-[#F4F6F9] rounded-full flex items-center justify-center mb-4">
-            <MessageSquare className="w-8 h-8 text-navy/30" />
-          </div>
-          <p className="text-navy font-semibold">Nenhum atendimento pendente</p>
-          <p className="text-sm text-navy/50 mt-1">Os novos contatos via OrbitChat aparecerão aqui de forma automática.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {pendentes.map((lead, i) => {
-            // Conversão EXPLICITA para string para evitar crashes se houver números ou objetos salvos
-            const nomeStr = String(lead?.nome || "Cliente");
-            const telStr = String(lead?.telefone || "");
-            const dataStr = typeof lead?.data === "string" ? lead.data : String(lead?.data || "");
-            const setorStr = String(lead?.setor || "Atendimento");
-            
-            // Agora é 100% seguro chamar charAt
-            const initLetter = nomeStr.charAt(0).toUpperCase();
-
-            return (
-              <div key={lead?.id || i} className="bg-white p-6 rounded-xl border border-border shadow-sm flex flex-col hover:border-[#C5A059]/50 hover:shadow-md transition-all group">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200">
-                        Novo Lead
-                      </span>
-                      <span className="text-xs text-navy/40 font-medium">{dataStr}</span>
-                    </div>
-                    <h4 className="font-serif text-xl text-navy">{nomeStr}</h4>
-                    <p className="text-xs font-medium uppercase tracking-widest text-gold mt-1">{setorStr}</p>
-                  </div>
-                  <div className="w-12 h-12 rounded-full bg-[#0F172A] flex items-center justify-center shrink-0 shadow-sm border border-[#C5A059]/30">
-                    <span className="text-white font-serif text-lg font-bold">{initLetter}</span>
-                  </div>
-                </div>
-                
-                <div className="mt-auto pt-5 border-t border-border/50">
-                  <a 
-                    href={`https://wa.me/55${telStr.replace(/\D/g, '')}?text=Olá ${encodeURIComponent(nomeStr)}, somos da Médici & Frez Sociedade de Advogados. Recebemos sua solicitação pelo nosso site.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#25D366]/10 text-[#075E54] group-hover:bg-[#25D366] group-hover:text-white transition-all cursor-pointer border border-[#25D366]/20"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    Iniciar no WhatsApp
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      {content}
     </div>
   );
 }
