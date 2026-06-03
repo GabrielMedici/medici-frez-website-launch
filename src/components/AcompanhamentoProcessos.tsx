@@ -13,7 +13,7 @@ import {
 import imgAstrea from "@/assets/astrea.png";
 import imgAstreaIco from "@/assets/astreaico.png";
 
-type TabId = "resumo" | "processos" | "agenda" | "financeiro" | "documentos" | "atendimentos";
+type TabId = "resumo" | "processos" | "agenda" | "financeiro" | "documentos";
 
 // --- MOCK DATA ---
 
@@ -78,10 +78,16 @@ export function AcompanhamentoProcessos() {
   const [isLogged, setIsLogged] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("resumo");
 
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (cpf.trim().length === 0) return; // Aceita qualquer coisa desde que preenchido
-    setIsLogged(true);
+    setIsAuthenticating(true);
+    setTimeout(() => {
+      setIsAuthenticating(false);
+      setIsLogged(true);
+    }, 1200); // Simulando carregamento de 1.2s para maior fluidez
   };
 
   const TABS = [
@@ -90,7 +96,6 @@ export function AcompanhamentoProcessos() {
     { id: "agenda", label: "Agenda Jurídica", icon: CalendarDays },
     { id: "financeiro", label: "Gestão Financeira", icon: Wallet },
     { id: "documentos", label: "Documentos", icon: FileText },
-    { id: "atendimentos", label: "Atendimentos Pendentes", icon: MessageSquare },
   ];
 
   return (
@@ -143,16 +148,24 @@ export function AcompanhamentoProcessos() {
                 />
                 <button
                   type="submit"
-                  className="w-full inline-flex min-h-[48px] items-center justify-center rounded-lg px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white transition-all hover:-translate-y-0.5 hover:shadow-lg cursor-pointer bg-[#0F172A] mt-2"
+                  disabled={isAuthenticating}
+                  className="w-full inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg px-6 py-3 text-xs font-semibold uppercase tracking-widest text-white transition-all hover:-translate-y-0.5 hover:shadow-lg cursor-pointer bg-[#0F172A] mt-2 disabled:opacity-70 disabled:cursor-wait disabled:hover:translate-y-0"
                 >
-                  Entrar Seguramente
+                  {isAuthenticating ? (
+                    <>
+                      <Circle className="w-4 h-4 animate-spin text-[#C5A059]" />
+                      <span>Autenticando...</span>
+                    </>
+                  ) : (
+                    "Entrar Seguramente"
+                  )}
                 </button>
              </form>
             </div>
           </div>
         ) : (
           // --- ASTREA DASHBOARD ---
-          <div className="flex flex-col md:flex-row bg-[#F4F6F9] rounded-2xl overflow-hidden border border-border shadow-xl min-h-[600px]">
+          <div className="flex flex-col md:flex-row bg-[#F4F6F9] rounded-2xl overflow-hidden border border-border shadow-xl min-h-[600px] animate-fade-in">
             
             {/* Sidebar */}
             <aside className="w-full md:w-64 bg-[#0F172A] flex flex-col">
