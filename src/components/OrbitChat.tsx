@@ -16,7 +16,7 @@ type Node = { question: string; options: Option[] };
 const TREE: Record<string, Node> = {
   root: {
     question:
-      "Olá! Sou o assistente de triagem da Médici & Frez. Qual é o tema principal da sua busca?",
+      "Olá! Bem-vindo ao atendimento da Médici & Frez. Para garantirmos a máxima eficiência e direcionar seu caso ao especialista mais qualificado da nossa equipe, por favor, selecione a área da sua demanda:",
     options: [
       { label: "Família", next: "familia" },
       { label: "Patrimônio", next: "patrimonio" },
