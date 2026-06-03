@@ -271,7 +271,7 @@ function Hero() {
               href="#quem-somos"
               className="text-xs font-medium uppercase tracking-[0.22em] text-white/70 underline-offset-[6px] decoration-gold/60 hover:text-gold hover:underline"
             >
-              Conheça o escritório
+              Nossa principal meta
             </a>
           </div>
         </div>
