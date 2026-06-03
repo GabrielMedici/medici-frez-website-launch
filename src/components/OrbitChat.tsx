@@ -422,7 +422,7 @@ export function OrbitChat() {
               </div>
             ))}
 
-            {(!awaitingPhoneKey && !awaitingObservationKey) && currentNode && (
+            {(!awaitingPhoneKey && !awaitingObservationKey && !awaitingNameKey) && currentNode && (
               <div className="mt-2 flex flex-col gap-2">
                 {currentNode.options.map((opt) => (
                   <button
