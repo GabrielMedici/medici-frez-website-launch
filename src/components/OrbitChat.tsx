@@ -96,8 +96,7 @@ const initialMessage = (): Message => ({
 });
 
 const dispararEmailNotificacao = createServerFn({ method: "POST" })
-  .validator((data: { pergunta: string; resposta: string }[]) => data)
-  .handler(async ({ data: historicoChat }) => {
+  .handler(async ({ data: historicoChat }: { data: { pergunta: string; resposta: string }[] }) => {
   const endpoint = "https://api.resend.com/emails";
   
   // Construção dinâmica das linhas da tabela com perguntas e respostas
