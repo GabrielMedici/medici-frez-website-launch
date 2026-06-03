@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   LayoutDashboard, Scale, CalendarDays, Wallet, FileText, 
   Search, Check, Clock, Download, Circle, LogOut, File, ChevronDown, CheckCircle2, MessageSquare
@@ -465,6 +465,43 @@ function DocumentosModulo() {
       </div>
     </div>
   );
+}
+
+class AtendimentosErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean, error: Error | null}> {
+  constructor(props: {children: React.ReactNode}) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error("Erro capturado no Atendimentos:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-6 bg-red-50 border border-red-200 text-red-800 rounded-xl">
+          <h3 className="font-bold mb-2">Erro crítico no Atendimentos</h3>
+          <p className="text-sm font-mono whitespace-pre-wrap">{this.state.error?.toString()}</p>
+          <button 
+            onClick={() => {
+              sessionStorage.removeItem("@medici:pendentes");
+              window.location.reload();
+            }}
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md text-sm hover:bg-red-700 cursor-pointer"
+          >
+            Limpar Dados e Recarregar
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 function AtendimentosModulo() {
   const [pendentes, setPendentes] = useState<any[]>([]);
