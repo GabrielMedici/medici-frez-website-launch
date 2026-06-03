@@ -116,7 +116,7 @@ const dispararEmailNotificacao = createServerFn({ method: "POST" })
   const corpoHtml = `
     <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); background-color: #ffffff;">
       <div style="background-color: #0b132b; padding: 25px; text-align: center; border-bottom: 3px solid #d4af37;">
-        <h2 style="color: #ffffff; margin: 0; font-size: 20px; letter-spacing: 1px; font-family: Georgia, serif;">NOVO LEAD QUALIFICADO</h2>
+        <h2 style="color: #ffffff; margin: 0; font-size: 20px; letter-spacing: 1px; font-family: Georgia, serif;">POTENCIAL CLIENTE</h2>
         <p style="color: #cbd5e1; margin: 5px 0 0 0; font-size: 13px;">Dados coletados via assistente Orbit Chat</p>
       </div>
       <div style="padding: 30px;">
