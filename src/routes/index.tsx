@@ -445,60 +445,171 @@ function AreasAtuacao() {
 }
 
 function FuncaoSocial() {
+  const [activeCol, setActiveCol] = useState<'left' | 'right' | null>(null);
+
   return (
-    <section className="px-4 md:px-8 py-16 md:py-24 border-t border-white/10 relative z-10 bg-[#0F172A]">
-      <div className="mx-auto max-w-4xl flex flex-col items-center text-center">
-        {/* Icon */}
-        <div className="w-20 h-20 rounded-full border-2 border-gold/40 flex items-center justify-center mb-8 bg-white/5 shadow-[0_0_30px_rgba(197,160,89,0.15)]">
-          <HeartHandshake className="w-10 h-10 text-gold" />
-        </div>
-        <h3 className="font-serif text-3xl font-normal uppercase tracking-widest text-white md:text-5xl leading-tight">
-          Função Social<br />Da Advocacia
-        </h3>
+    <section className="px-4 md:px-8 py-20 md:py-32 border-t border-white/10 relative z-10 bg-[#0F172A] overflow-hidden">
+      
+      {/* Background interaction (abstract glow based on active column) */}
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] md:w-[800px] h-[600px] md:h-[800px] rounded-full blur-[120px] md:blur-[150px] transition-all duration-1000 opacity-30 pointer-events-none"
+        style={{
+          background: activeCol === 'left' ? 'radial-gradient(circle, rgba(197,160,89,0.3) 0%, transparent 70%)' :
+                      activeCol === 'right' ? 'radial-gradient(circle, rgba(0,104,157,0.3) 0%, transparent 70%)' :
+                      'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)',
+          transform: activeCol === 'left' ? 'translate(-80%, -50%)' : activeCol === 'right' ? 'translate(-20%, -50%)' : 'translate(-50%, -50%)'
+        }}
+      />
+
+      <div className="mx-auto max-w-6xl flex flex-col items-center relative z-10">
         
-        {/* Badges / Logos */}
-        <div className="flex flex-wrap justify-center gap-10 md:gap-16 items-center mt-16 w-full max-w-2xl">
-          {/* ODS 16 */}
-          <div className="bg-[#00689D] text-white p-5 flex flex-col items-start w-40 h-40 justify-center shadow-2xl hover:scale-105 transition-transform rounded-sm">
-            <div className="flex gap-2 items-start">
-              <span className="font-bold text-5xl leading-none tracking-tighter">16</span>
-              <span className="text-[10px] font-bold uppercase leading-tight mt-1">Paz, Justiça e<br/>Inst. Fortes</span>
+        {/* Header Fixo */}
+        <div className="flex flex-col items-center text-center mb-16 relative z-20">
+          <div className="relative group cursor-default">
+            {/* Pulsing aura */}
+            <div className="absolute inset-0 rounded-full bg-gold/20 blur-xl animate-pulse scale-150" />
+            <div className="relative w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-gold/40 flex items-center justify-center bg-[#0F172A] shadow-[0_0_40px_rgba(197,160,89,0.3)] z-10">
+              <HeartHandshake className="w-10 h-10 md:w-12 md:h-12 text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]" />
             </div>
-            <Bird className="w-12 h-12 mt-4 ml-2 fill-white" />
+            {/* Connecting lines growing downwards */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-gold/60 to-transparent opacity-50" />
           </div>
-          {/* Mão Amiga */}
-          <div className="flex flex-col items-center justify-center gap-3">
-            <div className="relative">
-              <HeartHandshake className="w-24 h-24 text-gold drop-shadow-[0_0_15px_rgba(197,160,89,0.4)]" />
-            </div>
-            <span className="font-bold text-white uppercase text-base tracking-widest">Mão Amiga</span>
-          </div>
+          <h3 className="mt-10 font-serif text-3xl font-normal uppercase tracking-widest text-white md:text-5xl leading-tight">
+            Função Social<br />Da Advocacia
+          </h3>
         </div>
 
-        {/* List */}
-        <div className="mt-20 w-full max-w-2xl flex flex-col gap-6 text-left">
-          <div className="group flex items-start gap-6 bg-white/5 border border-white/10 p-8 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/30">
-            <div className="p-3 bg-white/5 rounded-lg shrink-0 group-hover:bg-gold/10 transition-colors">
-              <UserIcon className="w-8 h-8 text-gold" />
+        {/* Dynamic Panel */}
+        <div className="w-full flex flex-col lg:flex-row gap-6 relative">
+          
+          {/* Coluna 1: Esquerda */}
+          <div 
+            className={`group relative flex flex-col bg-[#162032]/80 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${activeCol === 'left' ? 'lg:flex-[1.4] shadow-[0_0_50px_rgba(197,160,89,0.15)] border-gold/40' : activeCol === 'right' ? 'lg:flex-[0.6] opacity-60' : 'lg:flex-1'}`}
+            onMouseEnter={() => setActiveCol('left')}
+            onMouseLeave={() => setActiveCol(null)}
+          >
+            {/* ODS 16 Integration at top of card */}
+            <div className="absolute top-6 right-6 flex flex-col items-end opacity-40 group-hover:opacity-100 transition-opacity duration-500 z-0">
+               <div className={`w-12 h-12 bg-[#00689D] flex items-center justify-center rounded-sm transition-all duration-500 ${activeCol === 'left' ? 'shadow-[0_0_20px_rgba(0,104,157,0.6)] scale-110' : ''}`}>
+                 <span className="font-bold text-white text-xl">16</span>
+               </div>
+               {activeCol === 'left' && <span className="text-[8px] text-white/70 uppercase mt-2 text-right tracking-widest font-bold">Paz e Justiça</span>}
             </div>
-            <div>
-              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Compromisso Institucional</h4>
-              <p className="text-base font-light text-white/70 leading-relaxed">
-                Acreditamos na função social do Direito como instrumento de pacificação. Nossa conduta é pautada pelo respeito aos direitos fundamentais e pela promoção da dignidade da pessoa humana nas relações sociais.
-              </p>
+
+            <div className="p-8 md:p-12 flex flex-col h-full z-10">
+              <div className="flex items-center gap-4 mb-6">
+                <div className={`p-4 rounded-xl transition-all duration-500 ${activeCol === 'left' ? 'bg-gold/20 shadow-[0_0_20px_rgba(197,160,89,0.4)]' : 'bg-white/5'}`}>
+                  <UserIcon className={`w-6 h-6 md:w-8 md:h-8 transition-colors duration-500 ${activeCol === 'left' ? 'text-gold' : 'text-white/50'}`} />
+                </div>
+                <h4 className="font-serif text-xl md:text-2xl text-white tracking-wide">Compromisso Institucional</h4>
+              </div>
+
+              {/* Text states */}
+              <div className="relative flex-1">
+                <div className={`transition-all duration-500 ${activeCol === 'left' ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 h-auto'}`}>
+                   <p className="text-base md:text-lg font-light text-white/80 leading-relaxed">
+                     Pacificação e Respeito aos Direitos Fundamentais
+                   </p>
+                </div>
+                
+                <div className={`transition-all duration-700 delay-100 ${activeCol === 'left' ? 'opacity-100 translate-y-0 h-auto' : 'opacity-0 translate-y-4 h-0 overflow-hidden'}`}>
+                  <p className="text-sm md:text-base font-light text-white/70 leading-relaxed mb-8">
+                    Acreditamos na função social do Direito como instrumento de pacificação. Nossa conduta é pautada pelo respeito aos direitos fundamentais e pela promoção da dignidade da pessoa humana nas relações sociais.
+                  </p>
+                  
+                  {/* Mini-infográfico dinâmico (abstrato e sóbrio) */}
+                  <div className="grid grid-cols-3 gap-2 md:gap-4 mb-8">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-gold/30 flex items-center justify-center relative">
+                        <div className="absolute inset-0 border-2 border-gold rounded-full border-t-transparent animate-spin" style={{animationDuration: '3s'}} />
+                        <span className="text-gold font-bold text-base md:text-lg">∞</span>
+                      </div>
+                      <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/50 text-center">Continuidade<br/>Ética</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-blue-500/30 flex items-center justify-center relative">
+                        <div className="absolute inset-2 bg-blue-500/20 rounded-full animate-pulse" />
+                        <Bird className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
+                      </div>
+                      <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/50 text-center">Promoção da<br/>Paz Social</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 flex items-center justify-center">
+                        <div className="flex gap-1 md:gap-1.5 items-end h-6">
+                          <div className="w-1 bg-gold rounded-t-sm animate-pulse" style={{height: '40%', animationDelay: '0ms'}}/>
+                          <div className="w-1 bg-gold rounded-t-sm animate-pulse" style={{height: '70%', animationDelay: '200ms'}}/>
+                          <div className="w-1 bg-gold rounded-t-sm animate-pulse" style={{height: '100%', animationDelay: '400ms'}}/>
+                        </div>
+                      </div>
+                      <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/50 text-center">Impacto<br/>Relevante</span>
+                    </div>
+                  </div>
+
+                  <a href="#contato" className="inline-flex items-center gap-2 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gold hover:text-white transition-colors">
+                    Saber mais sobre o compromisso <span className="text-sm">→</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="group flex items-start gap-6 bg-white/5 border border-white/10 p-8 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/30">
-            <div className="p-3 bg-white/5 rounded-lg shrink-0 group-hover:bg-gold/10 transition-colors">
-              <GraduationCap className="w-8 h-8 text-gold" />
+
+          {/* Coluna 2: Direita */}
+          <div 
+            className={`group relative flex flex-col bg-[#162032]/80 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${activeCol === 'right' ? 'lg:flex-[1.4] shadow-[0_0_50px_rgba(197,160,89,0.15)] border-gold/40' : activeCol === 'left' ? 'lg:flex-[0.6] opacity-60' : 'lg:flex-1'}`}
+            onMouseEnter={() => setActiveCol('right')}
+            onMouseLeave={() => setActiveCol(null)}
+          >
+            {/* Mão Amiga Integration at top of card */}
+            <div className="absolute top-6 right-6 flex flex-col items-end opacity-30 group-hover:opacity-100 transition-opacity duration-500 z-0">
+               <div className={`w-12 h-12 flex items-center justify-center rounded-sm transition-all duration-500 ${activeCol === 'right' ? 'shadow-[0_0_30px_rgba(197,160,89,0.2)] scale-110' : ''}`}>
+                 <HeartHandshake className="w-8 h-8 md:w-10 md:h-10 text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.5)]" />
+               </div>
+               {activeCol === 'right' && <span className="text-[8px] text-white/70 uppercase mt-2 text-right tracking-widest font-bold">Apoio Mútuo</span>}
             </div>
-            <div>
-              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Difusão Jurídica</h4>
-              <p className="text-base font-light text-white/70 leading-relaxed">
-                Fomentamos a disseminação de informações por meio de estudos e conteúdo acadêmico, contribuindo estritamente para o aprimoramento da classe e para o conhecimento jurídico da sociedade.
-              </p>
+
+            <div className="p-8 md:p-12 flex flex-col h-full z-10">
+              <div className="flex items-center gap-4 mb-6">
+                <div className={`p-4 rounded-xl transition-all duration-500 ${activeCol === 'right' ? 'bg-gold/20 shadow-[0_0_20px_rgba(197,160,89,0.4)]' : 'bg-white/5'}`}>
+                  <GraduationCap className={`w-6 h-6 md:w-8 md:h-8 transition-colors duration-500 ${activeCol === 'right' ? 'text-gold' : 'text-white/50'}`} />
+                </div>
+                <h4 className="font-serif text-xl md:text-2xl text-white tracking-wide">Difusão Jurídica</h4>
+              </div>
+
+              {/* Text states */}
+              <div className="relative flex-1">
+                <div className={`transition-all duration-500 ${activeCol === 'right' ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 h-auto'}`}>
+                   <p className="text-base md:text-lg font-light text-white/80 leading-relaxed">
+                     Disseminação de Conteúdo Acadêmico para a Sociedade
+                   </p>
+                </div>
+                
+                <div className={`transition-all duration-700 delay-100 ${activeCol === 'right' ? 'opacity-100 translate-y-0 h-auto' : 'opacity-0 translate-y-4 h-0 overflow-hidden'}`}>
+                  <p className="text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gold mb-2">Nosso Propósito</p>
+                  <p className="text-sm md:text-base font-light text-white/70 leading-relaxed mb-8">
+                    Fomentamos a disseminação de informações por meio de estudos e conteúdo acadêmico, contribuindo estritamente para o aprimoramento da classe e para o conhecimento jurídico da sociedade.
+                  </p>
+                  
+                  {/* Feed visual de tópicos */}
+                  <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+                     {[
+                       { title: "Direito Digital", subtitle: "Evolução e Prática" },
+                       { title: "LGPD no Judiciário", subtitle: "Análise de Casos" },
+                       { title: "Holding Familiar", subtitle: "Planejamento Sucessório" }
+                     ].map((article, i) => (
+                       <div key={i} className="min-w-[160px] md:min-w-[180px] bg-[#0F172A] border border-white/5 p-4 md:p-5 rounded-xl hover:border-gold/30 transition-colors cursor-pointer group/article snap-start flex flex-col">
+                         <h5 className="font-bold text-white text-xs md:text-sm mb-1">{article.title}</h5>
+                         <p className="text-[9px] md:text-[10px] text-white/50 uppercase tracking-wider mb-4 flex-1">{article.subtitle}</p>
+                         <button className="text-[9px] md:text-[10px] font-semibold text-gold uppercase tracking-widest group-hover/article:text-white transition-colors flex items-center gap-1 mt-auto">
+                           Ler Artigo <span className="opacity-0 group-hover/article:opacity-100 group-hover/article:translate-x-1 transition-all">→</span>
+                         </button>
+                       </div>
+                     ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
