@@ -41,7 +41,6 @@ export const Route = createFileRoute("/")({
 const navLinks = [
   { label: "Home", href: "#home" },
   { label: "Áreas de Atuação", href: "#areas" },
-  { label: "Área do Cliente", href: "#cliente" },
   { label: "Equipe", href: "#equipe" },
 ];
 
@@ -113,6 +112,14 @@ function MouseGlow() {
 }
 
 function Home() {
+  const [showPartnerLogin, setShowPartnerLogin] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setShowPartnerLogin(true);
+    window.addEventListener("partner:open", handler);
+    return () => window.removeEventListener("partner:open", handler);
+  }, []);
+
   return (
     <div className="min-h-screen text-white relative bg-[#0F172A]">
       <CustomCursor />
@@ -125,11 +132,29 @@ function Home() {
         <AreasAtuacao />
         <FuncaoSocial />
         <ModeloHibrido />
-        <AcompanhamentoProcessos />
         <TeamSection />
       </main>
       <Footer />
       <OrbitChat />
+
+      {showPartnerLogin && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto animate-fade-in">
+          <div className="relative w-full max-w-6xl bg-[#0F172A] rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+            <div className="absolute top-4 right-4 z-50">
+              <button 
+                onClick={() => setShowPartnerLogin(false)}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 text-white/50 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                aria-label="Fechar"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="max-h-[85vh] overflow-y-auto w-full">
+              <AcompanhamentoProcessos />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -457,9 +482,9 @@ function FuncaoSocial() {
               <UserIcon className="w-8 h-8 text-gold" />
             </div>
             <div>
-              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Ações mulheres</h4>
+              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Compromisso Institucional</h4>
               <p className="text-base font-light text-white/70 leading-relaxed">
-                Apoio a mulheres em situações vulneráveis, atendimento prioritário a crianças e proteção aos direitos de pessoas idosas.
+                Acreditamos na função social do Direito como instrumento de pacificação. Nossa conduta é pautada pelo respeito aos direitos fundamentais e pela promoção da dignidade da pessoa humana nas relações sociais.
               </p>
             </div>
           </div>
@@ -468,9 +493,9 @@ function FuncaoSocial() {
               <GraduationCap className="w-8 h-8 text-gold" />
             </div>
             <div>
-              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Ações educacionais</h4>
+              <h4 className="font-bold text-xl text-white mb-2 tracking-wide uppercase">Difusão Jurídica</h4>
               <p className="text-base font-light text-white/70 leading-relaxed">
-                Capacitação para profissionais da área, palestras educativas e iniciativas voltadas à conscientização de pessoas idosas.
+                Fomentamos a disseminação de informações por meio de estudos e conteúdo acadêmico, contribuindo estritamente para o aprimoramento da classe e para o conhecimento jurídico da sociedade.
               </p>
             </div>
           </div>
@@ -489,59 +514,40 @@ function ModeloHibrido() {
           <MessageCircle className="w-10 h-10 text-gold" />
         </div>
         <h3 className="font-serif text-3xl font-normal uppercase tracking-widest text-white md:text-5xl leading-tight">
-          Modelo Híbrido e<br />Acessibilidade
+          Atendimento 100% digital<br />ou presencial,<br />conforme sua necessidade
         </h3>
+        <p className="mx-auto mt-8 max-w-2xl text-lg font-light leading-relaxed text-white/70">
+          Nossa infraestrutura foi desenhada para romper barreiras geográficas sem perder a pessoalidade. Garantimos que a comunicação flua com agilidade, permitindo o direcionamento imediato para um advogado especialista capaz de compreender a sua demanda.
+        </p>
         
-        {/* Diagram */}
-        <div className="mt-16 flex flex-col md:flex-row items-center gap-12 md:gap-24 w-full max-w-4xl justify-center bg-white/5 p-10 md:p-16 rounded-2xl border border-white/10 backdrop-blur-sm relative">
-           {/* Office icon representation */}
-           <div className="flex flex-col items-center gap-4">
-             <div className="w-40 h-40 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center shadow-xl">
-               <Building2 className="w-20 h-20 text-gold opacity-90" />
+        {/* Cards */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+           {/* Card Digital */}
+           <div className="flex flex-col items-center bg-white/5 p-10 rounded-2xl border border-white/10 backdrop-blur-sm transition-all hover:-translate-y-2 hover:border-gold/30 hover:bg-white/10">
+             <div className="w-20 h-20 mb-6 bg-gold/10 rounded-full flex items-center justify-center shadow-inner">
+               <MessageSquare className="w-8 h-8 text-gold" />
              </div>
-             <span className="text-xs font-medium uppercase tracking-widest text-white/50">Escritório Físico</span>
+             <h4 className="font-bold text-xl text-white mb-3 tracking-wide uppercase">Conexão Digital</h4>
+             <p className="text-sm font-light text-white/60 leading-relaxed text-center mb-8">
+               Triagem automatizada que identifica com precisão a área de atuação necessária, assegurando que o seu primeiro contato seja feito diretamente pelo especialista responsável.
+             </p>
+             <button onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))} className="mt-auto px-6 py-3 border border-gold/50 rounded-full text-xs font-semibold uppercase tracking-widest text-gold hover:bg-gold hover:text-navy transition-colors cursor-pointer w-full max-w-[240px]">
+               Fale Conosco
+             </button>
            </div>
-           
-           {/* Connecting Lines (Desktop only) */}
-           <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[2px] bg-gradient-to-r from-gold/0 via-gold/50 to-gold/0" />
-           
-           {/* Digital tools */}
-           <div className="flex flex-col gap-6 z-10 w-full md:w-auto">
-             <div className="group flex items-center gap-5 bg-[#1E293B] p-5 rounded-xl border border-white/10 shadow-2xl cursor-pointer transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(197,160,89,0.15)]" onClick={() => window.dispatchEvent(new CustomEvent("orbit:open"))}>
-               <div className="bg-[#2563EB] p-3 rounded-xl shadow-inner"><MessageCircle className="w-6 h-6 text-white" /></div>
-               <span className="font-bold text-white text-lg tracking-wide">OrbitChat</span>
-               <span className="ml-auto text-gold opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-             </div>
-             <div className="group flex items-center gap-5 bg-[#1E293B] p-5 rounded-xl border border-white/10 shadow-2xl transition-all hover:-translate-y-1 hover:border-gold/30 hover:shadow-[0_10px_40px_rgba(197,160,89,0.15)] cursor-pointer" onClick={() => {
-               document.getElementById("cliente")?.scrollIntoView({ behavior: "smooth" });
-             }}>
-               <div className="bg-[#0284C7] p-3 rounded-xl shadow-inner"><LayoutDashboard className="w-6 h-6 text-white" /></div>
-               <span className="font-bold text-white text-lg tracking-wide">Astrea</span>
-               <span className="ml-auto text-gold opacity-0 group-hover:opacity-100 transition-opacity">↓</span>
-             </div>
-           </div>
-        </div>
 
-        {/* Timeline */}
-        <div className="mt-24 w-full max-w-3xl flex items-end justify-between border-b border-white/20 pb-6 relative px-4">
-           {/* Line accent */}
-           <div className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent w-full opacity-50" />
-           
-           <div className="flex flex-col items-center gap-3 w-1/3">
-             <Building className="w-10 h-10 text-white/30" />
-             <span className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest">Tradicional</span>
-           </div>
-           
-           <div className="flex flex-col items-center gap-3 w-1/3 -translate-y-4">
-             <div className="p-4 rounded-full bg-gold/10 border border-gold/30 shadow-[0_0_20px_rgba(197,160,89,0.2)]">
-               <MessageSquare className="w-12 h-12 text-gold" />
+           {/* Card Presencial */}
+           <div className="flex flex-col items-center bg-white/5 p-10 rounded-2xl border border-white/10 backdrop-blur-sm transition-all hover:-translate-y-2 hover:border-gold/30 hover:bg-white/10">
+             <div className="w-20 h-20 mb-6 bg-gold/10 rounded-full flex items-center justify-center shadow-inner">
+               <Building2 className="w-8 h-8 text-gold" />
              </div>
-             <span className="text-xs md:text-sm font-bold text-gold uppercase tracking-widest">Híbrido</span>
-           </div>
-           
-           <div className="flex flex-col items-center gap-3 w-1/3">
-             <Lightbulb className="w-10 h-10 text-white/30" />
-             <span className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest">Moderno</span>
+             <h4 className="font-bold text-xl text-white mb-3 tracking-wide uppercase">Estrutura Física</h4>
+             <p className="text-sm font-light text-white/60 leading-relaxed text-center mb-8">
+               Sede moderna localizada no Centro Empresarial Phenom, projetada com discrição e sobriedade para garantir o absoluto sigilo e conforto em suas reuniões estratégicas.
+             </p>
+             <a href="https://www.google.com/maps/dir//Phenom+Parque+Empresarial,+Av.+Carneiro+Le%C3%A3o,+500+-+Zona+01,+Maring%C3%A1+-+PR,+87014-010/@-23.4030571,-51.9262769,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x94ecd7905bd78327:0xb6d1e8ca625a9909!2m2!1d-51.9477224!2d-23.4196462?hl=pt-BR&entry=ttu&g_ep=EgoyMDI2MDUzMS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="mt-auto flex items-center justify-center px-6 py-3 border border-white/20 rounded-full text-xs font-semibold uppercase tracking-widest text-white/70 hover:border-white hover:text-white transition-colors cursor-pointer w-full max-w-[240px]">
+               Ver Endereço
+             </a>
            </div>
         </div>
       </div>
@@ -698,12 +704,21 @@ function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs font-light text-white/40 md:flex-row">
+        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 text-xs font-light text-white/40 md:flex-row">
           <span>
             © {new Date().getFullYear()} Médici &amp; Frez Sociedade de
             Advogados. Todos os direitos reservados.
           </span>
-          <span className="uppercase tracking-[0.28em] text-white/40">OAB/PR</span>
+          <div className="flex items-center gap-6">
+            <span className="uppercase tracking-[0.28em] text-white/40">OAB/PR</span>
+            <button 
+              onClick={() => window.dispatchEvent(new CustomEvent("partner:open"))}
+              className="uppercase tracking-[0.2em] text-white/60 bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-full transition-all flex items-center gap-2 cursor-pointer font-medium shadow-sm hover:text-white"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              Login dos Sócios
+            </button>
+          </div>
         </div>
       </div>
     </footer>

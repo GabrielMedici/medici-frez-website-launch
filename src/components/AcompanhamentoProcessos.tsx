@@ -102,7 +102,7 @@ export function AcompanhamentoProcessos() {
             Área Restrita
           </span>
           <h2 className="mt-6 font-serif text-4xl font-normal text-white md:text-5xl">
-            Painel do <span className="italic">Cliente</span>
+            Acesso exclusivo dos <span className="italic">sócios</span>
           </h2>
           <div className="mx-auto mt-6 h-px w-16 bg-gold/70" />
           <p className="mx-auto mt-6 max-w-2xl text-base font-light leading-relaxed text-white/65">

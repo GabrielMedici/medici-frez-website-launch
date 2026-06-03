@@ -68,6 +68,8 @@ export function OrbitChat() {
   const [messages, setMessages] = useState<Message[]>([initialMessage()]);
   const [nodeKey, setNodeKey] = useState<string>("root");
   const [finished, setFinished] = useState(false);
+  const [awaitingPhoneKey, setAwaitingPhoneKey] = useState<string | null>(null);
+  const [phoneInput, setPhoneInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,9 +95,9 @@ export function OrbitChat() {
     pushUser(opt.label);
     if (opt.next.startsWith("end:")) {
       const key = opt.next.slice(4);
+      setAwaitingPhoneKey(key);
       setTimeout(() => {
-        pushBot(FINAL[key]);
-        setFinished(true);
+        pushBot("Para que o advogado especialista possa entrar em contato, por favor, informe seu número de WhatsApp com DDD:");
       }, 500);
     } else {
       const nextNode = TREE[opt.next];
@@ -104,10 +106,25 @@ export function OrbitChat() {
     }
   };
 
+  const handleSendPhone = () => {
+    if (!phoneInput.trim() || !awaitingPhoneKey) return;
+    pushUser(phoneInput);
+    const key = awaitingPhoneKey;
+    setPhoneInput("");
+    setAwaitingPhoneKey(null);
+    
+    setTimeout(() => {
+      pushBot(FINAL[key]);
+      setFinished(true);
+    }, 500);
+  };
+
   const reset = () => {
     setMessages([initialMessage()]);
     setNodeKey("root");
     setFinished(false);
+    setAwaitingPhoneKey(null);
+    setPhoneInput("");
   };
 
   const currentNode = !finished ? TREE[nodeKey] : null;
@@ -198,7 +215,7 @@ export function OrbitChat() {
               </div>
             ))}
 
-            {currentNode && (
+            {!awaitingPhoneKey && currentNode && (
               <div className="mt-2 flex flex-col gap-2">
                 {currentNode.options.map((opt) => (
                   <button
@@ -229,14 +246,18 @@ export function OrbitChat() {
           <div className="flex items-center gap-2 border-t border-border bg-card px-3 py-3">
             <input
               type="text"
-              disabled
-              placeholder="Selecione uma opção acima…"
-              className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-muted-foreground placeholder:text-muted-foreground/70 disabled:cursor-not-allowed"
+              disabled={!awaitingPhoneKey || finished}
+              placeholder={awaitingPhoneKey ? "Digite seu número com DDD..." : "Selecione uma opção acima…"}
+              value={phoneInput}
+              onChange={(e) => setPhoneInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleSendPhone(); }}
+              className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-navy placeholder:text-muted-foreground/70 disabled:cursor-not-allowed"
             />
             <button
-              disabled
+              disabled={!awaitingPhoneKey || finished || !phoneInput.trim()}
+              onClick={handleSendPhone}
               aria-label="Enviar"
-              className="flex h-9 w-9 items-center justify-center rounded-md text-gold-foreground disabled:opacity-60"
+              className="flex h-9 w-9 items-center justify-center rounded-md text-gold-foreground disabled:opacity-60 cursor-pointer"
               style={{ background: "var(--gradient-gold)" }}
             >
               <Send className="h-4 w-4" />
