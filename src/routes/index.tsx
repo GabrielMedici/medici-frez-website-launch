@@ -446,23 +446,9 @@ function AreasAtuacao() {
 
 function FuncaoSocial() {
   const [activeCol, setActiveCol] = useState<'left' | 'right' | null>(null);
-  const [toastMsg, setToastMsg] = useState<string | null>(null);
-
-  const showToast = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setToastMsg("O artigo completo será publicado em breve em nosso novo Portal de Conteúdo Jurídico.");
-    setTimeout(() => setToastMsg(null), 4000);
-  };
 
   return (
     <section className="px-4 md:px-8 py-20 md:py-32 border-t border-white/10 relative z-10 bg-[#0F172A] overflow-hidden">
-      {/* Toast Notification */}
-      {toastMsg && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-[#162032] border border-gold/40 shadow-[0_0_40px_rgba(197,160,89,0.2)] px-6 py-4 rounded-full flex items-center gap-3 animate-fade-in text-white w-max max-w-[90vw] text-center">
-          <span className="text-gold text-lg">✦</span>
-          <p className="text-xs md:text-sm font-light">{toastMsg}</p>
-        </div>
-      )}
       
       {/* Background interaction (abstract glow based on active column) */}
       <div 
@@ -558,10 +544,6 @@ function FuncaoSocial() {
                       <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-white/50 text-center">Impacto<br/>Relevante</span>
                     </div>
                   </div>
-
-                  <button onClick={showToast} className="inline-flex items-center gap-2 text-[10px] md:text-xs font-semibold uppercase tracking-widest text-gold hover:text-white transition-colors cursor-pointer">
-                    Saber mais sobre o compromisso <span className="text-sm">→</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -613,9 +595,6 @@ function FuncaoSocial() {
                        <div key={i} className="min-w-[160px] md:min-w-[180px] bg-[#0F172A] border border-white/5 p-4 md:p-5 rounded-xl hover:border-gold/30 transition-colors cursor-pointer group/article snap-start flex flex-col">
                          <h5 className="font-bold text-white text-xs md:text-sm mb-1">{article.title}</h5>
                          <p className="text-[9px] md:text-[10px] text-white/50 uppercase tracking-wider mb-4 flex-1">{article.subtitle}</p>
-                         <button onClick={showToast} className="text-[9px] md:text-[10px] font-semibold text-gold uppercase tracking-widest group-hover/article:text-white transition-colors flex items-center gap-1 mt-auto cursor-pointer">
-                           Ler Artigo <span className="opacity-0 group-hover/article:opacity-100 group-hover/article:translate-x-1 transition-all">→</span>
-                         </button>
                        </div>
                      ))}
                   </div>

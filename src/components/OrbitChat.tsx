@@ -96,7 +96,7 @@ const initialMessage = (): Message => ({
 });
 
 const dispararEmailNotificacao = createServerFn({ method: "POST" })
-  .handler(async ({ data }: { data: { historicoChat: { pergunta: string; resposta: string }[], nomesAdvogados: string } }) => {
+  .handler(async ({ data }: { data: { historicoChat: { pergunta: string; resposta: string }[], nomesAdvogados: string, leadName: string } }) => {
   const endpoint = "https://api.resend.com/emails";
   
   // Construção dinâmica das linhas da tabela com perguntas e respostas
@@ -120,6 +120,10 @@ const dispararEmailNotificacao = createServerFn({ method: "POST" })
         <p style="color: #cbd5e1; margin: 5px 0 0 0; font-size: 13px;">Dados coletados via assistente Orbit Chat</p>
       </div>
       <div style="padding: 30px;">
+        <div style="margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0;">
+           <p style="margin: 0; color: #4a5568; font-size: 14px; text-transform: uppercase; font-weight: bold;">Nome do Contato</p>
+           <p style="margin: 5px 0 0 0; color: #1a202c; font-size: 22px; font-weight: bold;">${data.leadName}</p>
+        </div>
         <p style="color: #2d3748; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">
           Um potencial cliente concluiu a triagem inicial no site. Abaixo estão listadas todas as informações e respostas fornecidas pelo usuário:
         </p>
@@ -170,6 +174,8 @@ export function OrbitChat() {
   const [messages, setMessages] = useState<Message[]>([initialMessage()]);
   const [nodeKey, setNodeKey] = useState<string>("root");
   const [finished, setFinished] = useState(false);
+  const [awaitingNameKey, setAwaitingNameKey] = useState<string | null>(null);
+  const [leadName, setLeadName] = useState("");
   const [awaitingObservationKey, setAwaitingObservationKey] = useState<string | null>(null);
   const [awaitingPhoneKey, setAwaitingPhoneKey] = useState<string | null>(null);
   const [phoneInput, setPhoneInput] = useState("");
@@ -196,6 +202,16 @@ export function OrbitChat() {
 
   const handleSelect = (opt: Option) => {
     pushUser(opt.label);
+    
+    // NEW: If we are at root, ask for name first
+    if (nodeKey === "root") {
+      setAwaitingNameKey(opt.next);
+      setTimeout(() => {
+        pushBot("Para começarmos, como você gostaria de ser chamado(a)?");
+      }, 500);
+      return;
+    }
+
     if (opt.next.startsWith("end:")) {
       const key = opt.next.slice(4);
       setAwaitingObservationKey(key);
@@ -211,6 +227,28 @@ export function OrbitChat() {
 
   const handleSendInput = () => {
     if (!phoneInput.trim()) return;
+
+    if (awaitingNameKey) {
+      pushUser(phoneInput);
+      const name = phoneInput;
+      setLeadName(name);
+      setPhoneInput("");
+      const nextKey = awaitingNameKey;
+      setAwaitingNameKey(null);
+      
+      if (nextKey.startsWith("end:")) {
+        const key = nextKey.slice(4);
+        setAwaitingObservationKey(key);
+        setTimeout(() => {
+          pushBot(`Muito prazer, ${name}! Existe algo que você gostaria de observar que considera importante para seu caso? Digite aqui pra mim que vou transmitir a informação:`);
+        }, 500);
+      } else {
+        const nextNode = TREE[nextKey];
+        setNodeKey(nextKey);
+        setTimeout(() => pushBot(`Muito prazer, ${name}! ${nextNode.question}`), 500);
+      }
+      return;
+    }
     
     if (awaitingObservationKey) {
       pushUser(phoneInput);
@@ -249,8 +287,21 @@ export function OrbitChat() {
           }
         }
         
+        // Construir e salvar o Lead no LocalStorage
+        const leadData = {
+           id: Date.now().toString(),
+           nome: leadName || "Cliente",
+           telefone: phoneInput,
+           setor: finalMsg.lawyers[0].role,
+           data: new Date().toLocaleDateString("pt-BR")
+        };
+        const pendingStr = localStorage.getItem("@medici:pendentes");
+        const pending = pendingStr ? JSON.parse(pendingStr) : [];
+        pending.push(leadData);
+        localStorage.setItem("@medici:pendentes", JSON.stringify(pending));
+
         const nomesAdvogados = finalMsg.lawyers.map(l => l.name).join(" e ");
-        dispararEmailNotificacao({ data: { historicoChat, nomesAdvogados } });
+        dispararEmailNotificacao({ data: { historicoChat, nomesAdvogados, leadName: leadData.nome } });
 
       }, 500);
       return;
@@ -263,6 +314,8 @@ export function OrbitChat() {
     setFinished(false);
     setAwaitingObservationKey(null);
     setAwaitingPhoneKey(null);
+    setAwaitingNameKey(null);
+    setLeadName("");
     setPhoneInput("");
   };
 
@@ -400,15 +453,15 @@ export function OrbitChat() {
           <div className="flex items-center gap-2 border-t border-border bg-card px-3 py-3">
             <input
               type="text"
-              disabled={(!awaitingPhoneKey && !awaitingObservationKey) || finished}
-              placeholder={awaitingPhoneKey ? "Digite seu número com DDD..." : awaitingObservationKey ? "Digite sua observação..." : "Selecione uma opção acima…"}
+              disabled={(!awaitingPhoneKey && !awaitingObservationKey && !awaitingNameKey) || finished}
+              placeholder={awaitingNameKey ? "Digite seu nome..." : awaitingPhoneKey ? "Digite seu número com DDD..." : awaitingObservationKey ? "Digite sua observação..." : "Selecione uma opção acima…"}
               value={phoneInput}
               onChange={(e) => setPhoneInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleSendInput(); }}
               className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-navy placeholder:text-muted-foreground/70 disabled:cursor-not-allowed"
             />
             <button
-              disabled={(!awaitingPhoneKey && !awaitingObservationKey) || finished || !phoneInput.trim()}
+              disabled={(!awaitingPhoneKey && !awaitingObservationKey && !awaitingNameKey) || finished || !phoneInput.trim()}
               onClick={handleSendInput}
               aria-label="Enviar"
               className="flex h-9 w-9 items-center justify-center rounded-md text-gold-foreground disabled:opacity-60 cursor-pointer"
