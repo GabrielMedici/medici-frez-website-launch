@@ -281,7 +281,6 @@ export function OrbitChat() {
         pushBot(finalMsg.text, finalMsg.lawyers);
         setFinished(true);
 
-        // Map messages up to this point + the current phone input to construct the email history
         const historicoMsgs = [...messages, { id: messages.length + 1, from: "user", text: phoneInput }];
         const historicoChat = [];
         for (let i = 0; i < historicoMsgs.length; i++) {
@@ -290,6 +289,13 @@ export function OrbitChat() {
             let resposta = "";
             if (i + 1 < historicoMsgs.length && historicoMsgs[i + 1].from === "user") {
               resposta = historicoMsgs[i + 1].text;
+              
+              // Converte o número de telefone em um link clicável do WhatsApp
+              if (pergunta.includes("WhatsApp")) {
+                const num = resposta.replace(/\D/g, "");
+                resposta = `<a href="https://wa.me/55${num}" target="_blank" style="color: #25D366; font-weight: bold; text-decoration: none;">${resposta} 📲 Iniciar Conversa</a>`;
+              }
+              
               historicoChat.push({ pergunta, resposta });
             }
           }
