@@ -355,8 +355,8 @@ export function OrbitChat() {
                   <div className={`flex flex-col gap-2 mt-1 mb-2 w-[95%] ${m.from === "user" ? "self-end" : "self-start"}`}>
                      {m.lawyers.map((lw, i) => (
                         <div key={i} className="flex items-center gap-3 bg-[#F4F6F9] border border-gold/30 p-2.5 rounded-xl shadow-sm animate-fade-in" style={{animationDelay: `${i * 150}ms`}}>
-                           <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-gold/40 shrink-0 shadow-inner">
-                              <img src={lw.image} alt={lw.name} className="w-full h-full object-cover object-top" />
+                           <div className="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-gold/40 shrink-0 shadow-sm bg-white">
+                              <img src={lw.image} alt={lw.name} className="w-full h-full object-cover object-center" style={{ imageRendering: "high-quality" }} />
                            </div>
                            <div className="flex flex-col">
                               <span className="text-[11px] md:text-xs font-bold text-navy leading-tight">{lw.name}</span>
