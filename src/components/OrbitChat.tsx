@@ -153,7 +153,7 @@ const dispararEmailNotificacao = createServerFn({ method: "POST" })
       body: JSON.stringify({
         from: "onboarding@resend.dev",
         to: "contato.medicistore@gmail.com",
-        subject: `atendimento aos cuidados de: ${data.nomesAdvogados}`,
+        subject: `Atendimento aos cuidados de: ${data.nomesAdvogados}`,
         html: corpoHtml
       })
     });
