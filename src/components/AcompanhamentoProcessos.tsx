@@ -467,13 +467,17 @@ function AtendimentosModulo() {
   const [pendentes, setPendentes] = useState<any[]>([]);
 
   useEffect(() => {
-    const data = sessionStorage.getItem("@medici:pendentes");
-    if (data) {
-      try {
-        setPendentes(JSON.parse(data).reverse()); // Show newest first
-      } catch (e) {
-        console.error("Erro ao ler pendentes", e);
+    try {
+      const data = sessionStorage.getItem("@medici:pendentes");
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) {
+          // Clona o array antes de dar reverse para evitar mutações indesejadas
+          setPendentes([...parsed].reverse());
+        }
       }
+    } catch (e) {
+      console.error("Erro ao ler pendentes", e);
     }
   }, []);
 
@@ -481,7 +485,7 @@ function AtendimentosModulo() {
     <div className="animate-fade-in">
       <h3 className="text-2xl font-serif text-navy mb-6">Atendimentos Pendentes</h3>
       
-      {pendentes.length === 0 ? (
+      {(!pendentes || pendentes.length === 0) ? (
         <div className="flex flex-col items-center justify-center bg-white rounded-xl border border-border p-12 text-center shadow-sm">
           <div className="w-16 h-16 bg-[#F4F6F9] rounded-full flex items-center justify-center mb-4">
             <MessageSquare className="w-8 h-8 text-navy/30" />
@@ -491,37 +495,46 @@ function AtendimentosModulo() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {pendentes.map((lead, i) => (
-            <div key={lead.id || i} className="bg-white p-6 rounded-xl border border-border shadow-sm flex flex-col hover:border-[#C5A059]/50 hover:shadow-md transition-all group">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200">
-                      Novo Lead
-                    </span>
-                    <span className="text-xs text-navy/40 font-medium">{lead.data}</span>
+          {pendentes.map((lead, i) => {
+            // Valores fallback para garantir que a renderização não quebre caso falte algum dado
+            const nome = lead?.nome || "Cliente";
+            const telefone = lead?.telefone || "";
+            const dataStr = lead?.data || "";
+            const setor = lead?.setor || "Atendimento";
+            const initLetter = nome.charAt(0).toUpperCase();
+
+            return (
+              <div key={lead?.id || i} className="bg-white p-6 rounded-xl border border-border shadow-sm flex flex-col hover:border-[#C5A059]/50 hover:shadow-md transition-all group">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200">
+                        Novo Lead
+                      </span>
+                      <span className="text-xs text-navy/40 font-medium">{dataStr}</span>
+                    </div>
+                    <h4 className="font-serif text-xl text-navy">{nome}</h4>
+                    <p className="text-xs font-medium uppercase tracking-widest text-gold mt-1">{setor}</p>
                   </div>
-                  <h4 className="font-serif text-xl text-navy">{lead.nome}</h4>
-                  <p className="text-xs font-medium uppercase tracking-widest text-gold mt-1">{lead.setor}</p>
+                  <div className="w-12 h-12 rounded-full bg-[#0F172A] flex items-center justify-center shrink-0 shadow-sm border border-[#C5A059]/30">
+                    <span className="text-white font-serif text-lg font-bold">{initLetter}</span>
+                  </div>
                 </div>
-                <div className="w-12 h-12 rounded-full bg-[#0F172A] flex items-center justify-center shrink-0 shadow-sm border border-[#C5A059]/30">
-                  <span className="text-white font-serif text-lg font-bold">{lead.nome ? lead.nome.charAt(0).toUpperCase() : "?"}</span>
+                
+                <div className="mt-auto pt-5 border-t border-border/50">
+                  <a 
+                    href={`https://wa.me/55${String(telefone).replace(/\D/g, '')}?text=Olá ${encodeURIComponent(nome)}, somos da Médici & Frez Sociedade de Advogados. Recebemos sua solicitação pelo nosso site.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#25D366]/10 text-[#075E54] group-hover:bg-[#25D366] group-hover:text-white transition-all cursor-pointer border border-[#25D366]/20"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Iniciar no WhatsApp
+                  </a>
                 </div>
               </div>
-              
-              <div className="mt-auto pt-5 border-t border-border/50">
-                <a 
-                  href={`https://wa.me/55${lead.telefone.replace(/\D/g, '')}?text=Olá ${encodeURIComponent(lead.nome)}, somos da Médici & Frez Sociedade de Advogados. Recebemos sua solicitação pelo nosso site.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider bg-[#25D366]/10 text-[#075E54] group-hover:bg-[#25D366] group-hover:text-white transition-all cursor-pointer border border-[#25D366]/20"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  Iniciar no WhatsApp
-                </a>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
